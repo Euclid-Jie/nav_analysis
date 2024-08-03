@@ -1,0 +1,6 @@
+build/
+dist/
+.history/
+.venv/
+*.spec
+__pycache__/
