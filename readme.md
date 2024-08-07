@@ -9,12 +9,12 @@ python -m venv .venv
 ```bash
 .\.venv\Scripts\activate
 python.exe -m pip install --upgrade pip
- pip install -r .\requirements.txt
+pip install -r .\requirements.txt
 ```
 
 * 修改 `Pyinstaller`：
 
-    将`hook-pyecharts.py` 复制到 `submodule\nav_analysis\.venv\Lib\site-packages\PyInstaller`目录下
+  将 `hook-pyecharts.py` 复制到 `submodule\nav_analysis\.venv\Lib\site-packages\PyInstaller`目录下
 
 ### 打包
 
@@ -30,4 +30,3 @@ Pyinstaller -F -i .\Ptools_B.ico .\main.py
 ```bash
 .\dist\main.exe 
 ```
-

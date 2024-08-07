@@ -309,7 +309,7 @@ def nav_analysis(
         if bench_mark_nav is not None:
             bench_mark_nav = bench_mark_nav[date <= end_date]
         date = date[date <= end_date]
-    print(f"净值区间: {format_date(date[0]).strftime("%Y-%m-%d")} - {format_date(date[-1]).strftime("%Y-%m-%d")}")
+    print(f"净值区间: {np.datetime_as_string(date[0],unit="D")} - {np.datetime_as_string(date[-1],unit="D")}")
     
     
     nav = nav / nav[0]

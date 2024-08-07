@@ -1,11 +1,13 @@
 from unitls import *
 
-print("请选择净值数据文件，请确保列名为：日期or净值日期 / 累计净值or累计单位净值")
+print(
+    "请选择净值数据文件，请确保列名为：日期or净值日期 / 累计净值or累计单位净值or实际累计净值"
+)
 nav_file_path = Path(getLocalFile())
 nav_data = pd.read_excel(nav_file_path)
-nav_data = nav_data.rename(columns={"净值日期": "日期", "累计单位净值": "累计净值"})[
-    ["日期", "单位净值", "累计净值"]
-]
+nav_data = nav_data.rename(
+    columns={"净值日期": "日期", "累计单位净值": "累计净值", "实际累计净值": "累计净值"}
+)[["日期", "累计净值"]]
 nav_data["日期"] = pd.to_datetime(nav_data["日期"])
 nav_data = nav_data.sort_values(by="日期", ascending=True).reset_index(drop=True)
 print(
@@ -51,9 +53,7 @@ weekly_rtn_table["日期"] = weekly_rtn_table["日期"].dt.strftime("%Y-%m-%d")
 weekly_rtn_table.set_index("日期", inplace=True)
 weekly_rtn_table = weekly_rtn_table.T
 
-monthly_rtn = win_ratio_stastics(
-    nav_data[["日期", "累计净值"]], start_date=np.datetime64("2023-01-01")
-)
+monthly_rtn = win_ratio_stastics(nav_data[["日期", "累计净值"]], start_date=begin_date)
 
 bench_idx = input(
     "请键入基准：[0]无基准, [1]沪深300, [2]中证500, [3]中证100, [4]国证2000, [5]中证全指"
