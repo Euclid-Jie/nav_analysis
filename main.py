@@ -18,8 +18,12 @@ nav_data_dict = {}
 for path in nav_file_paths:
     nav_data = pd.read_excel(path)
     nav_data = nav_data.rename(
-        columns={"净值日期": "日期", "累计单位净值": "累计净值"}
-    )[["日期", "单位净值", "累计净值"]]
+        columns={
+            "净值日期": "日期",
+            "累计单位净值": "累计净值",
+            "实际累计净值": "累计净值",
+        }
+    )[["日期", "累计净值"]]
     nav_data["日期"] = pd.to_datetime(nav_data["日期"])
     nav_data = nav_data.sort_values(by="日期", ascending=True).reset_index(drop=True)
     # 选取最大的开始时间作为开始时间
