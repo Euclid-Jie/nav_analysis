@@ -3,12 +3,12 @@ from utils import *
 
 print("请选择净值数据文件，请确保列名为：日期or净值日期 / 累计净值or累计单位净值")
 nav_file_paths = [Path(path_i) for path_i in getLocalFiles()]
-assert len(nav_file_paths) > 0, "未选择文件"
+assert len(nav_file_paths) > 0, input("未选择文件")
 
 # 读取指数数据
 index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
 index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
-trade_date = index_data["bob"].values.astype("datetime64[ns]")
+trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
 
 begin_date = np.datetime64("2000-06-06")
 end_date = np.datetime64("2099-06-06")
@@ -24,7 +24,13 @@ for path in nav_file_paths:
             "实际累计净值": "累计净值",
         }
     )[["日期", "累计净值"]]
-    nav_data["日期"] = pd.to_datetime(nav_data["日期"])
+    assert (nav_data["累计净值"] <= 0.01).sum() == 0, input(
+        "Error: 净值数据中存在净值为0的数据"
+    )
+    if nav_data["日期"].dtype == "int":
+        nav_data["日期"] = pd.to_datetime(nav_data["日期"], format="%Y%m%d")
+    else:
+        nav_data["日期"] = pd.to_datetime(nav_data["日期"])
     nav_data = nav_data.sort_values(by="日期", ascending=True).reset_index(drop=True)
     # 选取最大的开始时间作为开始时间
     if nav_data["日期"].min() >= begin_date:
@@ -42,7 +48,7 @@ begin_date_input = input(
 )
 if begin_date_input != "":
     begin_date_input = np.datetime64(begin_date_input)
-    assert begin_date_input >= begin_date, "开始统计日期早于净值数据最早日期"
+    assert begin_date_input >= begin_date, input("开始统计日期早于净值数据最早日期")
     begin_date = begin_date_input
 
 end_date_input = input(
@@ -50,7 +56,7 @@ end_date_input = input(
 )
 if end_date_input != "":
     end_date_input = np.datetime64(end_date_input)
-    assert end_date_input <= end_date, "结束统计日期晚于净值数据最晚日期"
+    assert end_date_input <= end_date, input("结束统计日期晚于净值数据最晚日期")
     end_date = end_date_input
 
 monthly_rtn_dict = {}
