@@ -172,6 +172,7 @@ def nav_compare_analysis(
     bench_mark_nav : np.ndarray[float] = None,
     html_file_name: str = None,
     additional_table: list[pd.DataFrame] = None,
+    origin_date: np.ndarray[np.datetime64] = None,
 ):
     metrics_dict = {}
     drawdown_dict = {}
@@ -225,12 +226,22 @@ def nav_compare_analysis(
         bench_mark_drawdown = bench_mark_nav - np.maximum.accumulate(bench_mark_nav)
         drawdown_dict.update({"bench_mark": bench_mark_drawdown})
     if html_file_name:
+        metrics_table = pd.concat(
+                [
+                    pd.DataFrame(metrics_dict).T[["年化收益", "年化波动率", "夏普比率", "最大回撤"]], 
+                    pd.DataFrame(max_drawdown_info_dict).T,
+                ], axis=1)
+        metrics_table["夏普比率"] = metrics_table["夏普比率"].apply(lambda x: f"{x:.3f}")
+        metrics_table["年化收益"] = metrics_table["年化收益"].map(lambda x: f"{x:.3%}")
+        metrics_table["年化波动率"] = metrics_table["年化波动率"].map(lambda x: f"{x:.3%}")
+        metrics_table["最大回撤"] = metrics_table["最大回撤"].map(lambda x: f"{x:.3%}")
         html = nav_compare_analysis_echarts_plot(
             date=trade_date,
             nav=nav_data_dict,
             drawdown=drawdown_dict,
-            table=pd.concat([pd.DataFrame(metrics_dict).T[["年化收益", "年化波动率", "夏普比率", "最大回撤"]], pd.DataFrame(max_drawdown_info_dict).T], axis=1),
+            table=metrics_table,
             additional_table=additional_table,
+            origin_date=origin_date,
         )
         with open(html_file_name, "w", encoding='utf-8') as f:
             f.write(html)
@@ -243,15 +254,20 @@ def nav_compare_analysis_echarts_plot(
     drawdown: dict[str:np.ndarray],
     table: pd.DataFrame = None,
     additional_table: list[pd.DataFrame] = None,
+    origin_date: np.ndarray[np.datetime64] = None,
 ):
-    date_str_list = date.astype("datetime64[D]").astype(str).tolist()
+    if origin_date is not None:
+        select_date_idx = np.isin(date, origin_date)
+    else:
+        select_date_idx = np.ones(len(date), dtype=bool)
+    date_str_list = date.astype("datetime64[D]").astype(str)[select_date_idx].tolist()
     max_nav = np.array([max(nav_i) for nav_i in nav.values()])
     min_nav = np.array([min(nav_i) for nav_i in nav.values()])
     up_bound, lower_bound = up_lower_bound(max(max_nav), min(min_nav))
     
     nav_line = Line().add_xaxis(date_str_list)
     for key, value in nav.items():
-        nav_line.add_yaxis(key, value.tolist(), is_symbol_show=False)
+        nav_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
     nav_line.set_global_opts(
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("Value over Time"),
@@ -260,7 +276,7 @@ def nav_compare_analysis_echarts_plot(
     # 绘制最大回撤区间
     drawdown_line = Line().add_xaxis(date_str_list)
     for key, value in drawdown.items():
-        drawdown_line.add_yaxis(key, value.tolist(), is_symbol_show=False)
+        drawdown_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("max drawdown")
@@ -276,7 +292,7 @@ def nav_compare_analysis_echarts_plot(
                 </head> 
                 <body>
                     {table}
-                    {nav_line.render_embed()}
+                    <div style="width: 2000%;">{nav_line.render_embed()}</div> 
                     {"".join(additional_table)}
                     {drawdown_line.render_embed()}
                 </body>

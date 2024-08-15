@@ -20,6 +20,7 @@ for path in nav_file_paths:
     nav_data = nav_data.rename(
         columns={
             "净值日期": "日期",
+            "时间": "日期",
             "累计单位净值": "累计净值",
             "实际累计净值": "累计净值",
         }
@@ -60,6 +61,12 @@ if end_date_input != "":
     end_date = end_date_input
 
 monthly_rtn_dict = {}
+if len(nav_data_dict) == 1:
+    origin_date = nav_data["日期"]
+    origin_date = origin_date[origin_date >= begin_date]
+    origin_date = origin_date[origin_date <= end_date]
+else:
+    origin_date = None
 for key, nav_data in nav_data_dict.items():
     nav_data = match_data(nav_data=nav_data_dict[key], trade_date=trade_date)
     nav_data = nav_data[nav_data["日期"] >= begin_date]
@@ -152,5 +159,6 @@ nav_compare_analysis(
     bench_mark_nav=bench_mark_nav,
     html_file_name=html_file_path,
     additional_table=additional_table,
+    origin_date=origin_date,
 )
 os.system(f"start {html_file_path}")
