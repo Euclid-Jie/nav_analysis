@@ -164,4 +164,5 @@ nav_compare_analysis(
     additional_table=additional_table,
     origin_date=origin_date,
 )
+input("导出完成，按任意键打开html文件")
 os.system(f"start {html_file_path}")
