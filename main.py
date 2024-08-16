@@ -78,6 +78,9 @@ for key, nav_data in nav_data_dict.items():
     )
     monthly_rtn.index = [f"{key}_{i}" for i in monthly_rtn.index]
     monthly_rtn_dict[key] = monthly_rtn
+monthly_rtn_df = pd.concat(list(monthly_rtn_dict.values()))
+for col in monthly_rtn_df.columns:
+    monthly_rtn_df[col] = monthly_rtn_df[col].map(lambda x: f"{x:.3%}")
 
 trade_date = trade_date[trade_date >= begin_date]
 trade_date = trade_date[trade_date <= end_date]
@@ -120,13 +123,13 @@ if len(nav_file_paths) == 1:
     weekly_rtn_table = weekly_rtn.copy()
     weekly_rtn_table = weekly_rtn_table[
         weekly_rtn_table["日期"] <= nav_data["日期"].max()
-    ].tail(8)
+    ].tail(10)
     weekly_rtn_table["日期"] = weekly_rtn_table["日期"].dt.strftime("%Y-%m-%d")
     weekly_rtn_table.set_index("日期", inplace=True)
     weekly_rtn_table = weekly_rtn_table.T
-    additional_table = [pd.concat(list(monthly_rtn_dict.values())), weekly_rtn_table]
+    additional_table = [monthly_rtn_df, weekly_rtn_table]
 else:
-    additional_table = [pd.concat(list(monthly_rtn_dict.values()))]
+    additional_table = [monthly_rtn_df]
 
 
 bench_idx = input(

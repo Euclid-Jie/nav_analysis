@@ -265,7 +265,13 @@ def nav_compare_analysis_echarts_plot(
     min_nav = np.array([min(nav_i) for nav_i in nav.values()])
     up_bound, lower_bound = up_lower_bound(max(max_nav), min(min_nav))
     
-    nav_line = Line().add_xaxis(date_str_list)
+    nav_line = Line(
+        init_opts={
+            "width":"1320px",
+            "height":"600px",
+            "is_horizontal_center":True,
+            }
+        ).add_xaxis(date_str_list)
     for key, value in nav.items():
         nav_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
     nav_line.set_global_opts(
@@ -274,7 +280,13 @@ def nav_compare_analysis_echarts_plot(
         yaxis_opts=opts.AxisOpts(min_=lower_bound, max_=up_bound),
     )
     # 绘制最大回撤区间
-    drawdown_line = Line().add_xaxis(date_str_list)
+    drawdown_line = Line(
+        init_opts={
+            "width":"1320px",
+            "height":"600px",
+            "is_horizontal_center":True,
+            }
+        ).add_xaxis(date_str_list)
     for key, value in drawdown.items():
         drawdown_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
@@ -292,7 +304,7 @@ def nav_compare_analysis_echarts_plot(
                 </head> 
                 <body>
                     {table}
-                    <div style="width: 2000%;">{nav_line.render_embed()}</div> 
+                    {nav_line.render_embed()}
                     {"".join(additional_table)}
                     {drawdown_line.render_embed()}
                 </body>
