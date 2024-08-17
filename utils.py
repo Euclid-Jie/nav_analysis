@@ -212,7 +212,7 @@ def nav_compare_analysis(
             drawdown_dict[key] = drawdown
             max_drawdown_info_dict[key] = max_drawdown_info
         print("-*-"*24)
-        print(f"{key}净值区间: {np.datetime_as_string(trade_date[0],unit="D")} - {np.datetime_as_string(trade_date[-1], unit='D')}")
+        print(f"【{key}】\n净值区间: {np.datetime_as_string(trade_date[0],unit="D")} - {np.datetime_as_string(trade_date[-1], unit='D')}")
         for i, v in metrics.items():
             if i == "夏普比率":
                 print(f"{i}：{v:.4f}")

@@ -6,12 +6,21 @@ nav_file_paths = [Path(path_i) for path_i in getLocalFiles()]
 assert len(nav_file_paths) > 0, input("未选择文件")
 
 # 读取指数数据
-index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
+if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
+    index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
+elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
+    index_data = pd.read_csv(nav_file_paths[0].parent.parent.joinpath("index_data.csv"))
+else:
+    print(
+        f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
+    )
+    print("请手动选择指数数据文件")
+    index_data = pd.read_csv(getLocalFiles()[0])
 index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
 trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
 
-begin_date = np.datetime64("2000-06-06")
-end_date = np.datetime64("2099-06-06")
+begin_date = pd.to_datetime("2023-12-29")
+end_date = pd.to_datetime("2099-06-06")
 
 # 读取数据并确定时间区间
 nav_data_dict = {}
@@ -28,6 +37,22 @@ for path in nav_file_paths:
     assert (nav_data["累计净值"] <= 0.01).sum() == 0, input(
         "Error: 净值数据中存在净值为0的数据"
     )
+    assert nav_data["累计净值"].isnull().sum() == 0, input(
+        "Error: 净值数据中存在累计净值为空的数据"
+    )
+    assert nav_data["日期"].isnull().sum() == 0, input(
+        "Error: 净值数据中存在日期为空的数据"
+    )
+    if nav_data["日期"].duplicated(keep=False).sum() != 0:
+        if (
+            input(
+                "Info: 净值数据中存在日期重复的数据\n{}\n 键入回车键自动剔除重复".format(
+                    nav_data[nav_data["日期"].duplicated()]
+                )
+            )
+            == ""
+        ):
+            nav_data = nav_data.drop_duplicates(subset="日期")
     if nav_data["日期"].dtype == "int":
         nav_data["日期"] = pd.to_datetime(nav_data["日期"], format="%Y%m%d")
     else:
