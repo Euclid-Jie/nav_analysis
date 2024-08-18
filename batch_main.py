@@ -5,8 +5,12 @@ from utils import *
 nav_analysis_config = NavAnalysisConfig(
     begin_date=pd.to_datetime("2023-12-29"),
     open_html=False,
-    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\市场中性"),
+    benchmark="SHSE.000852",
+    image_save_parh=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\image\1000指增"),
+    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\1000增强"),
 )
+if nav_analysis_config.image_save_parh.exists() == False:
+    nav_analysis_config.image_save_parh.mkdir(parents=True)
 
 if nav_analysis_config.nav_data_path == None:
     print("请选择净值数据文件，请确保列名为：日期or净值日期 / 累计净值or累计单位净值")
@@ -132,9 +136,9 @@ for file_path in nav_file_paths:
     weekly_rtn_table = weekly_rtn_table.T
     additional_table = [monthly_rtn, weekly_rtn_table]
 
-    if nav_analysis_config.bechmark is not None:
+    if nav_analysis_config.benchmark is not None:
         bench_mark_nav = index_data[
-            index_data["symbol"] == nav_analysis_config.bechmark
+            index_data["symbol"] == nav_analysis_config.benchmark
         ]
         bench_mark_nav = (
             bench_mark_nav[["bob", "close"]]
@@ -152,6 +156,7 @@ for file_path in nav_file_paths:
         html_file_name=html_file_path,
         additional_table=additional_table,
         origin_date=origin_date,
+        image_save_path=nav_analysis_config.image_save_parh,
     )
     if nav_analysis_config.open_html:
         input("导出完成，按任意键打开html文件")

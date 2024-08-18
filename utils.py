@@ -184,6 +184,7 @@ def nav_compare_analysis(
     html_file_name: Path = None,
     additional_table: list[pd.DataFrame] = None,
     origin_date: np.ndarray[np.datetime64] = None,
+    image_save_path: Path = Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image")
 ):
     metrics_dict = {}
     drawdown_dict = {}
@@ -255,7 +256,7 @@ def nav_compare_analysis(
             origin_date=origin_date,
         )
         
-        img_path =Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image").joinpath(f"{html_file_name.stem}.jpg")
+        img_path =image_save_path.joinpath(f"{html_file_name.stem}.jpg")
         print(f"正在保存图片至{img_path}, 请稍后...")
         imgkit.from_string(
             html,
@@ -350,7 +351,7 @@ class NavAnalysisConfig(NamedTuple):
     end_date: pd.Timestamp = None
     special_html_name:bool=False
     open_html:bool=True
-    bechmark: Literal[
+    benchmark: Literal[
         "SHSE.000300",
         "SHSE.000905",
         "SHSE.000852",
