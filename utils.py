@@ -2,7 +2,7 @@ import datetime
 import pandas as pd
 import numpy as np
 from pandas import Series, Timestamp
-from typing import Union, Literal
+from typing import Union, Literal,NamedTuple
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from pyecharts.charts import Line
@@ -11,6 +11,17 @@ import tkinter as tk
 from tkinter import filedialog
 from pathlib import Path
 import os
+import imgkit
+path_wk = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"
+config = imgkit.config(wkhtmltoimage=path_wk) 
+options = {
+    'javascript-delay': 1000,
+        'crop-w': 1200,
+        'crop-h': 620,
+        'crop-x': 65,
+        'crop-y': 5,
+
+}
 def getLocalFiles():
     root = tk.Tk()
     root.withdraw()
@@ -170,7 +181,7 @@ def nav_compare_analysis(
     trade_date: np.ndarray[np.datetime64],
     nav_data_dict: dict[str:np.ndarray[float]],
     bench_mark_nav : np.ndarray[float] = None,
-    html_file_name: str = None,
+    html_file_name: Path = None,
     additional_table: list[pd.DataFrame] = None,
     origin_date: np.ndarray[np.datetime64] = None,
 ):
@@ -243,6 +254,15 @@ def nav_compare_analysis(
             additional_table=additional_table,
             origin_date=origin_date,
         )
+        
+        img_path =Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image").joinpath(f"{html_file_name.stem}.jpg")
+        print(f"正在保存图片至{img_path}, 请稍后...")
+        imgkit.from_string(
+            html,
+            config=config,
+            output_path= img_path,
+            options = options,
+            )
         with open(html_file_name, "w", encoding='utf-8') as f:
             f.write(html)
 
@@ -278,7 +298,7 @@ def nav_compare_analysis_echarts_plot(
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("Value over Time"),
         yaxis_opts=opts.AxisOpts(min_=lower_bound, max_=up_bound),
-    )
+    ).set_series_opts(linestyle_opts=opts.LineStyleOpts(width = 4))
     # 绘制最大回撤区间
     drawdown_line = Line(
         init_opts={
@@ -292,7 +312,7 @@ def nav_compare_analysis_echarts_plot(
     drawdown_line.set_global_opts(
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("max drawdown")
-    )
+    ).set_series_opts(linestyle_opts=opts.LineStyleOpts(width = 4))
     table = table.to_html(render_links=True)
     if additional_table is not None:
         additional_table = [table_i.to_html(render_links=True) for table_i in additional_table]
@@ -324,3 +344,18 @@ def nav_compare_analysis_echarts_plot(
             </html>
         """
     return html
+
+class NavAnalysisConfig(NamedTuple):
+    begin_date: pd.Timestamp = None
+    end_date: pd.Timestamp = None
+    special_html_name:bool=False
+    open_html:bool=True
+    bechmark: Literal[
+        "SHSE.000300",
+        "SHSE.000905",
+        "SHSE.000852",
+        "SZSE.399303",
+        "SHSE.000985",
+    ] = None
+    image_save_parh: Path = Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image")
+    nav_data_path: Path=None

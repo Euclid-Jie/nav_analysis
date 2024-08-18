@@ -1,8 +1,28 @@
 import datetime
 from utils import *
 
-print("请选择净值数据文件，请确保列名为：日期or净值日期 / 累计净值or累计单位净值")
-nav_file_paths = [Path(path_i) for path_i in getLocalFiles()]
+# --- global settings ---
+nav_analysis_config = NavAnalysisConfig(
+    begin_date=pd.to_datetime("2023-12-29"),
+    open_html=True,
+)
+
+if nav_analysis_config.nav_data_path == None:
+    print("请选择净值数据文件，请确保列名为：日期or净值日期 / 累计净值or累计单位净值")
+    nav_file_paths = [Path(path_i) for path_i in getLocalFiles()]
+    # nav_file_paths = [
+    #     Path("C:/Users/Ouwei/Desktop/nav_data/净值0814/市场中性/天算中性B-SXU256.xlsx")
+    # ]
+else:
+    assert nav_analysis_config.nav_data_path.exists(), input("未找到文件夹/文件")
+    if nav_analysis_config.nav_data_path.is_file():
+        nav_file_paths = [nav_analysis_config.nav_data_path]
+    else:
+        nav_file_paths = [
+            Path(path_i)
+            for path_i in nav_analysis_config.nav_data_path.glob("*.xlsx|*.xls")
+        ]
+
 assert len(nav_file_paths) > 0, input("未选择文件")
 
 # 读取指数数据
@@ -19,7 +39,7 @@ else:
 index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
 trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
 
-begin_date = pd.to_datetime("2023-12-29")
+begin_date = pd.to_datetime("2000-06-06")
 end_date = pd.to_datetime("2099-06-06")
 
 # 读取数据并确定时间区间
@@ -69,21 +89,19 @@ for path in nav_file_paths:
     nav_data_dict[path.stem] = nav_data
 
 # 对时间区间进行修改
-begin_date_input = input(
-    f"统计时间将开始于{begin_date.strftime('%Y-%m-%d')}，如需调整请输入开始统计的日期[YYYY-MM-DD]："
-)
-if begin_date_input != "":
-    begin_date_input = np.datetime64(begin_date_input)
-    assert begin_date_input >= begin_date, input("开始统计日期早于净值数据最早日期")
-    begin_date = begin_date_input
+if nav_analysis_config.begin_date is not None:
+    assert nav_analysis_config.begin_date >= begin_date, input(
+        "开始统计日期早于净值数据最早日期"
+    )
+    print(f"统计时间将从{begin_date.strftime('%Y-%m-%d')}开始")
+    begin_date = nav_analysis_config.begin_date
 
-end_date_input = input(
-    f"统计时间将结束于{end_date.strftime('%Y-%m-%d')}，如需调整请输入结束统计的日期[YYYY-MM-DD]："
-)
-if end_date_input != "":
-    end_date_input = np.datetime64(end_date_input)
-    assert end_date_input <= end_date, input("结束统计日期晚于净值数据最晚日期")
-    end_date = end_date_input
+if nav_analysis_config.end_date is not None:
+    assert nav_analysis_config.end_date <= end_date, input(
+        "结束统计日期晚于净值数据最晚日期"
+    )
+    print(f"统计时间将结束于{end_date.strftime('%Y-%m-%d')}")
+    end_date = nav_analysis_config.end_date
 
 monthly_rtn_dict = {}
 if len(nav_data_dict) == 1:
@@ -110,7 +128,11 @@ for col in monthly_rtn_df.columns:
 trade_date = trade_date[trade_date >= begin_date]
 trade_date = trade_date[trade_date <= end_date]
 
-html_name = input("请输入导出的html文件名：")
+if nav_analysis_config.special_html_name:
+    html_name = input("请输入导出的html文件名：")
+else:
+    html_name = ""
+
 if html_name == "" and len(nav_file_paths) > 1:
     html_name = (
         "compare_"
@@ -128,7 +150,7 @@ elif html_name == "":
     )
 else:
     pass
-html_file_path = nav_file_paths[0].parent.joinpath(f"{html_name}.html")
+html_file_path = Path(nav_file_paths[0].parent.joinpath(f"{html_name}.html"))
 print(f"html路径为：{html_file_path}")
 
 
@@ -157,27 +179,16 @@ else:
     additional_table = [monthly_rtn_df]
 
 
-bench_idx = input(
-    "请键入基准：[0]无基准, [1]沪深300, [2]中证500, [3]中证100, [4]国证2000, [5]中证全指"
-)
-if bench_idx == "" or bench_idx == "0":
-    bench_mark_nav = None
-else:
-    bench_symbol = [
-        "",
-        "SHSE.000300",
-        "SHSE.000905",
-        "SHSE.000852",
-        "SZSE.399303",
-        "SHSE.000985",
-    ][int(bench_idx)]
-    bench_mark_nav = index_data[index_data["symbol"] == bench_symbol]
+if nav_analysis_config.bechmark is not None:
+    bench_mark_nav = index_data[index_data["symbol"] == nav_analysis_config.bechmark]
     bench_mark_nav = (
         bench_mark_nav[["bob", "close"]]
         .set_index("bob")
         .reindex(trade_date)["close"]
         .values
     )
+else:
+    bench_mark_nav = None
 
 nav_compare_analysis(
     trade_date=trade_date,
@@ -189,5 +200,6 @@ nav_compare_analysis(
     additional_table=additional_table,
     origin_date=origin_date,
 )
-input("导出完成，按任意键打开html文件")
-os.system(f"start {html_file_path}")
+if nav_analysis_config.open_html:
+    input("导出完成，按任意键打开html文件")
+    os.system(f"start {html_file_path.__str__()}")
