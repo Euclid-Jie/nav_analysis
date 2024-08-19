@@ -5,9 +5,9 @@ from utils import *
 nav_analysis_config = NavAnalysisConfig(
     begin_date=pd.to_datetime("2023-12-29"),
     open_html=False,
-    benchmark="SHSE.000852",
-    image_save_parh=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\image\1000指增"),
-    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\1000增强"),
+    # benchmark="SHSE.000905",
+    image_save_parh=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\image\量化选股"),
+    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\量化选股"),
 )
 if nav_analysis_config.image_save_parh.exists() == False:
     nav_analysis_config.image_save_parh.mkdir(parents=True)
@@ -47,36 +47,7 @@ for file_path in nav_file_paths:
     trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
     # 读取数据并确定时间区间
     nav_data_dict = {}
-    nav_data = pd.read_excel(file_path)
-    nav_data = nav_data.rename(
-        columns={
-            "净值日期": "日期",
-            "时间": "日期",
-            "累计单位净值": "累计净值",
-            "实际累计净值": "累计净值",
-        }
-    )[["日期", "累计净值"]]
-    assert (nav_data["累计净值"] <= 0.01).sum() == 0, input(
-        "Error: 净值数据中存在净值为0的数据"
-    )
-    assert nav_data["累计净值"].isnull().sum() == 0, input(
-        "Error: 净值数据中存在累计净值为空的数据"
-    )
-    assert nav_data["日期"].isnull().sum() == 0, input(
-        "Error: 净值数据中存在日期为空的数据"
-    )
-    if nav_data["日期"].duplicated(keep=False).sum() != 0:
-        print(
-            "Info: 净值数据中存在日期重复的数据".format(
-                nav_data[nav_data["日期"].duplicated()]
-            )
-        )
-        nav_data = nav_data.drop_duplicates(subset="日期")
-    if nav_data["日期"].dtype == "int":
-        nav_data["日期"] = pd.to_datetime(nav_data["日期"], format="%Y%m%d")
-    else:
-        nav_data["日期"] = pd.to_datetime(nav_data["日期"])
-    nav_data = nav_data.sort_values(by="日期", ascending=True).reset_index(drop=True)
+    nav_data = format_nav_data(file_path)
     # 选取最大的开始时间作为开始时间
     if nav_data["日期"].min() >= begin_date:
         begin_date = nav_data["日期"].min()

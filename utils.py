@@ -30,6 +30,58 @@ def getLocalFiles():
         print('文件路径：', filePath)
     return filePaths
 
+# 读取指数数据
+def load_trade_date(nav_file_paths):
+    if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
+        index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
+    elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
+        index_data = pd.read_csv(nav_file_paths[0].parent.parent.joinpath("index_data.csv"))
+    else:
+        print(
+        f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
+    )
+        print("请手动选择指数数据文件")
+        index_data = pd.read_csv(getLocalFiles()[0])
+    index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
+    trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
+    return index_data,trade_date
+
+def format_nav_data(path):
+    nav_data = pd.read_excel(path)
+    nav_data = nav_data.rename(
+        columns={
+            "净值日期": "日期",
+            "时间": "日期",
+            "累计单位净值": "累计净值",
+            "实际累计净值": "累计净值",
+        }
+    )[["日期", "累计净值"]]
+    assert (nav_data["累计净值"] <= 0.01).sum() == 0, input(
+        "Error: 净值数据中存在净值为0的数据"
+    )
+    assert nav_data["累计净值"].isnull().sum() == 0, input(
+        "Error: 净值数据中存在累计净值为空的数据"
+    )
+    assert nav_data["日期"].isnull().sum() == 0, input(
+        "Error: 净值数据中存在日期为空的数据"
+    )
+    if nav_data["日期"].duplicated(keep=False).sum() != 0:
+        if (
+            input(
+                "Info: 净值数据中存在日期重复的数据\n{}\n 键入回车键自动剔除重复".format(
+                    nav_data[nav_data["日期"].duplicated()]
+                )
+            )
+            == ""
+        ):
+            nav_data = nav_data.drop_duplicates(subset="日期")
+    if nav_data["日期"].dtype == "int":
+        nav_data["日期"] = pd.to_datetime(nav_data["日期"], format="%Y%m%d")
+    else:
+        nav_data["日期"] = pd.to_datetime(nav_data["日期"])
+    nav_data = nav_data.sort_values(by="日期", ascending=True).reset_index(drop=True)
+    return nav_data
+
 def match_data(
     nav_data: pd.DataFrame,
     trade_date: np.ndarray[np.datetime64],
