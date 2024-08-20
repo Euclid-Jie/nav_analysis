@@ -3,9 +3,8 @@ from utils import *
 
 # --- global settings ---
 nav_analysis_config = NavAnalysisConfig(
-    nav_data_path=Path(
-        "C:/Users/Ouwei/Desktop/nav_data/QB772B-衍复新擎对冲一号B类.xlsx"
-    ),
+    index_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
+    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\SJJ733衍复春晓一期.xls"),
     begin_date=pd.to_datetime("2023-12-29"),
     open_html=True,
     image_save_parh=None,
@@ -31,16 +30,21 @@ else:
 assert len(nav_file_paths) > 0, input("未选择文件")
 
 # 读取指数数据
-if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
-    index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
-elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
-    index_data = pd.read_csv(nav_file_paths[0].parent.parent.joinpath("index_data.csv"))
+if nav_analysis_config.index_data_path is not None:
+    index_data = pd.read_csv(nav_analysis_config.index_data_path)
 else:
-    print(
-        f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
-    )
-    print("请手动选择指数数据文件")
-    index_data = pd.read_csv(getLocalFiles()[0])
+    if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
+        index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
+    elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
+        index_data = pd.read_csv(
+            nav_file_paths[0].parent.parent.joinpath("index_data.csv")
+        )
+    else:
+        print(
+            f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
+        )
+        print("请手动选择指数数据文件")
+        index_data = pd.read_csv(getLocalFiles()[0])
 index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
 trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
 
