@@ -90,6 +90,40 @@ def match_data(
     nav_data = nav_data.reindex(trade_date, method="ffill")
     return nav_data.reset_index(drop=False)
 
+def _backword_analysis(nav_data, backword_delta: pd.Timedelta):
+    date_backword_delta = nav_data["日期"].values[-1] - backword_delta
+    assert (
+        date_backword_delta >= nav_data["日期"].values[0]
+    ), f"数据不足{str(backword_delta)},begin_date: {np.datetime_as_string(nav_data['日期'].values[0], unit='D')} ~ end_date: {np.datetime_as_string(nav_data['日期'].values[-1],unit='D')}"
+    backword_period_nav_data = nav_data[nav_data["日期"] >= date_backword_delta]
+    nav = backword_period_nav_data["累计净值"].values
+    rtn = np.log(nav[1:]) - np.log(nav[:-1])
+    res = curve_analysis(rtn, nav)
+    res["begin_date"] = np.datetime_as_string(
+        backword_period_nav_data["日期"].values[0], unit="D"
+    )
+    res["end_date"] = np.datetime_as_string(
+        backword_period_nav_data["日期"].values[-1], unit="D"
+    )
+    return res
+
+def backword_analysis(nav_data):
+    max_backword_motnhs = (
+        (nav_data["日期"].values[-1] - nav_data["日期"].values[0])
+        .astype("timedelta64[M]")
+        .astype(int)
+    )
+    res_dict = {}
+    for i in [1, 3, 6, 12, 24, 36]:
+        if i > max_backword_motnhs:
+            break
+        res = _backword_analysis(nav_data, pd.DateOffset(months=i))
+        res_dict[i] = res
+    out_df = pd.DataFrame(res_dict).T
+    out_df.index.name = "backword months"
+    out_df.index = out_df.index.astype(str) + "M"
+    return out_df
+
 def clean(arr: np.ndarray, inplace=False, fill_value=0.0) -> np.ndarray:
     """
     将array中的Inf, NaN转为 fill_value
@@ -183,11 +217,11 @@ def curve_analysis(rtn: np.ndarray, nav: np.ndarray):
     assert nav.ndim == 1, "nav维度不为1"
     assert len(rtn) == len(nav) - 1, "rtn的长度应并nav长度少1"
     rtn = clean(rtn)
-    result = {"total_rtn": nav[-1] / nav[0] - 1}
+    result = {"区间收益率": nav[-1] / nav[0] - 1}
     number_of_years = len(rtn) / 250
-    result["年化收益"] = result["total_rtn"] / number_of_years
-    result["total_std"] = np.nanstd(rtn)
-    result["年化波动率"] = result["total_std"] * np.sqrt(250)
+    result["年化收益"] = result["区间收益率"] / number_of_years
+    result["区间波动率"] = np.nanstd(rtn)
+    result["年化波动率"] = result["区间波动率"] * np.sqrt(250)
     result["夏普比率"] = result["年化收益"] / result["年化波动率"]
     result["最大回撤"] = maximum_draw_down(rtn)
     return result    
@@ -236,7 +270,7 @@ def nav_compare_analysis(
     html_file_name: Path = None,
     additional_table: list[pd.DataFrame] = None,
     origin_date: np.ndarray[np.datetime64] = None,
-    image_save_path: Path = Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image")
+    image_save_path: Path = None
 ):
     metrics_dict = {}
     drawdown_dict = {}
@@ -307,15 +341,15 @@ def nav_compare_analysis(
             additional_table=additional_table,
             origin_date=origin_date,
         )
-        
-        img_path =image_save_path.joinpath(f"{html_file_name.stem}.jpg")
-        print(f"正在保存图片至{img_path}, 请稍后...")
-        imgkit.from_string(
-            html,
-            config=config,
-            output_path= img_path,
-            options = options,
-            )
+        if image_save_path is not None:
+            img_path =image_save_path.joinpath(f"{html_file_name.stem}.jpg")
+            print(f"正在保存图片至{img_path}, 请稍后...")
+            imgkit.from_string(
+                html,
+                config=config,
+                output_path= img_path,
+                options = options,
+                )
         with open(html_file_name, "w", encoding='utf-8') as f:
             f.write(html)
 

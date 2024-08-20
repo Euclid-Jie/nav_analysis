@@ -3,9 +3,13 @@ from utils import *
 
 # --- global settings ---
 nav_analysis_config = NavAnalysisConfig(
+    nav_data_path=Path(
+        "C:/Users/Ouwei/Desktop/nav_data/QB772B-衍复新擎对冲一号B类.xlsx"
+    ),
     begin_date=pd.to_datetime("2023-12-29"),
-    open_html=False,
-    benchmark="SZSE.399303",
+    open_html=True,
+    image_save_parh=None,
+    # benchmark="SZSE.399303",
 )
 
 if nav_analysis_config.nav_data_path == None:
@@ -143,7 +147,14 @@ if len(nav_file_paths) == 1:
     weekly_rtn_table["日期"] = weekly_rtn_table["日期"].dt.strftime("%Y-%m-%d")
     weekly_rtn_table.set_index("日期", inplace=True)
     weekly_rtn_table = weekly_rtn_table.T
-    additional_table = [monthly_rtn_df, weekly_rtn_table]
+
+    backword_analysis_df = backword_analysis(list(nav_data_dict.values())[0])
+    for col in ["区间收益率", "年化收益", "区间波动率", "年化波动率", "最大回撤"]:
+        backword_analysis_df[col] = backword_analysis_df[col].map(lambda x: f"{x:.3%}")
+    backword_analysis_df["夏普比率"] = backword_analysis_df["夏普比率"].apply(
+        lambda x: f"{x:.3f}"
+    )
+    additional_table = [monthly_rtn_df, weekly_rtn_table, backword_analysis_df]
 else:
     additional_table = [monthly_rtn_df]
 
@@ -168,6 +179,7 @@ nav_compare_analysis(
     html_file_name=html_file_path,
     additional_table=additional_table,
     origin_date=origin_date,
+    image_save_path=nav_analysis_config.image_save_parh,
 )
 if nav_analysis_config.open_html:
     input("导出完成，按任意键打开html文件")
