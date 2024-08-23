@@ -3,11 +3,12 @@ from utils import *
 
 # --- global settings ---
 nav_analysis_config = NavAnalysisConfig(
+    index_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
     begin_date=pd.to_datetime("2023-12-29"),
     open_html=False,
-    # benchmark="SHSE.000905",
-    image_save_parh=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\image\量化选股"),
-    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值0814\量化选股"),
+    # benchmark="SHSE.000852",
+    image_save_parh=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值库0820\image\市场中性"),
+    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值库0820\SSS-净值库\按策略分\市场中性"),
 )
 if nav_analysis_config.image_save_parh.exists() == False:
     nav_analysis_config.image_save_parh.mkdir(parents=True)
@@ -28,20 +29,27 @@ else:
 assert len(nav_file_paths) > 0, input("未选择文件")
 
 # 读取指数数据
-if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
-    index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
-elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
-    index_data = pd.read_csv(nav_file_paths[0].parent.parent.joinpath("index_data.csv"))
+if nav_analysis_config.index_data_path is not None:
+    index_data = pd.read_csv(nav_analysis_config.index_data_path)
 else:
-    print(
-        f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
-    )
-    print("请手动选择指数数据文件")
-    index_data = pd.read_csv(getLocalFiles()[0])
+    if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
+        index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
+    elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
+        index_data = pd.read_csv(
+            nav_file_paths[0].parent.parent.joinpath("index_data.csv")
+        )
+    else:
+        print(
+            f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
+        )
+        print("请手动选择指数数据文件")
+        index_data = pd.read_csv(getLocalFiles()[0])
 index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
 trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
 
 for file_path in nav_file_paths:
+    print("-*-"*24)
+    print(f"【{file_path.stem}】")
     begin_date = pd.to_datetime("2023-12-29")
     end_date = pd.to_datetime("2099-06-06")
     trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
@@ -54,7 +62,7 @@ for file_path in nav_file_paths:
     if nav_data["日期"].max() <= end_date:
         end_date = nav_data["日期"].max()
     print(
-        f"{file_path.stem}净值数据中，时间区间为：{nav_data['日期'].min().strftime('%Y-%m-%d')} - {nav_data['日期'].max().strftime('%Y-%m-%d')}"
+        f"净值数据中，时间区间为：{nav_data['日期'].min().strftime('%Y-%m-%d')} - {nav_data['日期'].max().strftime('%Y-%m-%d')}"
     )
 
     origin_date = nav_data["日期"]
@@ -86,6 +94,9 @@ for file_path in nav_file_paths:
         )
     html_file_path = Path(file_path.parent.joinpath(f"{html_name}.html"))
     print(f"html路径为：{html_file_path}")
+    if html_file_path.exists():
+        print("文件已存在, 直接跳过")
+        continue
 
     weekly_rtn = (
         nav_data.groupby(pd.Grouper(key="日期", freq="W"))

@@ -309,8 +309,7 @@ def nav_compare_analysis(
             metrics_dict[key] = metrics
             drawdown_dict[key] = drawdown
             max_drawdown_info_dict[key] = max_drawdown_info
-        print("-*-"*24)
-        print(f"【{key}】\n净值区间: {np.datetime_as_string(trade_date[0],unit="D")} - {np.datetime_as_string(trade_date[-1], unit='D')}")
+        print(f"净值区间: {np.datetime_as_string(trade_date[0],unit="D")} - {np.datetime_as_string(trade_date[-1], unit='D')}")
         for i, v in metrics.items():
             if i == "夏普比率":
                 print(f"{i}：{v:.4f}")
@@ -382,10 +381,13 @@ def nav_compare_analysis_echarts_plot(
     for key, value in nav.items():
         nav_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
     nav_line.set_global_opts(
+        legend_opts=opts.LegendOpts(textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)),
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("Value over Time"),
         yaxis_opts=opts.AxisOpts(min_=lower_bound, max_=up_bound),
-    ).set_series_opts(linestyle_opts=opts.LineStyleOpts(width = 4))
+    ).set_series_opts(
+        linestyle_opts=opts.LineStyleOpts(width = 4),
+        )
     # 绘制最大回撤区间
     drawdown_line = Line(
         init_opts={
@@ -397,6 +399,7 @@ def nav_compare_analysis_echarts_plot(
     for key, value in drawdown.items():
         drawdown_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
+        legend_opts=opts.LegendOpts(textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)),
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("max drawdown")
     ).set_series_opts(linestyle_opts=opts.LineStyleOpts(width = 4))

@@ -4,8 +4,8 @@ from utils import *
 # --- global settings ---
 nav_analysis_config = NavAnalysisConfig(
     index_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\SJJ733衍复春晓一期.xls"),
-    begin_date=pd.to_datetime("2023-12-29"),
+    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\SQB772衍复新擎对冲一号.xls"),
+    # begin_date=pd.to_datetime("2023-12-29"),
     open_html=True,
     image_save_parh=None,
     # benchmark="SZSE.399303",
@@ -54,6 +54,7 @@ end_date = pd.to_datetime("2099-06-06")
 # 读取数据并确定时间区间
 nav_data_dict = {}
 for path in nav_file_paths:
+    print(f"【{file_path.stem}】")
     nav_data = format_nav_data(path)
     # 选取最大的开始时间作为开始时间
     if nav_data["日期"].min() >= begin_date:
@@ -61,7 +62,7 @@ for path in nav_file_paths:
     if nav_data["日期"].max() <= end_date:
         end_date = nav_data["日期"].max()
     print(
-        f"{path.stem}净值数据中，时间区间为：{nav_data['日期'].min().strftime('%Y-%m-%d')} - {nav_data['日期'].max().strftime('%Y-%m-%d')}"
+        f"净值数据中，时间区间为：{nav_data['日期'].min().strftime('%Y-%m-%d')} - {nav_data['日期'].max().strftime('%Y-%m-%d')}"
     )
     nav_data_dict[path.stem] = nav_data
 
