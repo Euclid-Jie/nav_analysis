@@ -8,7 +8,7 @@ nav_analysis_config = NavAnalysisConfig(
     # begin_date=pd.to_datetime("2023-12-29"),
     open_html=True,
     image_save_parh=None,
-    # benchmark="SZSE.399303",
+    # benchmark="SHSE.000905",
 )
 
 if nav_analysis_config.nav_data_path == None:
@@ -154,7 +154,7 @@ if len(nav_file_paths) == 1:
     weekly_rtn_table = weekly_rtn_table.T
 
     backword_analysis_df = backword_analysis(list(nav_data_dict.values())[0])
-    for col in ["区间收益率", "年化收益", "区间波动率", "年化波动率", "最大回撤"]:
+    for col in ["区间收益率", "年化收益", "年化波动率", "最大回撤"]:
         backword_analysis_df[col] = backword_analysis_df[col].map(lambda x: f"{x:.3%}")
     backword_analysis_df["夏普比率"] = backword_analysis_df["夏普比率"].apply(
         lambda x: f"{x:.3f}"

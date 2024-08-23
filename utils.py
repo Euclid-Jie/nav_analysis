@@ -220,8 +220,7 @@ def curve_analysis(rtn: np.ndarray, nav: np.ndarray):
     result = {"区间收益率": nav[-1] / nav[0] - 1}
     number_of_years = len(rtn) / 250
     result["年化收益"] = result["区间收益率"] / number_of_years
-    result["区间波动率"] = np.nanstd(rtn)
-    result["年化波动率"] = result["区间波动率"] * np.sqrt(250)
+    result["年化波动率"] = np.nanstd(rtn) * np.sqrt(250)
     result["夏普比率"] = result["年化收益"] / result["年化波动率"]
     result["最大回撤"] = maximum_draw_down(rtn)
     return result    
