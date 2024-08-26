@@ -4,11 +4,13 @@ from utils import *
 # --- global settings ---
 nav_analysis_config = NavAnalysisConfig(
     index_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-    begin_date=pd.to_datetime("2023-12-29"),
+    # begin_date=pd.to_datetime("2023-12-29"),
     open_html=False,
     # benchmark="SHSE.000852",
-    image_save_parh=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值库0820\image\市场中性"),
-    nav_data_path=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值库0820\SSS-净值库\按策略分\市场中性"),
+    # image_save_parh=Path(r"C:\Users\Ouwei\Desktop\nav_data\净值库0820\image\市场中性"),
+    # nav_data_path=Path(
+    #     r"C:\Users\Ouwei\Desktop\nav_data\净值库0820\SSS-净值库\按策略分\市场中性"
+    # ),
 )
 if nav_analysis_config.image_save_parh.exists() == False:
     nav_analysis_config.image_save_parh.mkdir(parents=True)
@@ -48,9 +50,9 @@ index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
 trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
 
 for file_path in nav_file_paths:
-    print("-*-"*24)
+    print("-*-" * 24)
     print(f"【{file_path.stem}】")
-    begin_date = pd.to_datetime("2023-12-29")
+    begin_date = pd.to_datetime("2000-06-06")
     end_date = pd.to_datetime("2099-06-06")
     trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
     # 读取数据并确定时间区间
@@ -97,6 +99,16 @@ for file_path in nav_file_paths:
     if html_file_path.exists():
         print("文件已存在, 直接跳过")
         continue
+    weekly_date = pd.read_csv(r"C:\Euclid_Jie\barra\submodule\nav_analysis\nav_weekly_date.csv")
+    weekly_date["date"] = pd.to_datetime(weekly_date["date"])
+    weekly_date = weekly_date["date"].values.astype("datetime64[D]")
+    save_data = match_data(nav_data, weekly_date)
+    save_data = save_data[save_data["日期"] <= origin_date.max()]
+    save_data.to_csv(
+        file_path.parent.joinpath(f"nav_data_{html_name}.csv"),
+        index=False,
+        encoding="utf-8-sig",
+    )
 
     weekly_rtn = (
         nav_data.groupby(pd.Grouper(key="日期", freq="W"))
