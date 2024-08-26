@@ -1,0 +1,300 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>TwoSigma · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="净值分析.html" />
+    
+    
+    <link rel="prev" href="AQR.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="世坤 or 统计套利系.html">
+            
+                <a href="世坤 or 统计套利系.html">
+            
+                    
+                    世坤模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="AQR.html">
+            
+                <a href="AQR.html">
+            
+                    
+                    AQR
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4" data-path="TwoSigma.html">
+            
+                <a href="TwoSigma.html">
+            
+                    
+                    TwoSigma
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="净值分析.html">
+            
+                <a href="净值分析.html">
+            
+                    
+                    nav_analysis
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >TwoSigma</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="two-sigma">Two Sigma</h1>
+<h3 id="two-sigma&#x7B80;&#x4ECB;">Two Sigma&#x7B80;&#x4ECB;</h3>
+<p>Two Sigma&#x662F;&#x4E00;&#x5BB6;&#x5168;&#x7403;&#x77E5;&#x540D;&#x7684;&#x91CF;&#x5316;&#x6295;&#x8D44;&#x7BA1;&#x7406;&#x516C;&#x53F8;&#xFF0C;&#x4EE5;&#x5176;&#x5148;&#x8FDB;&#x7684;&#x6280;&#x672F;&#x548C;&#x7B97;&#x6CD5;&#x4EA4;&#x6613;&#x7B56;&#x7565;&#x800C;&#x95FB;&#x540D;&#x3002;&#x516C;&#x53F8;&#x7531;John Overdeck&#x3001;David Siegel&#x548C;Mark Pickard&#x4E8E;2001&#x5E74;&#x521B;&#x7ACB;&#xFF0C;&#x603B;&#x90E8;&#x4F4D;&#x4E8E;&#x7F8E;&#x56FD;&#x7EBD;&#x7EA6;&#x3002;Two Sigma&#x7684;&#x6295;&#x8D44;&#x7B56;&#x7565;&#x4E3B;&#x8981;&#x4F9D;&#x8D56;&#x4E8E;&#x7EDF;&#x8BA1;&#x5B66;&#x3001;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x3001;&#x5206;&#x5E03;&#x5F0F;&#x8BA1;&#x7B97;&#x7B49;&#x79D1;&#x5B66;&#x6280;&#x672F;&#xFF0C;&#x65E8;&#x5728;&#x4ECE;&#x6D77;&#x91CF;&#x6570;&#x636E;&#x4E2D;&#x53D1;&#x73B0;&#x4EA4;&#x6613;&#x89C4;&#x5F8B;&#x3002;&#x516C;&#x53F8;&#x7684;&#x7BA1;&#x7406;&#x89C4;&#x6A21;&#x5728;&#x8FD1;&#x5E74;&#x6765;&#x663E;&#x8457;&#x589E;&#x957F;&#xFF0C;&#x636E;&#x6700;&#x65B0;&#x6570;&#x636E;&#x663E;&#x793A;&#xFF0C;Two Sigma&#x7684;&#x7BA1;&#x7406;&#x89C4;&#x6A21;&#x5DF2;&#x8D85;&#x8FC7;600&#x4EBF;&#x7F8E;&#x5143;&#xFF0C;&#x4F7F;&#x5176;&#x6210;&#x4E3A;&#x5168;&#x7403;&#x6700;&#x5927;&#x7684;&#x91CF;&#x5316;&#x5BF9;&#x51B2;&#x57FA;&#x91D1;&#x4E4B;&#x4E00;&#x3002;Two Sigma&#x7684;&#x6295;&#x8D44;&#x9886;&#x57DF;&#x5DF2;&#x7ECF;&#x4E0D;&#x4EC5;&#x9650;&#x4E8E;&#x80A1;&#x7968;&#xFF0C;&#x8FD8;&#x6DB5;&#x76D6;&#x4E86;&#x518D;&#x4FDD;&#x9669;&#x3001;&#x98CE;&#x9669;&#x6295;&#x8D44;&#x53CA;&#x505A;&#x5E02;&#x4EA4;&#x6613;&#x5546;&#x7B49;&#x3002;</p>
+<p>Two Sigma&#x7684;&#x56E2;&#x961F;&#x7ED3;&#x6784;&#x72EC;&#x7279;&#xFF0C;&#x5176;&#x4E2D;&#x5927;&#x591A;&#x6570;&#x5458;&#x5DE5;&#x62E5;&#x6709;&#x8BA1;&#x7B97;&#x673A;&#x79D1;&#x5B66;&#x3001;&#x6570;&#x5B66;&#x548C;&#x5DE5;&#x7A0B;&#x5B66;&#x80CC;&#x666F;&#xFF0C;&#x800C;&#x975E;&#x4F20;&#x7EDF;&#x91D1;&#x878D;&#x80CC;&#x666F;&#x3002;&#x516C;&#x53F8;&#x5F3A;&#x8C03;&#x79D1;&#x5B66;&#x65B9;&#x6CD5;&#x662F;&#x6700;&#x4F73;&#x6295;&#x8D44;&#x65B9;&#x5F0F;&#xFF0C;&#x5E76;&#x901A;&#x8FC7;&#x4FE1;&#x606F;&#x652F;&#x6491;&#x7406;&#x5FF5;&#x548C;&#x91CD;&#x590D;&#x8BD5;&#x9A8C;&#x6765;&#x4F18;&#x5316;&#x6295;&#x8D44;&#x7B56;&#x7565;&#x3002;Two Sigma&#x7684;&#x7814;&#x7A76;&#x548C;&#x5F00;&#x53D1;&#x56E2;&#x961F;&#x5360;&#x636E;&#x5458;&#x5DE5;&#x603B;&#x6570;&#x7684;&#x5F88;&#x5927;&#x6BD4;&#x4F8B;&#xFF0C;&#x8FD9;&#x53CD;&#x6620;&#x4E86;&#x516C;&#x53F8;&#x5BF9;&#x6280;&#x672F;&#x521B;&#x65B0;&#x7684;&#x9AD8;&#x5EA6;&#x91CD;&#x89C6;&#x3002;</p>
+<p>&#x5728;&#x5168;&#x7403;&#x5316;&#x5E03;&#x5C40;&#x65B9;&#x9762;&#xFF0C;Two Sigma&#x5728;&#x7EBD;&#x7EA6;&#x3001;&#x4F11;&#x65AF;&#x6566;&#x3001;&#x4F26;&#x6566;&#x3001;&#x9999;&#x6E2F;&#x3001;&#x4E0A;&#x6D77;&#x548C;&#x4E1C;&#x4EAC;&#x7B49;&#x5730;&#x8BBE;&#x6709;&#x529E;&#x516C;&#x5BA4;&#xFF0C;&#x5E76;&#x79EF;&#x6781;&#x6269;&#x5C55;&#x5176;&#x5728;&#x4E9A;&#x6D32;&#x5E02;&#x573A;&#x7684;&#x4E1A;&#x52A1;&#x3002;&#x516C;&#x53F8;&#x5728;&#x4E2D;&#x56FD;&#x7684;&#x4E1A;&#x52A1;&#x53D1;&#x5C55;&#x8FC5;&#x901F;&#xFF0C;&#x5DF2;&#x5728;&#x4E2D;&#x56FD;&#x8BC1;&#x5238;&#x6295;&#x8D44;&#x57FA;&#x91D1;&#x4E1A;&#x534F;&#x4F1A;&#x767B;&#x8BB0;&#x6210;&#x4E3A;&#x79C1;&#x52DF;&#x8BC1;&#x5238;&#x6295;&#x8D44;&#x7BA1;&#x7406;&#x4EBA;&#xFF0C;&#x5E76;&#x5907;&#x6848;&#x4E86;&#x591A;&#x53EA;&#x57FA;&#x91D1;&#x3002;Two Sigma&#x7684;&#x4E2D;&#x56FD;&#x6218;&#x7565;&#x4E0D;&#x4EC5;&#x9650;&#x4E8E;&#x6295;&#x8D44;&#x7BA1;&#x7406;&#xFF0C;&#x8FD8;&#x6D89;&#x53CA;&#x4E0E;&#x5F53;&#x5730;&#x91D1;&#x878D;&#x79D1;&#x6280;&#x516C;&#x53F8;&#x548C;&#x6559;&#x80B2;&#x673A;&#x6784;&#x7684;&#x5408;&#x4F5C;&#xFF0C;&#x4EE5;&#x4FC3;&#x8FDB;&#x77E5;&#x8BC6;&#x5171;&#x4EAB;&#x548C;&#x4EBA;&#x624D;&#x57F9;&#x517B;&#x3002;</p>
+<h2 id="&#x6280;&#x672F;&#x521B;&#x65B0;&#x4E0E;&#x6295;&#x8D44;&#x7B56;&#x7565;">&#x6280;&#x672F;&#x521B;&#x65B0;&#x4E0E;&#x6295;&#x8D44;&#x7B56;&#x7565;</h2>
+<p>&#x4E0E;&#x5176;&#x4ED6;&#x4F20;&#x7EDF;&#x6295;&#x8D44;&#x673A;&#x6784;&#x4E0D;&#x540C;&#xFF0C;Two Sigma&#x5F3A;&#x8C03;&#x6280;&#x672F;&#x521B;&#x65B0;&#x548C;&#x5206;&#x5E03;&#x5F0F;&#x8FD0;&#x7B97;&#x7684;&#x8FD0;&#x7528;&#x3002;&#x516C;&#x53F8;&#x5185;&#x90E8;&#xFF0C;72%&#x7684;&#x5458;&#x5DE5;&#x6CA1;&#x6709;&#x91D1;&#x878D;&#x80CC;&#x666F;&#xFF0C;&#x5927;&#x90E8;&#x5206;&#x5458;&#x5DE5;&#x62E5;&#x6709;&#x8BA1;&#x7B97;&#x673A;&#x79D1;&#x5B66;&#x3001;&#x6570;&#x5B66;&#x548C;&#x5DE5;&#x7A0B;&#x4E13;&#x4E1A;&#x7684;&#x5B66;&#x4F4D;&#x3002;&#x8D85;&#x8FC7;1200&#x540D;&#x5458;&#x5DE5;&#x4E2D;&#xFF0C;&#x4E09;&#x5206;&#x4E4B;&#x4E8C;&#x5728;&#x4ECE;&#x4E8B;&#x7814;&#x53D1;&#x5DE5;&#x4F5C;&#x3002;Two Sigma&#x7684;&#x6570;&#x636E;&#x79D1;&#x5B66;&#x5BB6;&#x548C;&#x7CFB;&#x7EDF;&#x7528;&#x6765;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x7684;&#x6570;&#x636E;&#x6E90;&#x8D85;&#x8FC7;&#x4E86;10,000&#x4E2A;&#xFF0C;&#x5404;&#x79CD;&#x8BBE;&#x5907;&#x52A8;&#x7528;&#x7684;CPU&#x8FBE;&#x5230;75,000&#x679A;&#xFF0C;&#x6570;&#x636E;&#x5E93;&#x7684;&#x5BB9;&#x91CF;&#x9AD8;&#x8FBE;750TB<a href="https://www.ylcf.com.cn/fund/90428.html" target="_blank">2</a>&#x3002;</p>
+<p>&#x5728;&#x6295;&#x8D44;&#x7B56;&#x7565;&#x4E0A;&#xFF0C;Two Sigma&#x5E76;&#x4E0D;&#x9996;&#x5148;&#x9009;&#x62E9;&#x6570;&#x636E;&#x6216;&#x8D5B;&#x9053;&#xFF0C;&#x800C;&#x662F;&#x9996;&#x5148;&#x8003;&#x8651;&#x5E02;&#x573A;&#x7684;&#x6DF1;&#x5EA6;&#x548C;&#x5E7F;&#x5EA6;&#x3002;&#x4ED6;&#x4EEC;&#x5E0C;&#x671B;&#x5E02;&#x573A;&#x65E2;&#x6DF1;&#x53C8;&#x5E7F;&#xFF0C;&#x56E0;&#x4E3A;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x66F4;&#x591A;&#x7684;&#x673A;&#x4F1A;&#x3002;&#x6B64;&#x5916;&#xFF0C;Two Sigma&#x4EE5;&#x521B;&#x9020;alpha&#xFF08;&#x8D85;&#x989D;&#x6536;&#x76CA;&#xFF09;&#x4F5C;&#x4E3A;&#x9996;&#x8981;&#x76EE;&#x6807;&#xFF0C;&#x9700;&#x8981;&#x5728;&#x7814;&#x7A76;&#x65B9;&#x9762;&#x505A;&#x51FA;&#x5DEE;&#x5F02;&#x5316;&#xFF0C;&#x4EE5;&#x627E;&#x5230;alpha&#x3002;&#x5728;&#x6295;&#x8D44;&#x7EC4;&#x5408;&#x4E2D;&#xFF0C;Two Sigma&#x53EF;&#x80FD;&#x5728;&#x5168;&#x7403;&#x8303;&#x56F4;&#x5185;&#x6301;&#x6709;&#x5927;&#x7EA6;1&#x4E07;&#x5230;2&#x4E07;&#x53EA;&#x80A1;&#x7968;&#xFF0C;&#x8FD9;&#x662F;&#x5176;&#x6295;&#x8D44;&#x7B56;&#x7565;&#x7684;&#x4E00;&#x90E8;&#x5206;<a href="https://www.nbd.com.cn/articles/2024-06-29/3446992.html" target="_blank">1</a>&#x3002;</p>
+<p><strong>&#x201C;&#x7B2C;&#x4E00;&#x624B;&#x8D44;&#x6599;&#x201D;</strong>&#x662F;Two Sigma&#x5F97;&#x4EE5;&#x8FC5;&#x901F;&#x5F00;&#x7586;&#x62D3;&#x571F;&#x7684;&#x4E3B;&#x8981;&#x9A71;&#x52A8;&#x529B;&#xFF0C;&#x800C;&#x201C;&#x7B2C;&#x4E00;&#x624B;&#x8D44;&#x6599;&#x201D;&#x6765;&#x6E90;&#x5219;&#x662F;Two sigma&#x901A;&#x8FC7;&#x5E7F;&#x6CDB;&#x7684;&#x6570;&#x636E;&#x6E90;&#x4E0E;&#x8BA1;&#x7B97;&#x673A;&#x5206;&#x6790;&#x5904;&#x7406;&#x800C;&#x6765;&#xFF0C;&#x5728;&#x9AD8;&#x9891;&#x4EA4;&#x6613;&#x4E2D;&#xFF0C;&#x83B7;&#x5F97;&#x4E00;&#x624B;&#x4FE1;&#x606F;&#x7684;&#x901F;&#x5EA6;&#x662F;&#x81F4;&#x80DC;&#x7684;&#x5173;&#x952E;&#x3002;</p>
+<h3 id="two-sigma&#x7684;&#x6295;&#x8D44;&#x7B56;&#x7565;&#x4E3B;&#x8981;&#x4F9D;&#x9760;&#x54EA;&#x4E9B;&#x6280;&#x672F;&#xFF1F;"><strong>Two Sigma&#x7684;&#x6295;&#x8D44;&#x7B56;&#x7565;&#x4E3B;&#x8981;&#x4F9D;&#x9760;&#x54EA;&#x4E9B;&#x6280;&#x672F;&#xFF1F;</strong></h3>
+<p>Two Sigma&#x662F;&#x4E00;&#x5BB6;&#x77E5;&#x540D;&#x7684;&#x91CF;&#x5316;&#x5BF9;&#x51B2;&#x57FA;&#x91D1;&#x516C;&#x53F8;&#xFF0C;&#x5176;&#x6295;&#x8D44;&#x7B56;&#x7565;&#x9AD8;&#x5EA6;&#x4F9D;&#x8D56;&#x4E8E;&#x5148;&#x8FDB;&#x7684;&#x6280;&#x672F;&#x3002;&#x6839;&#x636E;&#x516C;&#x5F00;&#x8D44;&#x6599;&#xFF0C;Two Sigma&#x7684;&#x6280;&#x672F;&#x57FA;&#x7840;&#x4E3B;&#x8981;&#x5305;&#x62EC;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x65B9;&#x9762;&#xFF1A;</p>
+<ol>
+<li><strong>&#x5927;&#x6570;&#x636E;&#x5206;&#x6790;</strong>&#xFF1A;Two Sigma&#x5229;&#x7528;&#x5927;&#x89C4;&#x6A21;&#x6570;&#x636E;&#x96C6;&#x6765;&#x53D1;&#x73B0;&#x5E02;&#x573A;&#x8D8B;&#x52BF;&#x548C;&#x5B9A;&#x4EF7;&#x5F02;&#x5E38;&#xFF0C;&#x8FD9;&#x4E9B;&#x6570;&#x636E;&#x6765;&#x6E90;&#x5E7F;&#x6CDB;&#xFF0C;&#x5305;&#x62EC;&#x4F20;&#x7EDF;&#x91D1;&#x878D;&#x5E02;&#x573A;&#x6570;&#x636E;&#x4EE5;&#x53CA;&#x975E;&#x4F20;&#x7EDF;&#x6570;&#x636E;&#x6E90;&#xFF0C;&#x5982;&#x536B;&#x661F;&#x56FE;&#x50CF;&#x3001;&#x793E;&#x4EA4;&#x5A92;&#x4F53;&#x60C5;&#x7EEA;&#x5206;&#x6790;&#x7B49;&#x3002;</li>
+<li><strong>&#x673A;&#x5668;&#x5B66;&#x4E60;&#x548C;&#x4EBA;&#x5DE5;&#x667A;&#x80FD;</strong>&#xFF1A;&#x516C;&#x53F8;&#x8FD0;&#x7528;&#x673A;&#x5668;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x6765;&#x8BAD;&#x7EC3;&#x6A21;&#x578B;&#xFF0C;&#x9884;&#x6D4B;&#x5E02;&#x573A;&#x884C;&#x4E3A;&#xFF0C;&#x5E76;&#x81EA;&#x52A8;&#x8C03;&#x6574;&#x4EA4;&#x6613;&#x7B56;&#x7565;&#x3002;&#x8FD9;&#x4E9B;&#x7B97;&#x6CD5;&#x80FD;&#x591F;&#x5904;&#x7406;&#x590D;&#x6742;&#x7684;&#x6570;&#x636E;&#x6A21;&#x5F0F;&#xFF0C;&#x63D0;&#x9AD8;&#x51B3;&#x7B56;&#x7684;&#x51C6;&#x786E;&#x6027;&#x548C;&#x901F;&#x5EA6;&#x3002;</li>
+<li><strong>&#x9AD8;&#x6027;&#x80FD;&#x8BA1;&#x7B97;</strong>&#xFF1A;&#x4E3A;&#x4E86;&#x5FEB;&#x901F;&#x5904;&#x7406;&#x5927;&#x91CF;&#x6570;&#x636E;&#x548C;&#x8FD0;&#x884C;&#x590D;&#x6742;&#x7684;&#x8BA1;&#x7B97;&#x6A21;&#x578B;&#xFF0C;Two Sigma&#x5EFA;&#x7ACB;&#x4E86;&#x5F3A;&#x5927;&#x7684;&#x8BA1;&#x7B97;&#x57FA;&#x7840;&#x8BBE;&#x65BD;&#xFF0C;&#x5305;&#x62EC;&#x5B9A;&#x5236;&#x7684;&#x786C;&#x4EF6;&#x548C;&#x4F18;&#x5316;&#x7684;&#x8F6F;&#x4EF6;&#x7B97;&#x6CD5;&#x3002;</li>
+<li><strong>&#x7EDF;&#x8BA1;&#x5EFA;&#x6A21;</strong>&#xFF1A;&#x516C;&#x53F8;&#x91C7;&#x7528;&#x7EDF;&#x8BA1;&#x5B66;&#x65B9;&#x6CD5;&#x6765;&#x6784;&#x5EFA;&#x98CE;&#x9669;&#x7BA1;&#x7406;&#x6A21;&#x578B;&#x548C;&#x6295;&#x8D44;&#x7EC4;&#x5408;&#x4F18;&#x5316;&#x5DE5;&#x5177;&#xFF0C;&#x4EE5;&#x63A7;&#x5236;&#x98CE;&#x9669;&#x5E76;&#x6700;&#x5927;&#x5316;&#x56DE;&#x62A5;&#x3002;</li>
+<li><strong>&#x81EA;&#x52A8;&#x5316;&#x4EA4;&#x6613;&#x7CFB;&#x7EDF;</strong>&#xFF1A;Two Sigma&#x5F00;&#x53D1;&#x4E86;&#x81EA;&#x52A8;&#x5316;&#x4EA4;&#x6613;&#x5E73;&#x53F0;&#xFF0C;&#x8FD9;&#x4E9B;&#x5E73;&#x53F0;&#x80FD;&#x591F;&#x5B9E;&#x65F6;&#x6267;&#x884C;&#x4EA4;&#x6613;&#x51B3;&#x7B56;&#xFF0C;&#x51CF;&#x5C11;&#x4EBA;&#x5DE5;&#x5E72;&#x9884;&#xFF0C;&#x63D0;&#x9AD8;&#x6548;&#x7387;&#x548C;&#x4E00;&#x81F4;&#x6027;&#x3002;</li>
+<li><strong>&#x4E91;&#x8BA1;&#x7B97;&#x548C;&#x5206;&#x5E03;&#x5F0F;&#x8BA1;&#x7B97;</strong>&#xFF1A;&#x901A;&#x8FC7;&#x4E91;&#x670D;&#x52A1;&#x548C;&#x5206;&#x5E03;&#x5F0F;&#x8BA1;&#x7B97;&#x8D44;&#x6E90;&#xFF0C;Two Sigma&#x80FD;&#x591F;&#x7075;&#x6D3B;&#x5730;&#x6269;&#x5C55;&#x5176;&#x8BA1;&#x7B97;&#x80FD;&#x529B;&#xFF0C;&#x5E94;&#x5BF9;&#x5E02;&#x573A;&#x53D8;&#x5316;&#x548C;&#x6570;&#x636E;&#x589E;&#x957F;&#x7684;&#x6311;&#x6218;&#x3002;</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="AQR.html" class="navigation navigation-prev " aria-label="Previous page: AQR">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="净值分析.html" class="navigation navigation-next " aria-label="Next page: nav_analysis">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"TwoSigma","level":"1.4","depth":1,"next":{"title":"nav_analysis","level":"1.5","depth":1,"path":"净值分析.md","ref":"净值分析.md","articles":[]},"previous":{"title":"AQR","level":"1.3","depth":1,"path":"AQR.md","ref":"AQR.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"TwoSigma.md","mtime":"2024-08-23T03:08:34.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-08-26T03:17:40.026Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
