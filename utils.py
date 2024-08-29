@@ -1,8 +1,9 @@
 import datetime
+import re
 import pandas as pd
 import numpy as np
 from pandas import Series, Timestamp
-from typing import Union, Literal,NamedTuple
+from typing import Union, Literal,NamedTuple,List
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from pyecharts.charts import Line
@@ -17,11 +18,20 @@ config = imgkit.config(wkhtmltoimage=path_wk)
 options = {
     'javascript-delay': 1000,
         'crop-w': 1200,
-        'crop-h': 620,
+        'crop-h': 560,
         'crop-x': 65,
         'crop-y': 5,
 
 }
+def keep_chinese_chars(text):
+    # 使用正则表达式匹配汉字
+    chinese_chars = re.findall(r'[\u4e00-\u9fff]+', text)
+    
+    # 将匹配到的汉字连接成一个字符串
+    result = ''.join(chinese_chars)
+    
+    return result
+
 def getLocalFiles():
     root = tk.Tk()
     root.withdraw()
@@ -30,21 +40,27 @@ def getLocalFiles():
         print('文件路径：', filePath)
     return filePaths
 
-# 读取指数数据
-def load_trade_date(nav_file_paths):
-    if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
-        index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
-    elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
-        index_data = pd.read_csv(nav_file_paths[0].parent.parent.joinpath("index_data.csv"))
-    else:
+
+def get_nav_file_paths(nav_data_path) -> List[Path]:
+    if nav_data_path == None:
         print(
-        f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
-    )
-        print("请手动选择指数数据文件")
-        index_data = pd.read_csv(getLocalFiles()[0])
-    index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
-    trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
-    return index_data,trade_date
+            "请选择净值数据文件，请确保列名为：日期or净值日期 / 累计净值or累计单位净值"
+        )
+        nav_file_paths = [Path(path_i) for path_i in getLocalFiles()]
+    else:
+        assert nav_data_path.exists(), input("未找到文件夹/文件")
+        if nav_data_path.is_file():
+            nav_file_paths = [nav_data_path]
+        else:
+            nav_file_paths = [
+                Path(path_i)
+                for path_i in nav_data_path.glob(
+                    "*.xlsx" or "*.xls"
+                )
+            ]
+
+    assert len(nav_file_paths) > 0, input("未选择文件")
+    return nav_file_paths
 
 def format_nav_data(path):
     nav_data = pd.read_excel(path)
@@ -66,16 +82,7 @@ def format_nav_data(path):
     assert nav_data["日期"].isnull().sum() == 0, input(
         "Error: 净值数据中存在日期为空的数据"
     )
-    if nav_data["日期"].duplicated(keep=False).sum() != 0:
-        if (
-            input(
-                "Info: 净值数据中存在日期重复的数据\n{}\n 键入回车键自动剔除重复".format(
-                    nav_data[nav_data["日期"].duplicated()]
-                )
-            )
-            == ""
-        ):
-            nav_data = nav_data.drop_duplicates(subset="日期")
+    nav_data = nav_data.drop_duplicates(subset="日期")
     if nav_data["日期"].dtype == "int":
         nav_data["日期"] = pd.to_datetime(nav_data["日期"], format="%Y%m%d")
     else:
@@ -267,80 +274,49 @@ def nav_compare_analysis(
     trade_date: np.ndarray[np.datetime64],
     nav_data_dict: dict[str:np.ndarray[float]],
     bench_mark_nav : np.ndarray[float] = None,
+    bench_mark_name: str = None,
     html_file_name: Path = None,
-    additional_table: list[pd.DataFrame] = None,
     origin_date: np.ndarray[np.datetime64] = None,
     image_save_path: Path = None
 ):
-    metrics_dict = {}
     drawdown_dict = {}
-    max_drawdown_info_dict = {}
     if bench_mark_nav is not None:
+        assert bench_mark_name is not None, "bench_mark_name 不能为空"
         bench_mark_nav = bench_mark_nav / bench_mark_nav[0]
-        bench_mark_rtn = np.log(bench_mark_nav[1:]) - np.log(bench_mark_nav[:-1])
-        nav_data_dict.update({"bench_mark": bench_mark_nav})
+        nav_data_dict.update({bench_mark_name: bench_mark_nav})
         excess_nav_dict = {}
         
     for key, nav_data in nav_data_dict.items():
-        if key == "bench_mark":
+        if key == bench_mark_name:
             continue
         assert len(trade_date) == len(nav_data), f"{key} date和nav长度不一致"
         assert bench_mark_nav is None or len(bench_mark_nav) == len(
             nav_data
         ), f"{key} bench_mark_nav和nav长度不一致"
         nav = nav_data / nav_data[0]
-        rtn = np.log(nav[1:]) - np.log(nav[:-1])
 
         if bench_mark_nav is not None:
-            excess_rtn = rtn - bench_mark_rtn
             excess_nav = nav / bench_mark_nav
-            
             nav_data_dict[key] = nav
             excess_nav_dict.update({f"超额_{key}": excess_nav})
-            metrics = curve_analysis(excess_rtn, excess_nav)
-            drawdown, max_drawdown_info = max_drawdown_period(excess_nav, trade_date)
-            metrics_dict[f"超额_{key}"] = metrics
-            drawdown_dict[f"超额_{key}"] = drawdown
-            max_drawdown_info_dict[f"超额_{key}"] = max_drawdown_info
+            drawdown_dict.update({f"超额_{key}": excess_nav - np.maximum.accumulate(excess_nav)})
+
         else:
             nav_data_dict[key] = nav
-            metrics = curve_analysis(rtn, nav)
-            drawdown,max_drawdown_info = max_drawdown_period(nav, trade_date)
-            metrics_dict[key] = metrics
-            drawdown_dict[key] = drawdown
-            max_drawdown_info_dict[key] = max_drawdown_info
         print(f"净值区间: {np.datetime_as_string(trade_date[0],unit="D")} - {np.datetime_as_string(trade_date[-1], unit='D')}")
-        for i, v in metrics.items():
-            if i == "夏普比率":
-                print(f"{i}：{v:.4f}")
-            else:
-                print(f"{i}：{v*100:.4f}%")
-        for i, v in max_drawdown_info.items():
-            print(f"{i}：{v}")
             
     if bench_mark_nav is not None:
         nav_data_dict.update(excess_nav_dict)
-        bench_mark_drawdown = bench_mark_nav - np.maximum.accumulate(bench_mark_nav)
-        drawdown_dict.update({"bench_mark": bench_mark_drawdown})
     if html_file_name:
-        metrics_table = pd.concat(
-                [
-                    pd.DataFrame(metrics_dict).T[["年化收益", "年化波动率", "夏普比率", "最大回撤"]], 
-                    pd.DataFrame(max_drawdown_info_dict).T,
-                ], axis=1)
-        metrics_table["夏普比率"] = metrics_table["夏普比率"].apply(lambda x: f"{x:.3f}")
-        metrics_table["年化收益"] = metrics_table["年化收益"].map(lambda x: f"{x:.3%}")
-        metrics_table["年化波动率"] = metrics_table["年化波动率"].map(lambda x: f"{x:.3%}")
-        metrics_table["最大回撤"] = metrics_table["最大回撤"].map(lambda x: f"{x:.3%}")
         html = nav_compare_analysis_echarts_plot(
             date=trade_date,
             nav=nav_data_dict,
             drawdown=drawdown_dict,
-            table=metrics_table,
-            additional_table=additional_table,
             origin_date=origin_date,
         )
         if image_save_path is not None:
+            if not image_save_path.parent.exists():
+                image_save_path.parent.mkdir(parents=True, exist_ok=True)
             img_path =image_save_path.joinpath(f"{html_file_name.stem}.jpg")
             print(f"正在保存图片至{img_path}, 请稍后...")
             imgkit.from_string(
@@ -358,8 +334,6 @@ def nav_compare_analysis_echarts_plot(
     date: np.ndarray[np.datetime64],
     nav: dict[str:np.ndarray],
     drawdown: dict[str:np.ndarray],
-    table: pd.DataFrame = None,
-    additional_table: list[pd.DataFrame] = None,
     origin_date: np.ndarray[np.datetime64] = None,
 ):
     if origin_date is not None:
@@ -403,41 +377,23 @@ def nav_compare_analysis_echarts_plot(
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("max drawdown")
     ).set_series_opts(linestyle_opts=opts.LineStyleOpts(width = 4))
-    table = table.to_html(render_links=True)
-    if additional_table is not None:
-        additional_table = [table_i.to_html(render_links=True) for table_i in additional_table]
-        html = f"""
-            <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Value over Time</title>
-                </head> 
-                <body>
-                    {table}
-                    {nav_line.render_embed()}
-                    {"".join(additional_table)}
-                    {drawdown_line.render_embed()}
-                </body>
-            </html>
-        """
-    else:
-        html = f"""
-            <html>
-                <head>
-                    <title>Value over Time</title>
-                </head> 
-                <body>
-                    {table}
-                    {nav_line.render_embed()}
-                    {drawdown_line.render_embed()}
-                </body>
-            </html>
-        """
+    html = f"""
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Value over Time</title>
+            </head> 
+            <body>
+                {nav_line.render_embed()}
+                {drawdown_line.render_embed()}
+            </body>
+        </html>
+    """
     return html
 
 class NavAnalysisConfig(NamedTuple):
-    begin_date: pd.Timestamp = None
-    end_date: pd.Timestamp = None
+    begin_date: pd.Timestamp = pd.to_datetime("2000-06-06")
+    end_date: pd.Timestamp = pd.to_datetime("2099-06-06")
     special_html_name:bool=False
     open_html:bool=True
     benchmark: Literal[
@@ -447,6 +403,7 @@ class NavAnalysisConfig(NamedTuple):
         "SZSE.399303",
         "SHSE.000985",
     ] = None
-    image_save_parh: Path = Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image")
+    image_save_path: Path = None
+    overwrite:bool=False
     nav_data_path: Path=None
     index_data_path:Path=None
