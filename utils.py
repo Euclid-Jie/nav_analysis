@@ -315,8 +315,8 @@ def nav_compare_analysis(
             origin_date=origin_date,
         )
         if image_save_path is not None:
-            if not image_save_path.parent.exists():
-                image_save_path.parent.mkdir(parents=True, exist_ok=True)
+            if not image_save_path.exists():
+                image_save_path.mkdir(parents=True, exist_ok=True)
             img_path =image_save_path.joinpath(f"{html_file_name.stem}.jpg")
             print(f"正在保存图片至{img_path}, 请稍后...")
             imgkit.from_string(
