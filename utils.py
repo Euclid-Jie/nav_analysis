@@ -185,7 +185,7 @@ def max_drawdown_period(nav: np.ndarray, date: np.ndarray):
     out_put = {}
     assert len(nav) == len(date)
     # 动态回撤
-    drawdown = nav - np.maximum.accumulate(nav)
+    drawdown = (nav - np.maximum.accumulate(nav)) / np.maximum.accumulate(nav)
     idx_maxDrawDown = np.argmin(drawdown)
     if idx_maxDrawDown == 0:
         out_put["最大回撤开始时间"] = "尚未回撤"
