@@ -47,7 +47,10 @@ def load_trade_date(nav_file_paths):
     return index_data,trade_date
 
 def format_nav_data(path):
-    nav_data = pd.read_excel(path)
+    if path.suffix == ".csv":
+        nav_data = pd.read_csv(path)
+    else:
+        nav_data = pd.read_excel(path)
     nav_data = nav_data.rename(
         columns={
             "净值日期": "日期",
@@ -226,7 +229,7 @@ def curve_analysis(rtn: np.ndarray, nav: np.ndarray):
     result["最大回撤"] = maximum_draw_down(rtn)
     return result    
     
-def win_ratio_stastics(nav_data: np.ndarray,start_date: np.datetime64 = None):
+def win_ratio_stastics(nav_data: pd.DataFrame,start_date: np.datetime64 = None):
     """
     目前只支持月度胜率统计
     """
