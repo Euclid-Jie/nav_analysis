@@ -2,7 +2,7 @@ import datetime
 import pandas as pd
 import numpy as np
 from pandas import Series, Timestamp
-from typing import Union, Literal,NamedTuple
+from typing import Union, Literal,NamedTuple,List
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from pyecharts.charts import Line
@@ -22,29 +22,49 @@ options = {
         'crop-y': 5,
 
 }
-def getLocalFiles():
+
+
+def getLocalFile(log=True, suffix:List[str]=None)->List[Path]:
+    """
+    选中本地文件, 返回单个
+    """
+    root = tk.Tk()
+    root.withdraw()
+    filePath = filedialog.askopenfilename()
+    filePath = Path(filePath)
+    
+    if suffix is not None:
+        assert filePath.suffix in suffix, input(f"文件{filePath.name}后缀不符合要求")
+    if log:
+        print('文件路径：', filePath)
+    return filePath
+
+def getLocalFiles(log=True, suffix:List[str]=None)->List[Path]:
+    """
+    选中本地文件, 返回列表
+    """
     root = tk.Tk()
     root.withdraw()
     filePaths = filedialog.askopenfilenames()
-    for filePath in filePaths:
-        print('文件路径：', filePath)
+    assert len(filePaths) > 0, input("未选择文件")
+    filePaths = [Path(path_i) for path_i in filePaths]
+    
+    if suffix is not None:
+        for filePath in filePaths:
+            assert filePath.suffix in suffix, input(f"文件{filePath.name}后缀不符合要求")
+    if log:
+        for filePath in filePaths:
+            print('文件路径：', filePath)
     return filePaths
 
-# 读取指数数据
-def load_trade_date(nav_file_paths):
-    if Path(nav_file_paths[0].parent.joinpath("index_data.csv")).exists():
-        index_data = pd.read_csv(nav_file_paths[0].parent.joinpath("index_data.csv"))
-    elif Path(nav_file_paths[0].parent.parent.joinpath("index_data.csv")).exists():
-        index_data = pd.read_csv(nav_file_paths[0].parent.parent.joinpath("index_data.csv"))
+def load_bench_data(index_data_path: Path = None):
+    if index_data_path is not None:
+        index_data = pd.read_csv(index_data_path)
     else:
-        print(
-        f"未找到指数数据文件，请将指数数据文件放在{nav_file_paths[0].parent}或{nav_file_paths[0].parent.parent}下"
-    )
         print("请手动选择指数数据文件")
         index_data = pd.read_csv(getLocalFiles()[0])
     index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
-    trade_date = np.unique(index_data["bob"].values).astype("datetime64[ns]")
-    return index_data,trade_date
+    return index_data
 
 def format_nav_data(path):
     if path.suffix == ".csv":
@@ -94,24 +114,22 @@ def match_data(
     nav_data = nav_data.reindex(trade_date, method="ffill")
     return nav_data.reset_index(drop=False)
 
-def _backword_analysis(nav_data, backword_delta: pd.Timedelta):
+def _backword_analysis(nav_data, backword_delta: pd.Timedelta,freq: Literal["W", "D"] = "W"):
     date_backword_delta = nav_data["日期"].values[-1] - backword_delta
     assert (
         date_backword_delta >= nav_data["日期"].values[0]
     ), f"数据不足{str(backword_delta)},begin_date: {np.datetime_as_string(nav_data['日期'].values[0], unit='D')} ~ end_date: {np.datetime_as_string(nav_data['日期'].values[-1],unit='D')}"
     backword_period_nav_data = nav_data[nav_data["日期"] >= date_backword_delta]
+    
     nav = backword_period_nav_data["累计净值"].values
-    rtn = np.log(nav[1:]) - np.log(nav[:-1])
-    res = curve_analysis(rtn, nav)
-    res["begin_date"] = np.datetime_as_string(
-        backword_period_nav_data["日期"].values[0], unit="D"
-    )
-    res["end_date"] = np.datetime_as_string(
-        backword_period_nav_data["日期"].values[-1], unit="D"
-    )
+    res = curve_analysis(nav=nav, freq=freq)
+    res["begin_date"] = np.datetime_as_string(backword_period_nav_data["日期"].values[0], unit="D")
+    res["end_date"] = np.datetime_as_string(backword_period_nav_data["日期"].values[-1], unit="D")
     return res
 
-def backword_analysis(nav_data):
+def backword_analysis(nav: np.ndarray, date:np.ndarray[np.datetime64], freq: Literal["W", "D"] = "W"):
+    assert len(nav) == len(date), "nav和date长度不一致"
+    nav_data = pd.DataFrame({"日期": date, "累计净值": nav})
     max_backword_motnhs = (
         (nav_data["日期"].values[-1] - nav_data["日期"].values[0])
         .astype("timedelta64[M]")
@@ -121,12 +139,26 @@ def backword_analysis(nav_data):
     for i in [1, 3, 6, 12, 24, 36]:
         if i > max_backword_motnhs:
             break
-        res = _backword_analysis(nav_data, pd.DateOffset(months=i))
-        res_dict[i] = res
-    out_df = pd.DataFrame(res_dict).T
-    out_df.index.name = "backword months"
-    out_df.index = out_df.index.astype(str) + "M"
-    return out_df
+        res = _backword_analysis(nav_data, pd.DateOffset(months=i), freq=freq)
+        res_dict[f"{i}M"] = res
+        
+    if nav_data["日期"].values.min() <= pd.to_datetime(f"{datetime.datetime.now().year}-01-01"):
+        ytd_data = nav_data[nav_data["日期"] >= pd.to_datetime(f"{datetime.datetime.now().year}-01-01")]
+        ytd_metrics = curve_analysis(ytd_data["累计净值"].values, freq=freq)
+        ytd_metrics["begin_date"] = np.datetime_as_string(ytd_data["日期"].values[0], unit="D")
+        ytd_metrics["end_date"] = np.datetime_as_string(ytd_data["日期"].values[-1], unit="D")
+        res_dict.update({"YTD":ytd_metrics})
+        
+    backword_analysis_df = pd.DataFrame(res_dict).T
+    backword_analysis_df.index.name = "backword months" 
+    for col in ["区间收益率", "年化收益率", "区间波动率", "年化波动率", "最大回撤"]:
+        backword_analysis_df[col] = backword_analysis_df[col].map(lambda x: f"{x:.3%}")
+    
+    backword_analysis_df["夏普比率"] = backword_analysis_df["夏普比率"].apply(
+        lambda x: f"{x:.3f}"
+    )
+    return backword_analysis_df
+
 
 def clean(arr: np.ndarray, inplace=False, fill_value=0.0) -> np.ndarray:
     """
@@ -142,7 +174,6 @@ def clean(arr: np.ndarray, inplace=False, fill_value=0.0) -> np.ndarray:
     res[~np.isfinite(res)] = fill_value
     return res
 
-
 def maximum_draw_down(rtn: np.ndarray):
     assert rtn.ndim == 1
     min_all = 0
@@ -155,13 +186,14 @@ def maximum_draw_down(rtn: np.ndarray):
             sum_here = 0
     return -min_all
 
-def max_drawdown_stats(nav: np.ndarray, date: np.ndarray):
+def drawdown_stats(nav: np.ndarray, date: np.ndarray):
     assert len(nav) == len(date)
     # 动态回撤
-    drawdown = nav - np.maximum.accumulate(nav)
+    cummax = np.maximum.accumulate(nav)
+    drawdown = (nav - cummax) / cummax
     drawdown_infos = []
     idx = 0
-    while idx < len(drawdown):
+    while idx < len(drawdown) - 1:
         if drawdown[idx] < 0:
             drawdown_info = {}
             drawdown_info["drawdown_start_date"] = date[idx - 1]
@@ -171,15 +203,39 @@ def max_drawdown_stats(nav: np.ndarray, date: np.ndarray):
                 if drawdown[idx] < drawdown_info["max_drawdown"]:
                     drawdown_info["max_drawdown"] = drawdown[idx]
                     drawdown_info["max_drawdown_date"] = date[idx]
-                idx += 1
-                if idx + 1 >= len(drawdown):
+                if idx == len(drawdown) -1:
                     break
+                idx += 1
             drawdown_info["drawdown_end_date"] = date[idx]
             drawdown_infos.append(drawdown_info)
-        idx += 1
+        else:
+            idx += 1
     if drawdown[-1] < 0:
-        drawdown_infos[-1]["drawdown_end_date"] = None
-    return drawdown, pd.DataFrame(drawdown_infos)
+        drawdown_infos[-1]["drawdown_end_date"] = np.datetime64("NaT")
+    
+    drawdown_infos = pd.DataFrame(drawdown_infos)
+    for col in ["drawdown_start_date", "max_drawdown_date", "drawdown_end_date"]:
+        drawdown_infos[col] = drawdown_infos[col]
+    drawdown_infos["max_drawdown_days"] = drawdown_infos["max_drawdown_date"]- drawdown_infos["drawdown_start_date"]
+    drawdown_infos["drawdown_fix_days"] = drawdown_infos["drawdown_end_date"] - drawdown_infos["max_drawdown_date"]
+    return drawdown, drawdown_infos[["max_drawdown", "drawdown_start_date", "max_drawdown_date", "max_drawdown_days", "drawdown_end_date", "drawdown_fix_days"]]
+
+def display_df(data:pd.DataFrame):
+    df = data.copy()
+    for col in df.columns:
+        if "date" in col or "日期" in col:
+            df[col] = df[col].dt.strftime("%Y-%m-%d")
+        if "days" in col or "天数" in col:
+            df[col] = df[col].dt.days
+        if "收益率" in col:
+            df[col] = df[col].map(lambda x: f"{x:.3%}")
+        if "波动率" in col:
+            df[col] = df[col].map(lambda x: f"{x:.3%}")
+        if "夏普比率" in col:
+            df[col] = df[col].map(lambda x: f"{x:.3f}")
+        if "最大回撤" in col:
+            df[col] = df[col].map(lambda x: f"{x:.3%}")
+    return df
 
 def max_drawdown_period(nav: np.ndarray, date: np.ndarray):
     """
@@ -216,32 +272,56 @@ def max_drawdown_period(nav: np.ndarray, date: np.ndarray):
         out_put["最大回撤修复天数"] = "尚未修复"
     return drawdown, out_put
 
-def curve_analysis(rtn: np.ndarray, nav: np.ndarray):
-    assert rtn.ndim == 1, "rtn维度不为1"
+def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     assert nav.ndim == 1, "nav维度不为1"
-    assert len(rtn) == len(nav) - 1, "rtn的长度应并nav长度少1"
-    rtn = clean(rtn)
+    assert np.isnan(nav).sum() == 0, "nav中有nan"
     result = {"区间收益率": nav[-1] / nav[0] - 1}
-    number_of_years = len(rtn) / 250
-    result["年化收益"] = result["区间收益率"] / number_of_years
-    result["年化波动率"] = np.nanstd(rtn) * np.sqrt(250)
-    result["夏普比率"] = result["年化收益"] / result["年化波动率"]
-    result["最大回撤"] = maximum_draw_down(rtn)
-    return result    
-    
-def win_ratio_stastics(nav_data: pd.DataFrame,start_date: np.datetime64 = None):
+    result["年化收益率"] = result["区间收益率"] / len(nav) * (250 if freq == "D" else 52)
+
+    rtn = np.log(nav[1:] / nav[:-1])
+    result["区间波动率"] = np.std(rtn)
+    result["年化波动率"] = result["区间波动率"] * np.sqrt(250 if freq == "D" else 52)
+    result["夏普比率"] = result["年化收益率"] / result["年化波动率"]
+    cummax = np.maximum.accumulate(nav)
+    result["最大回撤"] = np.min((nav - cummax) / cummax)
+    return result
+
+def weekly_rtn_stats(nav: np.ndarray, date:np.ndarray[np.datetime64],tail=10):
+    assert len(nav) == len(date), "nav和date长度不一致"
+    nav_data = pd.DataFrame({"日期": date, "累计净值": nav})
+    nav_data["rtn"] = np.log(nav_data["累计净值"]) - np.log(nav_data["累计净值"].shift(1))
+    weekly_rtn = (
+    nav_data.groupby(pd.Grouper(key="日期", freq="W"))
+    .apply(
+        lambda x: x["rtn"].sum(skipna=True),
+        include_groups=False,
+    )
+    .to_frame("周收益")
+    .reset_index()
+)
+    weekly_rtn["周收益"] = weekly_rtn["周收益"].apply(lambda x: round(x, 4))
+    weekly_rtn["日期"] = weekly_rtn["日期"] - datetime.timedelta(days=2)
+    weekly_rtn_table = weekly_rtn.copy()
+    weekly_rtn_table = weekly_rtn_table[
+    weekly_rtn_table["日期"] <= nav_data["日期"].max()
+].tail(tail)
+    weekly_rtn_table["日期"] = weekly_rtn_table["日期"].dt.strftime("%Y-%m-%d")
+    weekly_rtn_table.set_index("日期", inplace=True)
+    weekly_rtn_table = weekly_rtn_table.T
+    return weekly_rtn_table
+
+
+def win_ratio_stastics(nav: np.ndarray, date:np.ndarray[np.datetime64]):
     """
     目前只支持月度胜率统计
     """
-    if start_date is not None:
-        nav_data = nav_data[nav_data["日期"]>= start_date]
-    nav_data["rtn"] = nav_data["累计净值"].pct_change()
-    # nav_data["rtn"] = np.log(nav_data["累计净值"]) - np.log(nav_data["累计净值"].shift(1))
+    assert len(nav) == len(date), "nav和date长度不一致"
+    nav_data = pd.DataFrame({"日期": date, "累计净值": nav})
+    nav_data["rtn"] = np.log(nav_data["累计净值"]) - np.log(nav_data["累计净值"].shift(1))
     monthly_rtn = (
         nav_data.groupby(pd.Grouper(key="日期", freq="ME"))
         .apply(
-            lambda x: (1 + x["rtn"]).prod() - 1,
-            # lambda x: x["rtn"].sum(),
+            lambda x: x["rtn"].sum(),
             include_groups=False,
         )
         .to_frame("月度收益")
@@ -255,6 +335,8 @@ def win_ratio_stastics(nav_data: pd.DataFrame,start_date: np.datetime64 = None):
     monthly_rtn["月度胜率"] = monthly_rtn.apply(lambda x: (x >= 0).sum() / (~np.isnan(x)).sum(), axis=1)
     # 保留四位小数
     monthly_rtn = monthly_rtn.map(lambda x: round(x, 4))
+    for col in monthly_rtn.columns:
+        monthly_rtn[col] = monthly_rtn[col].map(lambda x: f"{x:.3%}")
     return monthly_rtn
     
 def up_lower_bound(max_value,min_value, precision = 0.1, decimal = 2):
@@ -266,110 +348,14 @@ def up_lower_bound(max_value,min_value, precision = 0.1, decimal = 2):
     lower_bound = np.floor(lower_bound * 10 ** decimal) / 10 ** decimal
     return up_bound, lower_bound
 
-def nav_compare_analysis(
-    trade_date: np.ndarray[np.datetime64],
-    nav_data_dict: dict[str:np.ndarray[float]],
-    bench_mark_nav : np.ndarray[float] = None,
-    html_file_name: Path = None,
-    additional_table: list[pd.DataFrame] = None,
-    origin_date: np.ndarray[np.datetime64] = None,
-    image_save_path: Path = None
-):
-    metrics_dict = {}
-    drawdown_dict = {}
-    max_drawdown_info_dict = {}
-    if bench_mark_nav is not None:
-        bench_mark_nav = bench_mark_nav / bench_mark_nav[0]
-        bench_mark_rtn = np.log(bench_mark_nav[1:]) - np.log(bench_mark_nav[:-1])
-        nav_data_dict.update({"bench_mark": bench_mark_nav})
-        excess_nav_dict = {}
-        
-    for key, nav_data in nav_data_dict.items():
-        if key == "bench_mark":
-            continue
-        assert len(trade_date) == len(nav_data), f"{key} date和nav长度不一致"
-        assert bench_mark_nav is None or len(bench_mark_nav) == len(
-            nav_data
-        ), f"{key} bench_mark_nav和nav长度不一致"
-        nav = nav_data / nav_data[0]
-        rtn = np.log(nav[1:]) - np.log(nav[:-1])
-
-        if bench_mark_nav is not None:
-            excess_rtn = rtn - bench_mark_rtn
-            excess_nav = nav / bench_mark_nav
-            
-            nav_data_dict[key] = nav
-            excess_nav_dict.update({f"超额_{key}": excess_nav})
-            metrics = curve_analysis(excess_rtn, excess_nav)
-            drawdown, max_drawdown_info = max_drawdown_period(excess_nav, trade_date)
-            metrics_dict[f"超额_{key}"] = metrics
-            drawdown_dict[f"超额_{key}"] = drawdown
-            max_drawdown_info_dict[f"超额_{key}"] = max_drawdown_info
-        else:
-            nav_data_dict[key] = nav
-            metrics = curve_analysis(rtn, nav)
-            drawdown,max_drawdown_info = max_drawdown_period(nav, trade_date)
-            metrics_dict[key] = metrics
-            drawdown_dict[key] = drawdown
-            max_drawdown_info_dict[key] = max_drawdown_info
-        print(f"净值区间: {np.datetime_as_string(trade_date[0],unit="D")} - {np.datetime_as_string(trade_date[-1], unit='D')}")
-        for i, v in metrics.items():
-            if i == "夏普比率":
-                print(f"{i}：{v:.4f}")
-            else:
-                print(f"{i}：{v*100:.4f}%")
-        for i, v in max_drawdown_info.items():
-            print(f"{i}：{v}")
-            
-    if bench_mark_nav is not None:
-        nav_data_dict.update(excess_nav_dict)
-        bench_mark_drawdown = bench_mark_nav - np.maximum.accumulate(bench_mark_nav)
-        drawdown_dict.update({"bench_mark": bench_mark_drawdown})
-    if html_file_name:
-        metrics_table = pd.concat(
-                [
-                    pd.DataFrame(metrics_dict).T[["年化收益", "年化波动率", "夏普比率", "最大回撤"]], 
-                    pd.DataFrame(max_drawdown_info_dict).T,
-                ], axis=1)
-        metrics_table["夏普比率"] = metrics_table["夏普比率"].apply(lambda x: f"{x:.3f}")
-        metrics_table["年化收益"] = metrics_table["年化收益"].map(lambda x: f"{x:.3%}")
-        metrics_table["年化波动率"] = metrics_table["年化波动率"].map(lambda x: f"{x:.3%}")
-        metrics_table["最大回撤"] = metrics_table["最大回撤"].map(lambda x: f"{x:.3%}")
-        html = nav_compare_analysis_echarts_plot(
-            date=trade_date,
-            nav=nav_data_dict,
-            drawdown=drawdown_dict,
-            table=metrics_table,
-            additional_table=additional_table,
-            origin_date=origin_date,
-        )
-        if image_save_path is not None:
-            img_path =image_save_path.joinpath(f"{html_file_name.stem}.jpg")
-            print(f"正在保存图片至{img_path}, 请稍后...")
-            imgkit.from_string(
-                html,
-                config=config,
-                output_path= img_path,
-                options = options,
-                )
-        with open(html_file_name, "w", encoding='utf-8') as f:
-            f.write(html)
-
-
-
-def nav_compare_analysis_echarts_plot(
+def nav_analysis_echarts_plot(
     date: np.ndarray[np.datetime64],
     nav: dict[str:np.ndarray],
     drawdown: dict[str:np.ndarray],
     table: pd.DataFrame = None,
     additional_table: list[pd.DataFrame] = None,
-    origin_date: np.ndarray[np.datetime64] = None,
 ):
-    if origin_date is not None:
-        select_date_idx = np.isin(date, origin_date)
-    else:
-        select_date_idx = np.ones(len(date), dtype=bool)
-    date_str_list = date.astype("datetime64[D]").astype(str)[select_date_idx].tolist()
+    date_str_list = date.astype("datetime64[D]").astype(str).tolist()
     max_nav = np.array([max(nav_i) for nav_i in nav.values()])
     min_nav = np.array([min(nav_i) for nav_i in nav.values()])
     up_bound, lower_bound = up_lower_bound(max(max_nav), min(min_nav))
@@ -382,7 +368,7 @@ def nav_compare_analysis_echarts_plot(
             }
         ).add_xaxis(date_str_list)
     for key, value in nav.items():
-        nav_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
+        nav_line.add_yaxis(key, value.tolist(), is_symbol_show=False)
     nav_line.set_global_opts(
         legend_opts=opts.LegendOpts(textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)),
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
@@ -400,49 +386,39 @@ def nav_compare_analysis_echarts_plot(
             }
         ).add_xaxis(date_str_list)
     for key, value in drawdown.items():
-        drawdown_line.add_yaxis(key, value[select_date_idx].tolist(), is_symbol_show=False)
+        drawdown_line.add_yaxis(key, value.tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
         legend_opts=opts.LegendOpts(textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)),
         datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")],
         title_opts=opts.TitleOpts("max drawdown")
     ).set_series_opts(linestyle_opts=opts.LineStyleOpts(width = 4))
     table = table.to_html(render_links=True)
-    if additional_table is not None:
-        additional_table = [table_i.to_html(render_links=True) for table_i in additional_table]
-        html = f"""
-            <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Value over Time</title>
-                </head> 
-                <body>
-                    {table}
-                    {nav_line.render_embed()}
-                    {"".join(additional_table)}
-                    {drawdown_line.render_embed()}
-                </body>
-            </html>
-        """
-    else:
-        html = f"""
-            <html>
-                <head>
-                    <title>Value over Time</title>
-                </head> 
-                <body>
-                    {table}
-                    {nav_line.render_embed()}
-                    {drawdown_line.render_embed()}
-                </body>
-            </html>
-        """
+    html = f"""
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Value over Time</title>
+            </head> 
+            <body>
+                {table}
+                {nav_line.render_embed()}
+                {"".join([table_i.to_html(render_links=True) for table_i in additional_table]) if additional_table is not None else ""}
+                {drawdown_line.render_embed()}
+            </body>
+        </html>
+    """
     return html
-
 class NavAnalysisConfig(NamedTuple):
-    begin_date: pd.Timestamp = None
-    end_date: pd.Timestamp = None
-    special_html_name:bool=False
-    open_html:bool=True
+    """
+    param:
+        nav_data_path: 支持多个净值数据文件路径
+        image_save_parh: 图片保存路径, 为None则不保存图片
+    """
+
+    begin_date: np.datetime64 = np.datetime64("2000-06-06")
+    end_date: np.datetime64 = np.datetime64("2099-06-06")
+    special_html_name: bool = False
+    open_html: bool = True
     benchmark: Literal[
         "SHSE.000300",
         "SHSE.000905",
@@ -451,5 +427,18 @@ class NavAnalysisConfig(NamedTuple):
         "SHSE.000985",
     ] = None
     image_save_parh: Path = Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image")
-    nav_data_path: Path=None
-    index_data_path:Path=None
+    nav_data_path: List[Path] | Path = None
+    bench_data_path: Path = None
+    
+    def dict(self):
+        return self._asdict()
+    
+    def copy(self, **kwargs):
+        return self._replace(**kwargs)
+    
+def ffill(arr:np.ndarray):
+    mask = np.isnan(arr)
+    idx = np.where(~mask, np.arange(mask.shape[0]), 0)
+    np.maximum.accumulate(idx, axis=0, out=idx)
+    out = arr[idx]
+    return out
