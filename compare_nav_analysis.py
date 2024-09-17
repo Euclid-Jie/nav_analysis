@@ -3,7 +3,7 @@ from utils import *
 from single_nav_analysis import SingleNavAnalysis
 
 
-class CompareNavAnalysis:
+class CompareNavAnalysis(SingleNavAnalysis):
     def __init__(self, nav_analysis_config: NavAnalysisConfig):
         self.nav_analysis_config = nav_analysis_config
         self.nav_file_paths = (
@@ -12,6 +12,8 @@ class CompareNavAnalysis:
             else getLocalFiles(log=False)
         )
         assert len(self.nav_file_paths) >= 2, input("至少选择两个文件")
+        if self.nav_analysis_config.benchmark == "":
+            self.specify_benchmark()
         self.begin_date = self.nav_analysis_config.begin_date
         self.end_date = self.nav_analysis_config.end_date
         self.nav_data_dict = {}
@@ -21,7 +23,7 @@ class CompareNavAnalysis:
         self.select_date()
 
     def __repr__(self) -> str:
-        return f"净值分析：{self.begin_date} ~ {self.end_date}"
+        return f"净值对比分析：{self.begin_date} ~ {self.end_date}"
 
     def load_data(self):
         self.bench_data: pd.DataFrame = load_bench_data(
@@ -135,8 +137,7 @@ if __name__ == "__main__":
         # ],
         begin_date=np.datetime64("2023-12-29"),
         open_html=True,
-        image_save_parh=None,
-        # benchmark="SHSE.000905",
+        benchmark="",
     )
     demo = CompareNavAnalysis(nav_analysis_config)
     demo.anlysis()

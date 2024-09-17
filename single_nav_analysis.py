@@ -15,6 +15,9 @@ class SingleNavAnalysis:
             if self.nav_analysis_config.nav_data_path
             else getLocalFile(log=False)
         )
+        if self.nav_analysis_config.benchmark == "":
+            self.specify_benchmark()
+
         self.name = self.nav_file_path.stem
         self.begin_date = self.nav_analysis_config.begin_date
         self.end_date = self.nav_analysis_config.end_date
@@ -22,6 +25,24 @@ class SingleNavAnalysis:
         self.drawdown_dict = {}
         self.load_data()
         self.select_date()
+
+    def specify_benchmark(self):
+        self.nav_analysis_config = self.nav_analysis_config.copy(
+            benchmark=[
+                None,
+                "SHSE.000300",
+                "SHSE.000905",
+                "SHSE.000852",
+                "SZSE.399303",
+                "SHSE.000985",
+            ][
+                int(
+                    input(
+                        "请键入基准：[0]无基准, [1]沪深300, [2]中证500, [3]中证100, [4]国证2000, [5]中证全指"
+                    )
+                )
+            ]
+        )
 
     def __repr__(self) -> str:
         return f"{self.name}净值分析[{self.freq}]：{self.begin_date} ~ {self.end_date}"
@@ -262,13 +283,12 @@ class SingleNavAnalysis:
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-        nav_data_path=Path(
-            r"C:/Users/Ouwei/Desktop/nav_data/净值0814/市场中性/天算中性B-SXU256.xlsx"
-        ),
+        # nav_data_path=Path(
+        #     r"C:/Users/Ouwei/Desktop/nav_data/净值0814/市场中性/天算中性B-SXU256.xlsx"
+        # ),
         begin_date=np.datetime64("2023-12-29"),
         open_html=True,
-        image_save_parh=None,
-        benchmark="SHSE.000905",
+        benchmark="",
     )
     demo = SingleNavAnalysis(nav_analysis_config)
     demo.analysis()
