@@ -285,12 +285,12 @@ class SingleNavAnalysis:
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-        nav_data_path=Path(
-            r"C:\Users\Ouwei\Desktop\nav_data\净值库0917\按策略分\300增强\佳期300B-SSB255.xlsx"
-        ),
+        # nav_data_path=Path(
+        #     r"C:\Users\Ouwei\Desktop\nav_data\净值库0917\按策略分\300增强\佳期300B-SSB255.xlsx"
+        # ),
         begin_date=np.datetime64("2023-12-29"),
         open_html=True,
-        benchmark="SHSE.000300",
+        benchmark="SHSE.000905",
     )
     demo = SingleNavAnalysis(nav_analysis_config)
     demo.analysis()

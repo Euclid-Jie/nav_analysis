@@ -93,18 +93,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
                 ] = drawdown_i
                 self.drawdown_dict[drawdown_name_i] = ffill(match_drawdown_i)
 
-    def export_html(self):
-        if self.nav_analysis_config.special_html_name:
-            html_name = input("请输入导出的html文件名：")
-        else:
-            html_name = (
-                datetime.date.today().strftime("%Y%m%d") + "_" + "compare_nav_analysis"
-            )
-        html_file_path = Path(
-            self.nav_file_paths[0].parent.joinpath(f"{html_name}.html")
-        )
-        print(f"html路径为：{html_file_path}")
-
+    def export_html(self, save=True):
         self.html = nav_analysis_echarts_plot(
             date=self.trade_date,
             nav=self.nav_dict,
@@ -116,12 +105,26 @@ class CompareNavAnalysis(SingleNavAnalysis):
                 self.backword_analysis_df,
             ],
         )
-        with open(html_file_path, "w", encoding="utf-8") as f:
-            f.write(self.html)
+        if save:
+            if self.nav_analysis_config.special_html_name:
+                html_name = input("请输入导出的html文件名：")
+            else:
+                html_name = (
+                    datetime.date.today().strftime("%Y%m%d")
+                    + "_"
+                    + "compare_nav_analysis"
+                )
+            html_file_path = Path(
+                self.nav_file_paths[0].parent.joinpath(f"{html_name}.html")
+            )
+            print(f"html路径为：{html_file_path}")
 
-        if self.nav_analysis_config.open_html:
-            input("导出完成，按任意键打开html文件")
-            os.system(f"start {html_file_path.__str__()}")
+            with open(html_file_path, "w", encoding="utf-8") as f:
+                f.write(self.html)
+
+            if self.nav_analysis_config.open_html:
+                input("导出完成，按任意键打开html文件")
+                os.system(f"start {html_file_path.__str__()}")
 
 
 if __name__ == "__main__":
@@ -137,7 +140,7 @@ if __name__ == "__main__":
         # ],
         begin_date=np.datetime64("2023-12-29"),
         open_html=True,
-        benchmark="",
+        benchmark="SHSE.000905",
     )
     demo = CompareNavAnalysis(nav_analysis_config)
     demo.anlysis()
