@@ -426,7 +426,6 @@ class NavAnalysisConfig(NamedTuple):
         "SZSE.399303",
         "SHSE.000985",
     ] = None
-    image_save_parh: Path = Path(r"C:\Euclid_Jie\barra\submodule\nav_analysis\image")
     nav_data_path: List[Path] | Path = None
     bench_data_path: Path = None
     

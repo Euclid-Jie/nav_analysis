@@ -1,5 +1,10 @@
 import datetime
 from utils import *
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+plt.rcParams["font.sans-serif"] = ["SimHei"]
+plt.rcParams["axes.unicode_minus"] = False
 
 
 class SingleNavAnalysis:
@@ -205,6 +210,53 @@ class SingleNavAnalysis:
         if self.nav_analysis_config.open_html:
             input("导出完成，按任意键打开html文件")
             os.system(f"start {html_file_path.__str__()}")
+
+    def plot(self):
+        fig, (ax1, ax2) = plt.subplots(nrows=2, figsize=(25, 14))
+        # 画超额收益图
+        ax1.plot(self.date, self.nav - 1, color="red", label=f"{self.name}_累计净值")
+        if self.nav_analysis_config.benchmark:
+            ax1.plot(
+                self.date,
+                self.bench_nav - 1,
+                color="blue",
+                label=self.nav_analysis_config.benchmark,
+            )
+            ax1.fill_between(
+                self.date, self.excess_nav - 1, color="gray", label="超额收益"
+            )
+        ax1.legend(loc="lower left", fontsize=15)
+        ax1.tick_params(axis="x", rotation=45, labelsize=15)
+        ax1.tick_params(axis="y", labelsize=15)
+        ax1.xaxis.set_major_locator(mdates.MonthLocator())
+        ax1.set_title("累计净值及动态回撤图", size=25)
+        ax1.grid()
+
+        # 画动态回撤图
+        ax2.plot(
+            self.date,
+            self.drawdown_dict[self.name],
+            color="red",
+            label=f"{self.name}_回撤",
+        )
+        if self.nav_analysis_config.benchmark:
+            ax2.plot(
+                self.date,
+                self.drawdown_dict[self.nav_analysis_config.benchmark],
+                color="blue",
+                label=f"{self.nav_analysis_config.benchmark}_回撤",
+            )
+            ax2.fill_between(
+                self.date,
+                self.drawdown_dict[f"超额_{self.name}"],
+                color="gray",
+                label="超额回撤",
+            )
+        ax2.legend(loc="lower left", fontsize=15)
+        ax2.tick_params(axis="x", rotation=45, labelsize=15)
+        ax2.tick_params(axis="y", labelsize=15)
+        ax2.xaxis.set_major_locator(mdates.MonthLocator())
+        ax2.grid()
 
 
 if __name__ == "__main__":

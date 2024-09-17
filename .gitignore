@@ -5,3 +5,4 @@ dist/
 *.spec
 __pycache__/
 image/
+私募净值分析.ipynb
