@@ -11,18 +11,17 @@ import tkinter as tk
 from tkinter import filedialog
 from pathlib import Path
 import os
+import re
 import imgkit
-path_wk = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"
-config = imgkit.config(wkhtmltoimage=path_wk) 
-options = {
-    'javascript-delay': 1000,
-        'crop-w': 1200,
-        'crop-h': 620,
-        'crop-x': 65,
-        'crop-y': 5,
 
-}
-
+def keep_chinese_chars(text):
+    # 使用正则表达式匹配汉字
+    chinese_chars = re.findall(r'[\u4e00-\u9fff]+', text)
+    
+    # 将匹配到的汉字连接成一个字符串
+    result = ''.join(chinese_chars)
+    
+    return result
 
 def getLocalFile(log=True, suffix:List[str]=None)->List[Path]:
     """
@@ -66,7 +65,7 @@ def load_bench_data(index_data_path: Path = None):
     index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
     return index_data
 
-def format_nav_data(path):
+def format_nav_data(path,ingnore_null=True):
     if path.suffix == ".csv":
         nav_data = pd.read_csv(path)
     else:
@@ -83,9 +82,14 @@ def format_nav_data(path):
     assert (nav_data["累计净值"] <= 0.01).sum() == 0, input(
         "Error: 净值数据中存在净值为0的数据"
     )
-    assert nav_data["累计净值"].isnull().sum() == 0, input(
-        "Error: 净值数据中存在累计净值为空的数据"
-    )
+    if ingnore_null==False:
+        assert nav_data["累计净值"].isnull().sum() == 0, input(
+            "Error: 净值数据中存在累计净值为空的数据"
+        )
+    else:
+        if nav_data["累计净值"].isnull().sum() > 0:
+            print("已剔除, 净值数据中存在累计净值为空的数据")
+            nav_data = nav_data[~nav_data["累计净值"].isnull()]
     assert nav_data["日期"].isnull().sum() == 0, input(
         "Error: 净值数据中存在日期为空的数据"
     )

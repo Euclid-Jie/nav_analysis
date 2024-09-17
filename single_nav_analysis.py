@@ -201,20 +201,8 @@ class SingleNavAnalysis:
             )
         )
 
-    def export_html(self):
-        if self.nav_analysis_config.special_html_name:
-            html_name = input("请输入导出的html文件名：")
-        else:
-            html_name = (
-                datetime.date.today().strftime("%Y%m%d")
-                + "_"
-                + self.name
-                + "_nav_analysis"
-            )
-        html_file_path = Path(self.nav_file_path.parent.joinpath(f"{html_name}.html"))
-        print(f"html路径为：{html_file_path}")
-
-        html = nav_analysis_echarts_plot(
+    def export_html(self, save=True):
+        self.html = nav_analysis_echarts_plot(
             date=self.date,
             nav=self.nav_dict,
             drawdown=self.drawdown_dict,
@@ -225,12 +213,26 @@ class SingleNavAnalysis:
                 self.backword_analysis_df,
             ],
         )
-        with open(html_file_path, "w", encoding="utf-8") as f:
-            f.write(html)
+        if save:
+            if self.nav_analysis_config.special_html_name:
+                html_name = input("请输入导出的html文件名：")
+            else:
+                html_name = (
+                    datetime.date.today().strftime("%Y%m%d")
+                    + "_"
+                    + self.name
+                    + "_nav_analysis"
+                )
+            html_file_path = Path(
+                self.nav_file_path.parent.joinpath(f"{html_name}.html")
+            )
+            print(f"html路径为：{html_file_path}")
+            with open(html_file_path, "w", encoding="utf-8") as f:
+                f.write(self.html)
 
-        if self.nav_analysis_config.open_html:
-            input("导出完成，按任意键打开html文件")
-            os.system(f"start {html_file_path.__str__()}")
+            if self.nav_analysis_config.open_html:
+                input("导出完成，按任意键打开html文件")
+                os.system(f"start {html_file_path.__str__()}")
 
     def plot(self):
         fig, (ax1, ax2) = plt.subplots(nrows=2, figsize=(25, 14))
@@ -283,12 +285,12 @@ class SingleNavAnalysis:
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-        # nav_data_path=Path(
-        #     r"C:/Users/Ouwei/Desktop/nav_data/净值0814/市场中性/天算中性B-SXU256.xlsx"
-        # ),
+        nav_data_path=Path(
+            r"C:\Users\Ouwei\Desktop\nav_data\净值库0917\按策略分\300增强\佳期300B-SSB255.xlsx"
+        ),
         begin_date=np.datetime64("2023-12-29"),
         open_html=True,
-        benchmark="",
+        benchmark="SHSE.000300",
     )
     demo = SingleNavAnalysis(nav_analysis_config)
     demo.analysis()

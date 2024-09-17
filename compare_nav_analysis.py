@@ -105,7 +105,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
         )
         print(f"html路径为：{html_file_path}")
 
-        html = nav_analysis_echarts_plot(
+        self.html = nav_analysis_echarts_plot(
             date=self.trade_date,
             nav=self.nav_dict,
             drawdown=self.drawdown_dict,
@@ -117,7 +117,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
             ],
         )
         with open(html_file_path, "w", encoding="utf-8") as f:
-            f.write(html)
+            f.write(self.html)
 
         if self.nav_analysis_config.open_html:
             input("导出完成，按任意键打开html文件")
