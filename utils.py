@@ -64,7 +64,14 @@ def load_bench_data(index_data_path: Path = None):
         index_data = pd.read_csv(getLocalFiles()[0])
     index_data["bob"] = pd.to_datetime(index_data["bob"]).dt.tz_localize(None)
     return index_data
-
+def infer_frequency(date: np.ndarray[np.datetime64]):
+    # 如果大部分日期间隔为 1 天，那么数据可能是日度的
+    if (np.diff(date) == np.timedelta64(1, "D")).mean() > 0.75:
+        return "D"
+    elif (np.diff(date) >= np.timedelta64(5, "D")).mean() > 0.75:
+        return "W"
+    else:
+        raise ValueError("无法推断频率")
 def format_nav_data(path,ingnore_null=True):
     if path.suffix == ".csv":
         nav_data = pd.read_csv(path)
@@ -77,6 +84,7 @@ def format_nav_data(path,ingnore_null=True):
             "累计单位净值": "累计净值",
             "实际累计净值": "累计净值",
             "复权净值": "累计净值",
+            "单位净值": "累计净值",
         }
     )[["日期", "累计净值"]]
     assert (nav_data["累计净值"] <= 0.01).sum() == 0, input(
@@ -336,6 +344,7 @@ def win_ratio_stastics(nav: np.ndarray, date:np.ndarray[np.datetime64]):
     monthly_rtn = monthly_rtn.pivot_table(index="year", columns="month", values="月度收益", aggfunc="sum")
     monthly_rtn.columns = [f"{x}月" for x in monthly_rtn.columns]
     monthly_rtn.index.name = None
+    monthly_rtn["年度总收益"] = monthly_rtn.apply(lambda x: np.nansum(x), axis=1)
     monthly_rtn["月度胜率"] = monthly_rtn.apply(lambda x: (x >= 0).sum() / (~np.isnan(x)).sum(), axis=1)
     # 保留四位小数
     monthly_rtn = monthly_rtn.map(lambda x: round(x, 4))

@@ -60,12 +60,7 @@ class SingleNavAnalysis:
         print(f"开始读取{self.name}净值数据")
         self.nav_data: pd.DataFrame = format_nav_data(self.nav_file_path)
 
-        self.freq = (
-            "W"
-            if (self.nav_data["日期"].iloc[-1] - self.nav_data["日期"].iloc[0])
-            > pd.Timedelta(len(self.nav_data["日期"]) * 365 / 251)
-            else "D"
-        )
+        self.freq = infer_frequency(self.nav_data["日期"].values)
 
         print(
             f"原始数据时间区间为：{self.nav_data['日期'].min().strftime('%Y-%m-%d')} ~ {self.nav_data['日期'].max().strftime('%Y-%m-%d')}"
@@ -288,7 +283,7 @@ if __name__ == "__main__":
         # nav_data_path=Path(
         #     r"C:\Users\Ouwei\Desktop\nav_data\净值库0917\按策略分\300增强\佳期300B-SSB255.xlsx"
         # ),
-        begin_date=np.datetime64("2023-12-29"),
+        # begin_date=np.datetime64("2023-12-29"),
         open_html=True,
         benchmark="SHSE.000905",
     )
