@@ -1,0 +1,951 @@
+
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Value over Time</title>
+            </head> 
+            <body>
+                <table align="center"  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>年化收益率</th>
+      <th>年化波动率</th>
+      <th>最大回撤</th>
+      <th>夏普比率</th>
+      <th>开始日期</th>
+      <th>结束日期</th>
+      <th>持续天数</th>
+      <th>修复日期</th>
+      <th>修复天数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>因诺中性</th>
+      <td>-0.206%</td>
+      <td>6.368%</td>
+      <td>-5.915%</td>
+      <td>-0.032</td>
+      <td>2024-01-26</td>
+      <td>2024-02-08</td>
+      <td>13</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+                <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+
+</head>
+<body >
+    <div id="9c0ea5e7d456433c9e5a4cf21107e78b" class="chart-container" style="width:1320px; height:600px; text-align:center; margin: auto"></div>
+    <script>
+        var chart_9c0ea5e7d456433c9e5a4cf21107e78b = echarts.init(
+            document.getElementById('9c0ea5e7d456433c9e5a4cf21107e78b'), 'white', {renderer: 'canvas'});
+        var option_9c0ea5e7d456433c9e5a4cf21107e78b = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "line",
+            "name": "\u56e0\u8bfa\u4e2d\u6027",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    1.0
+                ],
+                [
+                    "2024-01-05",
+                    1.0060516987983055
+                ],
+                [
+                    "2024-01-12",
+                    1.0047549061986685
+                ],
+                [
+                    "2024-01-19",
+                    1.0010374340797095
+                ],
+                [
+                    "2024-01-26",
+                    1.0084723783176277
+                ],
+                [
+                    "2024-01-31",
+                    0.9801158468055674
+                ],
+                [
+                    "2024-02-02",
+                    0.9735454309674073
+                ],
+                [
+                    "2024-02-08",
+                    0.9488199187343304
+                ],
+                [
+                    "2024-02-19",
+                    0.9578974669317888
+                ],
+                [
+                    "2024-02-23",
+                    0.9706924872482061
+                ],
+                [
+                    "2024-02-29",
+                    0.9751880349269472
+                ],
+                [
+                    "2024-03-01",
+                    0.976917091726463
+                ],
+                [
+                    "2024-03-08",
+                    0.9757932048067779
+                ],
+                [
+                    "2024-03-15",
+                    0.9807210166853981
+                ],
+                [
+                    "2024-03-22",
+                    0.9933431313218639
+                ],
+                [
+                    "2024-03-29",
+                    0.9993948301201693
+                ],
+                [
+                    "2024-04-03",
+                    0.9981844903605084
+                ],
+                [
+                    "2024-04-12",
+                    0.9938618483617185
+                ],
+                [
+                    "2024-04-19",
+                    0.9822771678049624
+                ],
+                [
+                    "2024-04-26",
+                    0.989971470562808
+                ],
+                [
+                    "2024-04-30",
+                    0.9926515086020576
+                ],
+                [
+                    "2024-05-10",
+                    0.9915276216823722
+                ],
+                [
+                    "2024-05-17",
+                    0.9985303017204115
+                ],
+                [
+                    "2024-05-24",
+                    0.9978386790006051
+                ],
+                [
+                    "2024-05-31",
+                    0.9952450938013313
+                ],
+                [
+                    "2024-06-07",
+                    0.9866862626437278
+                ],
+                [
+                    "2024-06-14",
+                    0.9844384888043572
+                ],
+                [
+                    "2024-06-21",
+                    0.9831416962047203
+                ],
+                [
+                    "2024-06-28",
+                    0.99074954612259
+                ],
+                [
+                    "2024-07-05",
+                    0.995763810841186
+                ],
+                [
+                    "2024-07-12",
+                    0.9931702256419124
+                ],
+                [
+                    "2024-07-19",
+                    0.9910089046425176
+                ],
+                [
+                    "2024-07-26",
+                    0.9973199619607503
+                ],
+                [
+                    "2024-07-31",
+                    0.9967147920809198
+                ],
+                [
+                    "2024-08-02",
+                    0.9986167545603872
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 4,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u56e0\u8bfa\u4e2d\u6027"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "textStyle": {
+                "fontWeight": "bold",
+                "fontSize": 20
+            },
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "2023-12-29",
+                "2024-01-05",
+                "2024-01-12",
+                "2024-01-19",
+                "2024-01-26",
+                "2024-01-31",
+                "2024-02-02",
+                "2024-02-08",
+                "2024-02-19",
+                "2024-02-23",
+                "2024-02-29",
+                "2024-03-01",
+                "2024-03-08",
+                "2024-03-15",
+                "2024-03-22",
+                "2024-03-29",
+                "2024-04-03",
+                "2024-04-12",
+                "2024-04-19",
+                "2024-04-26",
+                "2024-04-30",
+                "2024-05-10",
+                "2024-05-17",
+                "2024-05-24",
+                "2024-05-31",
+                "2024-06-07",
+                "2024-06-14",
+                "2024-06-21",
+                "2024-06-28",
+                "2024-07-05",
+                "2024-07-12",
+                "2024-07-19",
+                "2024-07-26",
+                "2024-07-31",
+                "2024-08-02"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "min": 0.94,
+            "max": 1.02,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": "Value over Time",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "dataZoom": [
+        {
+            "show": true,
+            "type": "slider",
+            "showDetail": true,
+            "showDataShadow": true,
+            "realtime": true,
+            "start": 0,
+            "end": 100,
+            "orient": "horizontal",
+            "zoomLock": false,
+            "filterMode": "filter"
+        }
+    ]
+};
+        chart_9c0ea5e7d456433c9e5a4cf21107e78b.setOption(option_9c0ea5e7d456433c9e5a4cf21107e78b);
+    </script>
+</body>
+</html>
+
+                <table align="center"  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>1月</th>
+      <th>2月</th>
+      <th>3月</th>
+      <th>4月</th>
+      <th>5月</th>
+      <th>6月</th>
+      <th>7月</th>
+      <th>8月</th>
+      <th>12月</th>
+      <th>年度总收益</th>
+      <th>月度胜率</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>因诺中性_2023</th>
+      <td>nan%</td>
+      <td>nan%</td>
+      <td>nan%</td>
+      <td>nan%</td>
+      <td>nan%</td>
+      <td>nan%</td>
+      <td>nan%</td>
+      <td>nan%</td>
+      <td>0.000%</td>
+      <td>0.000%</td>
+      <td>100.000%</td>
+    </tr>
+    <tr>
+      <th>因诺中性_2024</th>
+      <td>-2.010%</td>
+      <td>-0.500%</td>
+      <td>2.450%</td>
+      <td>-0.680%</td>
+      <td>0.260%</td>
+      <td>-0.450%</td>
+      <td>0.600%</td>
+      <td>0.190%</td>
+      <td>nan%</td>
+      <td>-0.140%</td>
+      <td>44.440%</td>
+    </tr>
+  </tbody>
+</table><table align="center"  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>日期</th>
+      <th>2024-05-31</th>
+      <th>2024-06-07</th>
+      <th>2024-06-14</th>
+      <th>2024-06-21</th>
+      <th>2024-06-28</th>
+      <th>2024-07-05</th>
+      <th>2024-07-12</th>
+      <th>2024-07-19</th>
+      <th>2024-07-26</th>
+      <th>2024-08-02</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>因诺中性_周收益</th>
+      <td>-0.0026</td>
+      <td>-0.0086</td>
+      <td>-0.0023</td>
+      <td>-0.0013</td>
+      <td>0.0077</td>
+      <td>0.005</td>
+      <td>-0.0026</td>
+      <td>-0.0022</td>
+      <td>0.0063</td>
+      <td>0.0013</td>
+    </tr>
+  </tbody>
+</table><table align="center"  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>区间收益率</th>
+      <th>年化收益率</th>
+      <th>区间波动率</th>
+      <th>年化波动率</th>
+      <th>夏普比率</th>
+      <th>最大回撤</th>
+      <th>begin_date</th>
+      <th>end_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>因诺中性_1M</th>
+      <td>0.287%</td>
+      <td>2.483%</td>
+      <td>0.329%</td>
+      <td>2.374%</td>
+      <td>1.046</td>
+      <td>-0.478%</td>
+      <td>2024-07-05</td>
+      <td>2024-08-02</td>
+    </tr>
+    <tr>
+      <th>因诺中性_3M</th>
+      <td>0.715%</td>
+      <td>2.656%</td>
+      <td>0.460%</td>
+      <td>3.318%</td>
+      <td>0.800</td>
+      <td>-1.541%</td>
+      <td>2024-05-10</td>
+      <td>2024-08-02</td>
+    </tr>
+    <tr>
+      <th>因诺中性_6M</th>
+      <td>2.575%</td>
+      <td>4.618%</td>
+      <td>0.771%</td>
+      <td>5.558%</td>
+      <td>0.831</td>
+      <td>-2.540%</td>
+      <td>2024-02-02</td>
+      <td>2024-08-02</td>
+    </tr>
+    <tr>
+      <th>因诺中性_YTD</th>
+      <td>-0.739%</td>
+      <td>-1.130%</td>
+      <td>0.890%</td>
+      <td>6.418%</td>
+      <td>-0.176</td>
+      <td>-5.915%</td>
+      <td>2024-01-05</td>
+      <td>2024-08-02</td>
+    </tr>
+  </tbody>
+</table>
+                <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+
+</head>
+<body >
+    <div id="d0a80817dd18431d9dd381b9d9b16d8e" class="chart-container" style="width:1320px; height:600px; text-align:center; margin: auto"></div>
+    <script>
+        var chart_d0a80817dd18431d9dd381b9d9b16d8e = echarts.init(
+            document.getElementById('d0a80817dd18431d9dd381b9d9b16d8e'), 'white', {renderer: 'canvas'});
+        var option_d0a80817dd18431d9dd381b9d9b16d8e = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "line",
+            "name": "\u56e0\u8bfa\u4e2d\u6027",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    0.0
+                ],
+                [
+                    "2024-01-05",
+                    0.0
+                ],
+                [
+                    "2024-01-12",
+                    -0.001288992008249648
+                ],
+                [
+                    "2024-01-19",
+                    -0.0049841024318982565
+                ],
+                [
+                    "2024-01-26",
+                    0.0
+                ],
+                [
+                    "2024-01-31",
+                    -0.028118302614659366
+                ],
+                [
+                    "2024-02-02",
+                    -0.03463351907415339
+                ],
+                [
+                    "2024-02-08",
+                    -0.059151307329618555
+                ],
+                [
+                    "2024-02-19",
+                    -0.05015002143163298
+                ],
+                [
+                    "2024-02-23",
+                    -0.03746249464209169
+                ],
+                [
+                    "2024-02-29",
+                    -0.03300471495928005
+                ],
+                [
+                    "2024-03-01",
+                    -0.03129018431204474
+                ],
+                [
+                    "2024-03-08",
+                    -0.03240462923274752
+                ],
+                [
+                    "2024-03-15",
+                    -0.027518216888126834
+                ],
+                [
+                    "2024-03-22",
+                    -0.015002143163309023
+                ],
+                [
+                    "2024-03-29",
+                    -0.009001285897985569
+                ],
+                [
+                    "2024-04-03",
+                    -0.010201457351050084
+                ],
+                [
+                    "2024-04-12",
+                    -0.014487783969138565
+                ],
+                [
+                    "2024-04-19",
+                    -0.025975139305615017
+                ],
+                [
+                    "2024-04-26",
+                    -0.01834547792541789
+                ],
+                [
+                    "2024-04-30",
+                    -0.015687955422203078
+                ],
+                [
+                    "2024-05-10",
+                    -0.01680240034290618
+                ],
+                [
+                    "2024-05-17",
+                    -0.009858551221603111
+                ],
+                [
+                    "2024-05-24",
+                    -0.010544363480497277
+                ],
+                [
+                    "2024-05-31",
+                    -0.013116159451350234
+                ],
+                [
+                    "2024-06-07",
+                    -0.021603086155165013
+                ],
+                [
+                    "2024-06-14",
+                    -0.023831975996570887
+                ],
+                [
+                    "2024-06-21",
+                    -0.025117873981997475
+                ],
+                [
+                    "2024-06-28",
+                    -0.01757393913416209
+                ],
+                [
+                    "2024-07-05",
+                    -0.012601800257179663
+                ],
+                [
+                    "2024-07-12",
+                    -0.01517359622803251
+                ],
+                [
+                    "2024-07-19",
+                    -0.01731675953707664
+                ],
+                [
+                    "2024-07-26",
+                    -0.011058722674667846
+                ],
+                [
+                    "2024-07-31",
+                    -0.011658808401200158
+                ],
+                [
+                    "2024-08-02",
+                    -0.009772824689241367
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 4,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u56e0\u8bfa\u4e2d\u6027"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "textStyle": {
+                "fontWeight": "bold",
+                "fontSize": 20
+            },
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "2023-12-29",
+                "2024-01-05",
+                "2024-01-12",
+                "2024-01-19",
+                "2024-01-26",
+                "2024-01-31",
+                "2024-02-02",
+                "2024-02-08",
+                "2024-02-19",
+                "2024-02-23",
+                "2024-02-29",
+                "2024-03-01",
+                "2024-03-08",
+                "2024-03-15",
+                "2024-03-22",
+                "2024-03-29",
+                "2024-04-03",
+                "2024-04-12",
+                "2024-04-19",
+                "2024-04-26",
+                "2024-04-30",
+                "2024-05-10",
+                "2024-05-17",
+                "2024-05-24",
+                "2024-05-31",
+                "2024-06-07",
+                "2024-06-14",
+                "2024-06-21",
+                "2024-06-28",
+                "2024-07-05",
+                "2024-07-12",
+                "2024-07-19",
+                "2024-07-26",
+                "2024-07-31",
+                "2024-08-02"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": "max drawdown",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "dataZoom": [
+        {
+            "show": true,
+            "type": "slider",
+            "showDetail": true,
+            "showDataShadow": true,
+            "realtime": true,
+            "start": 0,
+            "end": 100,
+            "orient": "horizontal",
+            "zoomLock": false,
+            "filterMode": "filter"
+        }
+    ]
+};
+        chart_d0a80817dd18431d9dd381b9d9b16d8e.setOption(option_d0a80817dd18431d9dd381b9d9b16d8e);
+    </script>
+</body>
+</html>
+
+            </body>
+        </html>
+    
