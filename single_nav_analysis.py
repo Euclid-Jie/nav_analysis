@@ -213,7 +213,9 @@ class SingleNavAnalysis:
                 html_name = input("请输入导出的html文件名：")
             else:
                 html_name = (
-                    datetime.date.today().strftime("%Y%m%d")
+                    np.datetime_as_string(self.begin_date, unit="D").replace("-", "")
+                    + "_"
+                    + np.datetime_as_string(self.end_date, unit="D").replace("-", "")
                     + "_"
                     + self.name
                     + "_nav_analysis"
@@ -280,9 +282,9 @@ class SingleNavAnalysis:
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-        # nav_data_path=Path(
-        #     r"C:\Users\Ouwei\Desktop\nav_data\净值库0917\按策略分\300增强\佳期300B-SSB255.xlsx"
-        # ),
+        nav_data_path=Path(
+            r"C:\Euclid_Jie\barra\submodule\nav_analysis\nav_data\ABA86A-弈倍龙杉九号A类净值序列.xlsx"
+        ),
         # begin_date=np.datetime64("2023-12-29"),
         open_html=True,
         benchmark="SHSE.000905",

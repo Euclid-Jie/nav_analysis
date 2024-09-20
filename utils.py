@@ -80,13 +80,14 @@ def format_nav_data(path,ingnore_null=True):
     nav_data = nav_data.rename(
         columns={
             "净值日期": "日期",
-            "时间": "日期",
-            "累计单位净值": "累计净值",
-            "实际累计净值": "累计净值",
-            "复权净值": "累计净值",
-            "单位净值": "累计净值",
-        }
-    )[["日期", "累计净值"]]
+            "时间": "日期"
+        })
+    assert "日期" in nav_data.columns, input("Error: 未找到日期列")
+    for fake_name in ["复权净值", "累计净值","累计单位净值","实际累计净值","单位净值"]:
+        if fake_name in nav_data.columns:
+            nav_data = nav_data[["日期",fake_name]].rename(columns={fake_name: "累计净值"})
+            break
+    assert "累计净值" in nav_data.columns, input("Error: 未找到累计净值列")
     assert (nav_data["累计净值"] <= 0.01).sum() == 0, input(
         "Error: 净值数据中存在净值为0的数据"
     )
