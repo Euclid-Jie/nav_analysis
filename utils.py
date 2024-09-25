@@ -413,13 +413,8 @@ def nav_analysis_echarts_plot(
         }
     ).add_xaxis(date_str_list)
     for key, value in nav.items():
-        nav_line.add_yaxis(key, value.tolist(), is_symbol_show=False)
+        nav_line.add_yaxis(key, np.round(value, 4).tolist(), is_symbol_show=False)
     nav_line.set_global_opts(
-        toolbox_opts=opts.ToolboxOpts(
-            feature=opts.ToolBoxFeatureOpts(
-                data_view=opts.ToolBoxFeatureDataViewOpts(is_show=True)
-            )
-        ),
         legend_opts=opts.LegendOpts(
             textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)
         ),
@@ -443,11 +438,6 @@ def nav_analysis_echarts_plot(
     for key, value in drawdown.items():
         drawdown_line.add_yaxis(key, value.tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
-        toolbox_opts=opts.ToolboxOpts(
-            feature=opts.ToolBoxFeatureOpts(
-                data_view=opts.ToolBoxFeatureDataViewOpts(is_show=True)
-            )
-        ),
         legend_opts=opts.LegendOpts(
             textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)
         ),
