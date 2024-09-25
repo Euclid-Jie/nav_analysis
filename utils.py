@@ -407,7 +407,7 @@ def nav_analysis_echarts_plot(
 
     nav_line = Line(
         init_opts={
-            "width": "1320px",
+            "width": "1740px",
             "height": "600px",
             "is_horizontal_center": True,
         }
@@ -430,13 +430,13 @@ def nav_analysis_echarts_plot(
     # 绘制最大回撤区间
     drawdown_line = Line(
         init_opts={
-            "width": "1320px",
+            "width": "1740px",
             "height": "600px",
             "is_horizontal_center": True,
         }
     ).add_xaxis(date_str_list)
     for key, value in drawdown.items():
-        drawdown_line.add_yaxis(key, value.tolist(), is_symbol_show=False)
+        drawdown_line.add_yaxis(key, np.round(value, 4).tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
         legend_opts=opts.LegendOpts(
             textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)
@@ -453,7 +453,30 @@ def nav_analysis_echarts_plot(
             <head>
                 <meta charset="UTF-8">
                 <title>Value over Time</title>
-            </head> 
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 0;
+                        background-color: #f0f0f0;
+                    }}
+                    table {{
+                        margin: auto;
+                        margin-bottom: 20px;
+                        border-collapse: collapse;
+                        width: 80%;
+                    }}
+                    table, th, td {{
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: center; 
+                    }}
+                    th {{
+                        background-color: #f59e00;
+                        color: white;
+                    }}
+                </style>
+            </head>
             <body>
                 {table}
                 {nav_line.render_embed()}
