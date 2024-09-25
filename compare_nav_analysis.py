@@ -39,6 +39,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
         # TODO 优化时间区间选择逻辑, 有可能无重叠部分(suppose不应该)
         # 记录所有净值数据的时间区间中重叠的部分
         exit_trade_date = self.trade_date.copy()
+        exit_trade_date = exit_trade_date[exit_trade_date >= self.begin_date]
         for name, nav_data in self.nav_data_dict.items():
             exit_trade_date = np.intersect1d(exit_trade_date, nav_data["日期"].values)
             # 选取两者中min(max)作为结束时间
@@ -114,8 +115,10 @@ class CompareNavAnalysis(SingleNavAnalysis):
             if self.nav_analysis_config.special_html_name:
                 html_name = input("请输入导出的html文件名：")
             else:
-                html_name = (
-                    datetime.date.today().strftime("%Y%m%d")
+               html_name = (
+                    np.datetime_as_string(self.begin_date, unit="D").replace("-", "")
+                    + "_"
+                    + np.datetime_as_string(self.end_date, unit="D").replace("-", "")
                     + "_"
                     + "compare_nav_analysis"
                 )

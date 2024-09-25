@@ -231,7 +231,7 @@ class SingleNavAnalysis:
                 input("导出完成，按任意键打开html文件")
                 os.system(f"start {html_file_path.__str__()}")
 
-    def plot(self):
+    def plot(self, where: Literal["lower", "upper"] = "lower"):
         fig, (ax1, ax2) = plt.subplots(nrows=2, figsize=(25, 14))
         # 画超额收益图
         ax1.plot(self.date, self.nav - 1, color="red", label=f"{self.name}_累计净值")
@@ -245,7 +245,7 @@ class SingleNavAnalysis:
             ax1.fill_between(
                 self.date, self.excess_nav - 1, color="gray", label="超额收益"
             )
-        ax1.legend(loc="lower left", fontsize=15)
+        ax1.legend(loc=f"{where} left", fontsize=15)
         ax1.tick_params(axis="x", rotation=45, labelsize=15)
         ax1.tick_params(axis="y", labelsize=15)
         ax1.xaxis.set_major_locator(mdates.MonthLocator())
