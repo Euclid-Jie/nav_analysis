@@ -200,7 +200,7 @@ def maximum_draw_down(rtn: np.ndarray):
     return -min_all
 
 def drawdown_stats(nav: np.ndarray, date: np.ndarray):
-    assert len(nav) == len(date)
+    assert len(nav) == len(date), "nav和date长度不一致, 请检查bench_data是否更新"
     # 动态回撤
     cummax = np.maximum.accumulate(nav)
     drawdown = (nav - cummax) / cummax

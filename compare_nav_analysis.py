@@ -23,7 +23,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
         self.select_date()
 
     def __repr__(self) -> str:
-        return f"净值对比分析：{self.begin_date} ~ {self.end_date}"
+        return f"{" AND ".join([i for i in self.nav_dict.keys()])} 净值对比分析：{self.begin_date} ~ {self.end_date}"
 
     def load_data(self):
         self.bench_data: pd.DataFrame = load_bench_data(
@@ -33,20 +33,25 @@ class CompareNavAnalysis(SingleNavAnalysis):
             self.nav_data_dict[path_i.stem] = format_nav_data(path_i)
 
     def select_date(self):
+        self.trade_date = np.unique(self.bench_data["bob"].values).astype(
+            "datetime64[ns]"
+        )
+        # TODO 优化时间区间选择逻辑, 有可能无重叠部分(suppose不应该)
+        # 记录所有净值数据的时间区间中重叠的部分
+        exit_trade_date = self.trade_date.copy()
         for name, nav_data in self.nav_data_dict.items():
-            # 选取最大的开始时间作为开始时间
-            if nav_data["日期"].min() >= self.begin_date:
-                self.begin_date = np.datetime64(nav_data["日期"].min(), "D")
+            exit_trade_date = np.intersect1d(exit_trade_date, nav_data["日期"].values)
+            # 选取两者中min(max)作为结束时间
             if nav_data["日期"].max() <= self.end_date:
                 self.end_date = np.datetime64(nav_data["日期"].max(), "D")
             print(
                 f"{name}，原始数据时间区间为：{nav_data['日期'].min().strftime('%Y-%m-%d')} - {nav_data['日期'].max().strftime('%Y-%m-%d')}"
             )
+        # 选取两者中max(min)作为开始时间
+        assert exit_trade_date.size > 0, input("不存在交集时间区间")
+        self.begin_date = np.datetime64(exit_trade_date.min(), "D")
         assert self.begin_date < self.end_date, input("不存在交集时间区间")
         print(f"本次统计时间区间为：{self.begin_date} ~ {self.end_date}")
-        self.trade_date = np.unique(self.bench_data["bob"].values).astype(
-            "datetime64[ns]"
-        )
         self.trade_date = self.trade_date[
             (self.trade_date >= self.begin_date) & (self.trade_date <= self.end_date)
         ].astype("datetime64[D]")
@@ -125,7 +130,6 @@ class CompareNavAnalysis(SingleNavAnalysis):
             if self.nav_analysis_config.open_html:
                 input("导出完成，按任意键打开html文件")
                 os.system(f"start {html_file_path.__str__()}")
-
 
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
