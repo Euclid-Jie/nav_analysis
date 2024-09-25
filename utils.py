@@ -250,41 +250,6 @@ def display_df(data:pd.DataFrame):
             df[col] = df[col].map(lambda x: f"{x:.3%}")
     return df
 
-def max_drawdown_period(nav: np.ndarray, date: np.ndarray):
-    """
-    计算最大回撤的开始时间和结束时间
-    """
-    out_put = {}
-    assert len(nav) == len(date)
-    # 动态回撤
-    drawdown = (nav - np.maximum.accumulate(nav)) / np.maximum.accumulate(nav)
-    idx_maxDrawDown = np.argmin(drawdown)
-    if idx_maxDrawDown == 0:
-        out_put["最大回撤开始时间"] = "尚未回撤"
-        out_put["最大回撤结束时间"] = "尚未回撤"
-        out_put["最大回撤持续天数"] = "0 天"
-        out_put["最大回撤修复时间"] = "尚未回撤"
-        out_put["最大回撤修复天数"] = "尚未回撤"
-        return drawdown, out_put
-    # 往前找到最大值
-    idx_maxDrawDown_begin = int(np.where(drawdown[0:idx_maxDrawDown] == 0)[0][-1])
-    out_put["最大回撤开始时间"] = date[idx_maxDrawDown_begin].astype("datetime64[D]")
-    out_put["最大回撤结束时间"] = date[idx_maxDrawDown].astype("datetime64[D]")
-    out_put["最大回撤持续天数"] = f"{(date[idx_maxDrawDown] - date[idx_maxDrawDown_begin]).astype("timedelta64[D]").astype(int)} 天"
-
-    # 往后找到修复时间
-    weather_recover = np.where(drawdown[idx_maxDrawDown:] == 0)[0]
-    if len(weather_recover) > 0:
-        idx_maxDrawDown_fix = (
-            int(np.where(drawdown[idx_maxDrawDown:] == 0)[0][0]) + idx_maxDrawDown
-        )
-        out_put["最大回撤修复时间"] = date[idx_maxDrawDown_fix].astype("datetime64[D]")
-        out_put["最大回撤修复天数"] = f"{(date[idx_maxDrawDown_fix] - date[idx_maxDrawDown]).astype("timedelta64[D]").astype(int)} 天"
-    else:
-        out_put["最大回撤修复时间"] = "尚未修复"
-        out_put["最大回撤修复天数"] = "尚未修复"
-    return drawdown, out_put
-
 def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     assert nav.ndim == 1, "nav维度不为1"
     assert np.isnan(nav).sum() == 0, "nav中有nan"
