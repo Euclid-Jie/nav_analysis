@@ -72,11 +72,13 @@ def load_bench_data(index_data_path: Path = None):
     return index_data
 
 
-def infer_frequency(date: np.ndarray[np.datetime64]):
+def infer_frequency(
+    date: np.ndarray[np.datetime64], threshold=0.75
+) -> Literal["W", "D"]:
     # 如果大部分日期间隔为 1 天，那么数据可能是日度的
-    if (np.diff(date) == np.timedelta64(1, "D")).mean() > 0.75:
+    if (np.diff(date) == np.timedelta64(1, "D")).mean() > threshold:
         return "D"
-    elif (np.diff(date) >= np.timedelta64(5, "D")).mean() > 0.75:
+    elif (np.diff(date) >= np.timedelta64(5, "D")).mean() > threshold:
         return "W"
     else:
         raise ValueError("无法推断频率")
@@ -183,9 +185,10 @@ def backword_analysis(
     if nav_data["日期"].values.min() <= pd.to_datetime(
         f"{datetime.datetime.now().year}-01-01"
     ):
-        ytd_data = nav_data[
+        YTD_idx = np.where(
             nav_data["日期"] >= pd.to_datetime(f"{datetime.datetime.now().year}-01-01")
-        ]
+        )[0][1]
+        ytd_data = nav_data[YTD_idx:]
         ytd_metrics = curve_analysis(ytd_data["累计净值"].values, freq=freq)
         ytd_metrics["begin_date"] = np.datetime_as_string(
             ytd_data["日期"].values[0], unit="D"
@@ -380,7 +383,9 @@ def win_ratio_stastics(nav: np.ndarray, date: np.ndarray[np.datetime64]):
     monthly_rtn = monthly_rtn.map(lambda x: round(x, 4))
     for col in monthly_rtn.columns:
         monthly_rtn[col] = monthly_rtn[col].map(lambda x: f"{x:.3%}")
-    return monthly_rtn
+
+    # 将NAN变成NULL
+    return monthly_rtn.replace("nan%", "")
 
 
 def up_lower_bound(max_value, min_value, precision=0.1, decimal=2):
@@ -458,7 +463,6 @@ def nav_analysis_echarts_plot(
                         font-family: Arial, sans-serif;
                         margin: 0;
                         padding: 0;
-                        background-color: #f0f0f0;
                     }}
                     table {{
                         margin: auto;
