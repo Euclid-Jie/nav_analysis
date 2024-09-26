@@ -407,7 +407,7 @@ def nav_analysis_echarts_plot(
 
     nav_line = Line(
         init_opts={
-            "width": "1740px",
+            "width": "1560px",
             "height": "600px",
             "is_horizontal_center": True,
         }
@@ -430,7 +430,7 @@ def nav_analysis_echarts_plot(
     # 绘制最大回撤区间
     drawdown_line = Line(
         init_opts={
-            "width": "1740px",
+            "width": "1560px",
             "height": "600px",
             "is_horizontal_center": True,
         }
