@@ -1,0 +1,1850 @@
+
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Value over Time</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    table {
+                        margin: auto;
+                        margin-bottom: 20px;
+                        border-collapse: collapse;
+                        width: 80%;
+                    }
+                    table, th, td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: center; 
+                    }
+                    th {
+                        background-color: #f59e00;
+                        color: white;
+                    }
+                </style>
+            </head>
+            <body>
+                <table align="center"  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>年化收益率</th>
+      <th>年化波动率</th>
+      <th>最大回撤</th>
+      <th>夏普比率</th>
+      <th>开始日期</th>
+      <th>结束日期</th>
+      <th>持续天数</th>
+      <th>修复日期</th>
+      <th>修复天数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>超额_龙旗</th>
+      <td>1.411%</td>
+      <td>19.715%</td>
+      <td>-15.706%</td>
+      <td>0.072</td>
+      <td>2024-01-26</td>
+      <td>2024-02-08</td>
+      <td>13</td>
+      <td>2024-09-13</td>
+      <td>218</td>
+    </tr>
+  </tbody>
+</table>
+                <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+
+</head>
+<body >
+    <div id="b29392129a694485baae3716ccbf799b" class="chart-container" style="width:1560px; height:600px; text-align:center; margin: auto"></div>
+    <script>
+        var chart_b29392129a694485baae3716ccbf799b = echarts.init(
+            document.getElementById('b29392129a694485baae3716ccbf799b'), 'white', {renderer: 'canvas'});
+        var option_b29392129a694485baae3716ccbf799b = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "line",
+            "name": "\u9f99\u65d7",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    1.0
+                ],
+                [
+                    "2024-01-05",
+                    0.9851
+                ],
+                [
+                    "2024-01-12",
+                    0.9737
+                ],
+                [
+                    "2024-01-19",
+                    0.9325
+                ],
+                [
+                    "2024-01-26",
+                    0.9368
+                ],
+                [
+                    "2024-02-02",
+                    0.7895
+                ],
+                [
+                    "2024-02-08",
+                    0.7482
+                ],
+                [
+                    "2024-02-23",
+                    0.8404
+                ],
+                [
+                    "2024-03-01",
+                    0.8561
+                ],
+                [
+                    "2024-03-08",
+                    0.8588
+                ],
+                [
+                    "2024-03-15",
+                    0.893
+                ],
+                [
+                    "2024-03-22",
+                    0.9132
+                ],
+                [
+                    "2024-03-29",
+                    0.8991
+                ],
+                [
+                    "2024-04-03",
+                    0.9175
+                ],
+                [
+                    "2024-04-12",
+                    0.8939
+                ],
+                [
+                    "2024-04-19",
+                    0.8623
+                ],
+                [
+                    "2024-04-26",
+                    0.886
+                ],
+                [
+                    "2024-04-30",
+                    0.9053
+                ],
+                [
+                    "2024-05-10",
+                    0.9184
+                ],
+                [
+                    "2024-05-17",
+                    0.9246
+                ],
+                [
+                    "2024-05-24",
+                    0.893
+                ],
+                [
+                    "2024-05-31",
+                    0.8886
+                ],
+                [
+                    "2024-06-07",
+                    0.8421
+                ],
+                [
+                    "2024-06-14",
+                    0.8439
+                ],
+                [
+                    "2024-06-21",
+                    0.8307
+                ],
+                [
+                    "2024-06-28",
+                    0.8193
+                ],
+                [
+                    "2024-07-05",
+                    0.8149
+                ],
+                [
+                    "2024-07-12",
+                    0.8254
+                ],
+                [
+                    "2024-07-19",
+                    0.8096
+                ],
+                [
+                    "2024-07-26",
+                    0.8035
+                ],
+                [
+                    "2024-08-02",
+                    0.8307
+                ],
+                [
+                    "2024-08-09",
+                    0.8219
+                ],
+                [
+                    "2024-08-16",
+                    0.8219
+                ],
+                [
+                    "2024-08-23",
+                    0.7939
+                ],
+                [
+                    "2024-08-30",
+                    0.8175
+                ],
+                [
+                    "2024-09-06",
+                    0.7982
+                ],
+                [
+                    "2024-09-13",
+                    0.7851
+                ],
+                [
+                    "2024-09-20",
+                    0.7982
+                ],
+                [
+                    "2024-09-27",
+                    0.9219
+                ],
+                [
+                    "2024-09-30",
+                    1.0132
+                ],
+                [
+                    "2024-10-11",
+                    0.9605
+                ],
+                [
+                    "2024-10-18",
+                    0.9877
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "line",
+            "name": "SHSE.000852",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    1.0
+                ],
+                [
+                    "2024-01-05",
+                    0.9641
+                ],
+                [
+                    "2024-01-12",
+                    0.9469
+                ],
+                [
+                    "2024-01-19",
+                    0.9014
+                ],
+                [
+                    "2024-01-26",
+                    0.8951
+                ],
+                [
+                    "2024-02-02",
+                    0.777
+                ],
+                [
+                    "2024-02-08",
+                    0.8481
+                ],
+                [
+                    "2024-02-23",
+                    0.8876
+                ],
+                [
+                    "2024-03-01",
+                    0.9176
+                ],
+                [
+                    "2024-03-08",
+                    0.9122
+                ],
+                [
+                    "2024-03-15",
+                    0.9437
+                ],
+                [
+                    "2024-03-22",
+                    0.9505
+                ],
+                [
+                    "2024-03-29",
+                    0.9242
+                ],
+                [
+                    "2024-04-03",
+                    0.9344
+                ],
+                [
+                    "2024-04-12",
+                    0.9068
+                ],
+                [
+                    "2024-04-19",
+                    0.8942
+                ],
+                [
+                    "2024-04-26",
+                    0.9199
+                ],
+                [
+                    "2024-04-30",
+                    0.9338
+                ],
+                [
+                    "2024-05-10",
+                    0.9468
+                ],
+                [
+                    "2024-05-17",
+                    0.945
+                ],
+                [
+                    "2024-05-24",
+                    0.9088
+                ],
+                [
+                    "2024-05-31",
+                    0.9096
+                ],
+                [
+                    "2024-06-07",
+                    0.8754
+                ],
+                [
+                    "2024-06-14",
+                    0.88
+                ],
+                [
+                    "2024-06-21",
+                    0.8587
+                ],
+                [
+                    "2024-06-28",
+                    0.8316
+                ],
+                [
+                    "2024-07-05",
+                    0.8172
+                ],
+                [
+                    "2024-07-12",
+                    0.8286
+                ],
+                [
+                    "2024-07-19",
+                    0.819
+                ],
+                [
+                    "2024-07-26",
+                    0.7987
+                ],
+                [
+                    "2024-08-02",
+                    0.817
+                ],
+                [
+                    "2024-08-09",
+                    0.7988
+                ],
+                [
+                    "2024-08-16",
+                    0.7908
+                ],
+                [
+                    "2024-08-23",
+                    0.7636
+                ],
+                [
+                    "2024-08-30",
+                    0.7863
+                ],
+                [
+                    "2024-09-06",
+                    0.7658
+                ],
+                [
+                    "2024-09-13",
+                    0.7496
+                ],
+                [
+                    "2024-09-20",
+                    0.7581
+                ],
+                [
+                    "2024-09-27",
+                    0.8725
+                ],
+                [
+                    "2024-09-30",
+                    0.9697
+                ],
+                [
+                    "2024-10-11",
+                    0.9201
+                ],
+                [
+                    "2024-10-18",
+                    0.9766
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "line",
+            "name": "\u8d85\u989d_\u9f99\u65d7",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    1.0
+                ],
+                [
+                    "2024-01-05",
+                    1.0218
+                ],
+                [
+                    "2024-01-12",
+                    1.0283
+                ],
+                [
+                    "2024-01-19",
+                    1.0344
+                ],
+                [
+                    "2024-01-26",
+                    1.0466
+                ],
+                [
+                    "2024-02-02",
+                    1.016
+                ],
+                [
+                    "2024-02-08",
+                    0.8822
+                ],
+                [
+                    "2024-02-23",
+                    0.9467
+                ],
+                [
+                    "2024-03-01",
+                    0.9331
+                ],
+                [
+                    "2024-03-08",
+                    0.9414
+                ],
+                [
+                    "2024-03-15",
+                    0.9463
+                ],
+                [
+                    "2024-03-22",
+                    0.9607
+                ],
+                [
+                    "2024-03-29",
+                    0.9728
+                ],
+                [
+                    "2024-04-03",
+                    0.982
+                ],
+                [
+                    "2024-04-12",
+                    0.9857
+                ],
+                [
+                    "2024-04-19",
+                    0.9643
+                ],
+                [
+                    "2024-04-26",
+                    0.9631
+                ],
+                [
+                    "2024-04-30",
+                    0.9695
+                ],
+                [
+                    "2024-05-10",
+                    0.97
+                ],
+                [
+                    "2024-05-17",
+                    0.9784
+                ],
+                [
+                    "2024-05-24",
+                    0.9826
+                ],
+                [
+                    "2024-05-31",
+                    0.9769
+                ],
+                [
+                    "2024-06-07",
+                    0.962
+                ],
+                [
+                    "2024-06-14",
+                    0.959
+                ],
+                [
+                    "2024-06-21",
+                    0.9674
+                ],
+                [
+                    "2024-06-28",
+                    0.9852
+                ],
+                [
+                    "2024-07-05",
+                    0.9973
+                ],
+                [
+                    "2024-07-12",
+                    0.9962
+                ],
+                [
+                    "2024-07-19",
+                    0.9886
+                ],
+                [
+                    "2024-07-26",
+                    1.006
+                ],
+                [
+                    "2024-08-02",
+                    1.0168
+                ],
+                [
+                    "2024-08-09",
+                    1.029
+                ],
+                [
+                    "2024-08-16",
+                    1.0394
+                ],
+                [
+                    "2024-08-23",
+                    1.0397
+                ],
+                [
+                    "2024-08-30",
+                    1.0397
+                ],
+                [
+                    "2024-09-06",
+                    1.0424
+                ],
+                [
+                    "2024-09-13",
+                    1.0473
+                ],
+                [
+                    "2024-09-20",
+                    1.0529
+                ],
+                [
+                    "2024-09-27",
+                    1.0567
+                ],
+                [
+                    "2024-09-30",
+                    1.0448
+                ],
+                [
+                    "2024-10-11",
+                    1.044
+                ],
+                [
+                    "2024-10-18",
+                    1.0114
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u9f99\u65d7",
+                "SHSE.000852",
+                "\u8d85\u989d_\u9f99\u65d7"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "textStyle": {
+                "fontWeight": "bold",
+                "fontSize": 20
+            },
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "axis",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "2023-12-29",
+                "2024-01-05",
+                "2024-01-12",
+                "2024-01-19",
+                "2024-01-26",
+                "2024-02-02",
+                "2024-02-08",
+                "2024-02-23",
+                "2024-03-01",
+                "2024-03-08",
+                "2024-03-15",
+                "2024-03-22",
+                "2024-03-29",
+                "2024-04-03",
+                "2024-04-12",
+                "2024-04-19",
+                "2024-04-26",
+                "2024-04-30",
+                "2024-05-10",
+                "2024-05-17",
+                "2024-05-24",
+                "2024-05-31",
+                "2024-06-07",
+                "2024-06-14",
+                "2024-06-21",
+                "2024-06-28",
+                "2024-07-05",
+                "2024-07-12",
+                "2024-07-19",
+                "2024-07-26",
+                "2024-08-02",
+                "2024-08-09",
+                "2024-08-16",
+                "2024-08-23",
+                "2024-08-30",
+                "2024-09-06",
+                "2024-09-13",
+                "2024-09-20",
+                "2024-09-27",
+                "2024-09-30",
+                "2024-10-11",
+                "2024-10-18"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "min": 0.71,
+            "max": 1.09,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": "Value over Time",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "dataZoom": [
+        {
+            "show": true,
+            "type": "slider",
+            "showDetail": true,
+            "showDataShadow": true,
+            "realtime": true,
+            "start": 0,
+            "end": 100,
+            "orient": "horizontal",
+            "zoomLock": false,
+            "filterMode": "filter"
+        }
+    ]
+};
+        chart_b29392129a694485baae3716ccbf799b.setOption(option_b29392129a694485baae3716ccbf799b);
+    </script>
+</body>
+</html>
+
+                <table align="center"  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>1月</th>
+      <th>2月</th>
+      <th>3月</th>
+      <th>4月</th>
+      <th>5月</th>
+      <th>6月</th>
+      <th>7月</th>
+      <th>8月</th>
+      <th>9月</th>
+      <th>10月</th>
+      <th>12月</th>
+      <th>年度总收益</th>
+      <th>月度胜率</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>超额_龙旗_2023</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0.000%</td>
+      <td>0.000%</td>
+      <td>100.000%</td>
+    </tr>
+    <tr>
+      <th>超额_龙旗_2024</th>
+      <td>4.560%</td>
+      <td>-10.030%</td>
+      <td>2.720%</td>
+      <td>-0.350%</td>
+      <td>0.760%</td>
+      <td>0.850%</td>
+      <td>2.100%</td>
+      <td>3.290%</td>
+      <td>0.490%</td>
+      <td>-3.250%</td>
+      <td></td>
+      <td>1.130%</td>
+      <td>72.730%</td>
+    </tr>
+  </tbody>
+</table><table align="center"  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>区间收益率</th>
+      <th>年化收益率</th>
+      <th>区间波动率</th>
+      <th>年化波动率</th>
+      <th>夏普比率</th>
+      <th>最大回撤</th>
+      <th>begin_date</th>
+      <th>end_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>超额_龙旗_1M</th>
+      <td>-3.942%</td>
+      <td>-40.997%</td>
+      <td>1.361%</td>
+      <td>9.814%</td>
+      <td>-4.178</td>
+      <td>-4.287%</td>
+      <td>2024-09-20</td>
+      <td>2024-10-18</td>
+    </tr>
+    <tr>
+      <th>超额_龙旗_3M</th>
+      <td>2.303%</td>
+      <td>8.553%</td>
+      <td>1.184%</td>
+      <td>8.539%</td>
+      <td>1.002</td>
+      <td>-4.287%</td>
+      <td>2024-07-19</td>
+      <td>2024-10-18</td>
+    </tr>
+    <tr>
+      <th>超额_龙旗_6M</th>
+      <td>4.884%</td>
+      <td>9.406%</td>
+      <td>1.040%</td>
+      <td>7.498%</td>
+      <td>1.254</td>
+      <td>-4.287%</td>
+      <td>2024-04-19</td>
+      <td>2024-10-18</td>
+    </tr>
+    <tr>
+      <th>超额_龙旗_YTD</th>
+      <td>-1.645%</td>
+      <td>-2.139%</td>
+      <td>2.780%</td>
+      <td>20.046%</td>
+      <td>-0.107</td>
+      <td>-15.706%</td>
+      <td>2024-01-12</td>
+      <td>2024-10-18</td>
+    </tr>
+  </tbody>
+</table>
+                <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+
+</head>
+<body >
+    <div id="9a3aea74fe1c416587812dd45a435c14" class="chart-container" style="width:1560px; height:600px; text-align:center; margin: auto"></div>
+    <script>
+        var chart_9a3aea74fe1c416587812dd45a435c14 = echarts.init(
+            document.getElementById('9a3aea74fe1c416587812dd45a435c14'), 'white', {renderer: 'canvas'});
+        var option_9a3aea74fe1c416587812dd45a435c14 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "line",
+            "name": "\u9f99\u65d7",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    0.0
+                ],
+                [
+                    "2024-01-05",
+                    -0.0149
+                ],
+                [
+                    "2024-01-12",
+                    -0.0263
+                ],
+                [
+                    "2024-01-19",
+                    -0.0675
+                ],
+                [
+                    "2024-01-26",
+                    -0.0632
+                ],
+                [
+                    "2024-02-02",
+                    -0.2105
+                ],
+                [
+                    "2024-02-08",
+                    -0.2518
+                ],
+                [
+                    "2024-02-23",
+                    -0.1596
+                ],
+                [
+                    "2024-03-01",
+                    -0.1439
+                ],
+                [
+                    "2024-03-08",
+                    -0.1412
+                ],
+                [
+                    "2024-03-15",
+                    -0.107
+                ],
+                [
+                    "2024-03-22",
+                    -0.0868
+                ],
+                [
+                    "2024-03-29",
+                    -0.1009
+                ],
+                [
+                    "2024-04-03",
+                    -0.0825
+                ],
+                [
+                    "2024-04-12",
+                    -0.1061
+                ],
+                [
+                    "2024-04-19",
+                    -0.1377
+                ],
+                [
+                    "2024-04-26",
+                    -0.114
+                ],
+                [
+                    "2024-04-30",
+                    -0.0947
+                ],
+                [
+                    "2024-05-10",
+                    -0.0816
+                ],
+                [
+                    "2024-05-17",
+                    -0.0754
+                ],
+                [
+                    "2024-05-24",
+                    -0.107
+                ],
+                [
+                    "2024-05-31",
+                    -0.1114
+                ],
+                [
+                    "2024-06-07",
+                    -0.1579
+                ],
+                [
+                    "2024-06-14",
+                    -0.1561
+                ],
+                [
+                    "2024-06-21",
+                    -0.1693
+                ],
+                [
+                    "2024-06-28",
+                    -0.1807
+                ],
+                [
+                    "2024-07-05",
+                    -0.1851
+                ],
+                [
+                    "2024-07-12",
+                    -0.1746
+                ],
+                [
+                    "2024-07-19",
+                    -0.1904
+                ],
+                [
+                    "2024-07-26",
+                    -0.1965
+                ],
+                [
+                    "2024-08-02",
+                    -0.1693
+                ],
+                [
+                    "2024-08-09",
+                    -0.1781
+                ],
+                [
+                    "2024-08-16",
+                    -0.1781
+                ],
+                [
+                    "2024-08-23",
+                    -0.2061
+                ],
+                [
+                    "2024-08-30",
+                    -0.1825
+                ],
+                [
+                    "2024-09-06",
+                    -0.2018
+                ],
+                [
+                    "2024-09-13",
+                    -0.2149
+                ],
+                [
+                    "2024-09-20",
+                    -0.2018
+                ],
+                [
+                    "2024-09-27",
+                    -0.0781
+                ],
+                [
+                    "2024-09-30",
+                    0.0
+                ],
+                [
+                    "2024-10-11",
+                    -0.0519
+                ],
+                [
+                    "2024-10-18",
+                    -0.0251
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "line",
+            "name": "SHSE.000852",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    0.0
+                ],
+                [
+                    "2024-01-05",
+                    -0.0359
+                ],
+                [
+                    "2024-01-12",
+                    -0.0531
+                ],
+                [
+                    "2024-01-19",
+                    -0.0986
+                ],
+                [
+                    "2024-01-26",
+                    -0.1049
+                ],
+                [
+                    "2024-02-02",
+                    -0.223
+                ],
+                [
+                    "2024-02-08",
+                    -0.1519
+                ],
+                [
+                    "2024-02-23",
+                    -0.1124
+                ],
+                [
+                    "2024-03-01",
+                    -0.0824
+                ],
+                [
+                    "2024-03-08",
+                    -0.0878
+                ],
+                [
+                    "2024-03-15",
+                    -0.0563
+                ],
+                [
+                    "2024-03-22",
+                    -0.0495
+                ],
+                [
+                    "2024-03-29",
+                    -0.0758
+                ],
+                [
+                    "2024-04-03",
+                    -0.0656
+                ],
+                [
+                    "2024-04-12",
+                    -0.0932
+                ],
+                [
+                    "2024-04-19",
+                    -0.1058
+                ],
+                [
+                    "2024-04-26",
+                    -0.0801
+                ],
+                [
+                    "2024-04-30",
+                    -0.0662
+                ],
+                [
+                    "2024-05-10",
+                    -0.0532
+                ],
+                [
+                    "2024-05-17",
+                    -0.055
+                ],
+                [
+                    "2024-05-24",
+                    -0.0912
+                ],
+                [
+                    "2024-05-31",
+                    -0.0904
+                ],
+                [
+                    "2024-06-07",
+                    -0.1246
+                ],
+                [
+                    "2024-06-14",
+                    -0.12
+                ],
+                [
+                    "2024-06-21",
+                    -0.1413
+                ],
+                [
+                    "2024-06-28",
+                    -0.1684
+                ],
+                [
+                    "2024-07-05",
+                    -0.1828
+                ],
+                [
+                    "2024-07-12",
+                    -0.1714
+                ],
+                [
+                    "2024-07-19",
+                    -0.181
+                ],
+                [
+                    "2024-07-26",
+                    -0.2013
+                ],
+                [
+                    "2024-08-02",
+                    -0.183
+                ],
+                [
+                    "2024-08-09",
+                    -0.2012
+                ],
+                [
+                    "2024-08-16",
+                    -0.2092
+                ],
+                [
+                    "2024-08-23",
+                    -0.2364
+                ],
+                [
+                    "2024-08-30",
+                    -0.2137
+                ],
+                [
+                    "2024-09-06",
+                    -0.2342
+                ],
+                [
+                    "2024-09-13",
+                    -0.2504
+                ],
+                [
+                    "2024-09-20",
+                    -0.2419
+                ],
+                [
+                    "2024-09-27",
+                    -0.1275
+                ],
+                [
+                    "2024-09-30",
+                    -0.0303
+                ],
+                [
+                    "2024-10-11",
+                    -0.0799
+                ],
+                [
+                    "2024-10-18",
+                    -0.0234
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "line",
+            "name": "\u8d85\u989d_\u9f99\u65d7",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2023-12-29",
+                    0.0
+                ],
+                [
+                    "2024-01-05",
+                    0.0
+                ],
+                [
+                    "2024-01-12",
+                    0.0
+                ],
+                [
+                    "2024-01-19",
+                    0.0
+                ],
+                [
+                    "2024-01-26",
+                    0.0
+                ],
+                [
+                    "2024-02-02",
+                    -0.0293
+                ],
+                [
+                    "2024-02-08",
+                    -0.1571
+                ],
+                [
+                    "2024-02-23",
+                    -0.0954
+                ],
+                [
+                    "2024-03-01",
+                    -0.1085
+                ],
+                [
+                    "2024-03-08",
+                    -0.1005
+                ],
+                [
+                    "2024-03-15",
+                    -0.0959
+                ],
+                [
+                    "2024-03-22",
+                    -0.0821
+                ],
+                [
+                    "2024-03-29",
+                    -0.0705
+                ],
+                [
+                    "2024-04-03",
+                    -0.0618
+                ],
+                [
+                    "2024-04-12",
+                    -0.0582
+                ],
+                [
+                    "2024-04-19",
+                    -0.0786
+                ],
+                [
+                    "2024-04-26",
+                    -0.0798
+                ],
+                [
+                    "2024-04-30",
+                    -0.0737
+                ],
+                [
+                    "2024-05-10",
+                    -0.0732
+                ],
+                [
+                    "2024-05-17",
+                    -0.0652
+                ],
+                [
+                    "2024-05-24",
+                    -0.0611
+                ],
+                [
+                    "2024-05-31",
+                    -0.0666
+                ],
+                [
+                    "2024-06-07",
+                    -0.0809
+                ],
+                [
+                    "2024-06-14",
+                    -0.0838
+                ],
+                [
+                    "2024-06-21",
+                    -0.0757
+                ],
+                [
+                    "2024-06-28",
+                    -0.0587
+                ],
+                [
+                    "2024-07-05",
+                    -0.0472
+                ],
+                [
+                    "2024-07-12",
+                    -0.0482
+                ],
+                [
+                    "2024-07-19",
+                    -0.0554
+                ],
+                [
+                    "2024-07-26",
+                    -0.0388
+                ],
+                [
+                    "2024-08-02",
+                    -0.0285
+                ],
+                [
+                    "2024-08-09",
+                    -0.0169
+                ],
+                [
+                    "2024-08-16",
+                    -0.0069
+                ],
+                [
+                    "2024-08-23",
+                    -0.0066
+                ],
+                [
+                    "2024-08-30",
+                    -0.0066
+                ],
+                [
+                    "2024-09-06",
+                    -0.004
+                ],
+                [
+                    "2024-09-13",
+                    0.0
+                ],
+                [
+                    "2024-09-20",
+                    0.0
+                ],
+                [
+                    "2024-09-27",
+                    0.0
+                ],
+                [
+                    "2024-09-30",
+                    -0.0112
+                ],
+                [
+                    "2024-10-11",
+                    -0.0121
+                ],
+                [
+                    "2024-10-18",
+                    -0.0429
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u9f99\u65d7",
+                "SHSE.000852",
+                "\u8d85\u989d_\u9f99\u65d7"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "textStyle": {
+                "fontWeight": "bold",
+                "fontSize": 20
+            },
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "axis",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "2023-12-29",
+                "2024-01-05",
+                "2024-01-12",
+                "2024-01-19",
+                "2024-01-26",
+                "2024-02-02",
+                "2024-02-08",
+                "2024-02-23",
+                "2024-03-01",
+                "2024-03-08",
+                "2024-03-15",
+                "2024-03-22",
+                "2024-03-29",
+                "2024-04-03",
+                "2024-04-12",
+                "2024-04-19",
+                "2024-04-26",
+                "2024-04-30",
+                "2024-05-10",
+                "2024-05-17",
+                "2024-05-24",
+                "2024-05-31",
+                "2024-06-07",
+                "2024-06-14",
+                "2024-06-21",
+                "2024-06-28",
+                "2024-07-05",
+                "2024-07-12",
+                "2024-07-19",
+                "2024-07-26",
+                "2024-08-02",
+                "2024-08-09",
+                "2024-08-16",
+                "2024-08-23",
+                "2024-08-30",
+                "2024-09-06",
+                "2024-09-13",
+                "2024-09-20",
+                "2024-09-27",
+                "2024-09-30",
+                "2024-10-11",
+                "2024-10-18"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": "max drawdown",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "dataZoom": [
+        {
+            "show": true,
+            "type": "slider",
+            "showDetail": true,
+            "showDataShadow": true,
+            "realtime": true,
+            "start": 0,
+            "end": 100,
+            "orient": "horizontal",
+            "zoomLock": false,
+            "filterMode": "filter"
+        }
+    ]
+};
+        chart_9a3aea74fe1c416587812dd45a435c14.setOption(option_9a3aea74fe1c416587812dd45a435c14);
+    </script>
+</body>
+</html>
+
+            </body>
+        </html>
+    

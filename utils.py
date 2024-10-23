@@ -323,6 +323,15 @@ def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     return result
 
 
+def calc_nav_rtn(nav: np.ndarray, types: Literal["log", "simple"] = "log"):
+    if types == "simple":
+        rtn = nav[1:] / nav[:-1] - 1
+    elif types == "log":
+        rtn = np.log(nav[1:] / nav[:-1])
+    else:
+        raise ValueError("types参数错误")
+    return np.insert(rtn,0,np.nan)
+
 def weekly_rtn_stats(nav: np.ndarray, date: np.ndarray[np.datetime64], tail=10):
     assert len(nav) == len(date), "nav和date长度不一致"
     nav_data = pd.DataFrame({"日期": date, "累计净值": nav})
