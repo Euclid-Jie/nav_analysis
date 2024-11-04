@@ -311,7 +311,7 @@ def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     assert np.isnan(nav).sum() == 0, "nav中有nan"
     result = {"区间收益率": nav[-1] / nav[0] - 1}
     result["年化收益率"] = (
-        result["区间收益率"] / len(nav) * (250 if freq == "D" else 52)
+        pow(1 + result["区间收益率"], (250 if freq == "D" else 52) / len(nav)) - 1
     )
 
     rtn = np.log(nav[1:] / nav[:-1])
@@ -330,7 +330,8 @@ def calc_nav_rtn(nav: np.ndarray, types: Literal["log", "simple"] = "log"):
         rtn = np.log(nav[1:] / nav[:-1])
     else:
         raise ValueError("types参数错误")
-    return np.insert(rtn,0,np.nan)
+    return np.insert(rtn, 0, np.nan)
+
 
 def weekly_rtn_stats(nav: np.ndarray, date: np.ndarray[np.datetime64], tail=10):
     assert len(nav) == len(date), "nav和date长度不一致"
