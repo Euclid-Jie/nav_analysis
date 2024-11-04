@@ -330,7 +330,8 @@ def calc_nav_rtn(nav: np.ndarray, types: Literal["log", "simple"] = "log"):
         rtn = np.log(nav[1:] / nav[:-1])
     else:
         raise ValueError("types参数错误")
-    return np.insert(rtn,0,np.nan)
+    return np.insert(rtn, 0, np.nan)
+
 
 def weekly_rtn_stats(nav: np.ndarray, date: np.ndarray[np.datetime64], tail=10):
     assert len(nav) == len(date), "nav和date长度不一致"
@@ -468,27 +469,35 @@ def nav_analysis_echarts_plot(
                 <meta charset="UTF-8">
                 <title>Value over Time</title>
                 <style>
-                    body {{
-                        font-family: Arial, sans-serif;
-                        margin: 0;
-                        padding: 0;
-                    }}
-                    table {{
-                        margin: auto;
-                        margin-bottom: 20px;
-                        border-collapse: collapse;
-                        width: 80%;
-                    }}
-                    table, th, td {{
-                        border: 1px solid #ddd;
-                        padding: 8px;
-                        text-align: center; 
-                    }}
-                    th {{
-                        background-color: #f59e00;
-                        color: white;
-                    }}
-                </style>
+                body {{
+                    font-family: kaiti, Fira Code;
+                }}
+                h1 {{
+                    text-align: center;
+                    margin-top: 2px;
+                    font-size: 24px;
+                    color: #333;
+                }}
+                table {{
+                    margin: auto;
+                    margin-bottom: 20px;
+                    border-collapse: collapse;
+                    width: 1500px;
+                    text-align: center;
+
+                }}
+                table,
+                th,
+                td {{
+                    border: 1px solid #8d8b8b;
+                    padding: 8px;
+                    text-align: center;
+                }}
+                th {{
+                    background-color: #f59e00;
+                    color: white;
+                }}
+            </style>
             </head>
             <body>
                 {table}

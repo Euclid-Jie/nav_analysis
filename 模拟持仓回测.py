@@ -6,6 +6,7 @@ plan_names = [
     "高波动FOF（1亿基准）_窄表",
     "积极型FOF（1亿基准）_窄表",
     "平衡性FOF（5亿基准）_窄表",
+    "Euclid_Makowitz",
 ]
 for plan_name in plan_names:
     nav_data = pd.read_excel(
@@ -138,7 +139,7 @@ for plan_name in plan_names:
                 Path(rf"C:\Euclid_Jie\barra\src\nav_analysis\data\{plan_name}净值.csv")
                 for plan_name in plan_names
             ],
-            begin_date=np.datetime64("2023-12-31"),
+            begin_date=np.datetime64(begin_date),
             open_html=False,
         )
         demo = CompareNavAnalysis(nav_analysis_config)
