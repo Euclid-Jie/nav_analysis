@@ -1,11 +1,11 @@
-import datetime
 from utils import *
 from single_nav_analysis import SingleNavAnalysis
 
-
 class CompareNavAnalysis(SingleNavAnalysis):
-    def __init__(self, nav_analysis_config: NavAnalysisConfig):
+    def __init__(self, nav_analysis_config: NavAnalysisConfig, strip_date:bool=True):
         self.nav_analysis_config = nav_analysis_config
+        if self.nav_analysis_config.begin_date == np.datetime64("2000-06-06") and self.strip_date:
+            raise ValueError("当使用strip_date时，必须指定begin_date")
         self.nav_file_paths = (
             self.nav_analysis_config.nav_data_path
             if self.nav_analysis_config.nav_data_path
@@ -16,6 +16,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
             self.specify_benchmark()
         self.begin_date = self.nav_analysis_config.begin_date
         self.end_date = self.nav_analysis_config.end_date
+        self.strip_date = strip_date
         self.nav_data_dict = {}
         self.nav_dict = {}
         self.drawdown_dict = {}
@@ -30,7 +31,11 @@ class CompareNavAnalysis(SingleNavAnalysis):
             self.nav_analysis_config.bench_data_path
         )
         for path_i in self.nav_file_paths:
-            self.nav_data_dict[path_i.stem] = format_nav_data(path_i)
+            data = format_nav_data(path_i)
+            if data["日期"].min() > self.begin_date and self.strip_date:
+                print(f"{path_i.stem}晚于开始时间，已删除")
+                continue
+            self.nav_data_dict[path_i.stem] = data
 
     def select_date(self):
         _, self.trade_date = generate_trading_date(
@@ -63,6 +68,8 @@ class CompareNavAnalysis(SingleNavAnalysis):
         self.weekly_rtn_df = pd.DataFrame()
         self.backword_analysis_df = pd.DataFrame()
         for path_i in self.nav_file_paths:
+            if path_i.stem not in self.nav_data_dict.keys():
+                continue
             nav_analysis_config: NavAnalysisConfig = self.nav_analysis_config.copy(
                 begin_date=self.begin_date,
                 end_date=self.end_date,
@@ -151,6 +158,7 @@ if __name__ == "__main__":
         open_html=True,
         # benchmark="SHSE.000905",
     )
+    # 增加参数, 短于begin_date的数据会被删除
     demo = CompareNavAnalysis(nav_analysis_config)
     demo.anlysis()
     demo.export_html()
