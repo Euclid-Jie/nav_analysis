@@ -430,6 +430,10 @@ def win_ratio_stastics(nav: np.ndarray, date: np.ndarray[np.datetime64]):
         monthly_rtn[col] = monthly_rtn[col].map(lambda x: f"{x:.3%}")
 
     # 将NAN变成NULL
+    if (monthly_rtn.iloc[0, :] == "nan%").sum() + 3 == monthly_rtn.shape[
+        1
+    ] and monthly_rtn.iloc[0, monthly_rtn.shape[1] - 3] == "0.000%":
+        monthly_rtn = monthly_rtn.iloc[1:]
     return monthly_rtn.replace("nan%", "")
 
 
@@ -437,9 +441,7 @@ def up_lower_bound(max_value, min_value, precision=0.1, decimal=2):
     assert (
         np.isnan(max_value) == False and np.isnan(min_value) == False
     ), "max_value or min_value is nan"
-    assert (
-        max_value > min_value
-    ), "max_value <= min_value,but {max_value} > {min_value}"
+    assert max_value > min_value, "max_value <= min_value,but {max_value} > {min_value}"
     up_bound = max_value + precision * (max_value - min_value)
     up_bound = np.ceil(up_bound * 10**decimal) / 10**decimal
 
@@ -454,8 +456,15 @@ def nav_analysis_echarts_plot(
     drawdown: dict[str : np.ndarray],
     table: pd.DataFrame = None,
     additional_table: list[pd.DataFrame] = None,
+    select_date: np.ndarray[np.datetime64] = None,
 ):
-    date_str_list = date.astype("datetime64[D]").astype(str).tolist()
+    if select_date is not None:
+        assert len(select_date) <= len(date), "select_date长度大于date"
+        assert np.isin(select_date, date).all(), "select_date中有不在date中的日期"
+        select_date_idx = np.isin(date, select_date)
+    else:
+        select_date_idx = np.ones(len(date), dtype=bool)
+    date_str_list = date.astype("datetime64[D]")[select_date_idx].astype(str).tolist()
     max_nav = np.array([max(nav_i) for nav_i in nav.values()])
     min_nav = np.array([min(nav_i) for nav_i in nav.values()])
     up_bound, lower_bound = up_lower_bound(max(max_nav), min(min_nav))
@@ -468,7 +477,9 @@ def nav_analysis_echarts_plot(
         }
     ).add_xaxis(date_str_list)
     for key, value in nav.items():
-        nav_line.add_yaxis(key, np.round(value, 4).tolist(), is_symbol_show=False)
+        # 有可能在select后, 部分日频的数据截取了前面一段, 故需要重新调整到1
+        nav = np.round(value, 4)[select_date_idx]
+        nav_line.add_yaxis(key, (nav / nav[0]).tolist(), is_symbol_show=False)
     nav_line.set_global_opts(
         legend_opts=opts.LegendOpts(
             textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)
@@ -491,7 +502,11 @@ def nav_analysis_echarts_plot(
         }
     ).add_xaxis(date_str_list)
     for key, value in drawdown.items():
-        drawdown_line.add_yaxis(key, np.round(value, 4).tolist(), is_symbol_show=False)
+        # TODO 此种调整并不准确, 需再优化
+        # 有可能在select后, 部分日频的数据截取了前面一段, 故需要重新调整到0
+        drawdown = np.round(value, 4)[select_date_idx]
+        drawdown[0] = 0
+        drawdown_line.add_yaxis(key, drawdown.tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
         legend_opts=opts.LegendOpts(
             textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)

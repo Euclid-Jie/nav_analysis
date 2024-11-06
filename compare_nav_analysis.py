@@ -20,6 +20,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
         self.nav_data_dict = {}
         self.nav_dict = {}
         self.drawdown_dict = {}
+        self.weely_display = False
         self.load_data()
         self.select_date()
 
@@ -38,7 +39,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
             self.nav_data_dict[path_i.stem] = data
 
     def select_date(self):
-        _, self.trade_date = generate_trading_date(
+        self.trade_date, self.weekly_trade_date = generate_trading_date(
             self.begin_date, self.end_date
         )
         # TODO 优化时间区间选择逻辑, 有可能无重叠部分(suppose不应该)
@@ -60,7 +61,10 @@ class CompareNavAnalysis(SingleNavAnalysis):
         print(f"本次统计时间区间为：{self.begin_date} ~ {self.end_date}")
         self.trade_date = self.trade_date[
             (self.trade_date >= self.begin_date) & (self.trade_date <= self.end_date)
-        ].astype("datetime64[D]")
+        ]
+        self.weekly_trade_date = self.weekly_trade_date[
+            (self.weekly_trade_date >= self.begin_date) & (self.weekly_trade_date <= self.end_date)
+        ]
 
     def anlysis(self):
         self.metrics_table = pd.DataFrame()
@@ -78,6 +82,8 @@ class CompareNavAnalysis(SingleNavAnalysis):
             )
             single_nav_analysis = SingleNavAnalysis(nav_analysis_config)
             single_nav_analysis.analysis()
+            if self.weely_display is False and single_nav_analysis.freq == "W":
+                self.weely_display = True
             self.metrics_table = pd.concat(
                 [self.metrics_table, single_nav_analysis.metrics_table]
             )
@@ -119,6 +125,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
                 self.weekly_rtn_df,
                 self.backword_analysis_df,
             ],
+            select_date=self.weekly_trade_date if self.weely_display else None,
         )
         if save:
             if self.nav_analysis_config.special_html_name:
