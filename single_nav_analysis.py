@@ -25,6 +25,14 @@ class SingleNavAnalysis:
         self.drawdown_dict = {}
         self.load_data()
         self.select_date()
+        self.trade_date, self.weekly_trade_date = generate_trading_date(
+            self.begin_date, self.end_date
+        )
+        # 根据数据频率对数据进行日期的规范化
+        if self.freq == "D":
+            self.nav_data = match_data(self.nav_data, self.trade_date)
+        else:  # freq is "W"
+            self.nav_data = match_data(self.nav_data, self.weekly_trade_date)
 
     def specify_benchmark(self):
         self.nav_analysis_config = self.nav_analysis_config.copy(
@@ -106,9 +114,11 @@ class SingleNavAnalysis:
 
         if self.nav_analysis_config.benchmark is not None:
             # NOTE benchmark
-            self.trade_date = self.bench_data["bob"].values.astype("datetime64[D]")
+            self.bench_trade_date = self.bench_data["bob"].values.astype(
+                "datetime64[D]"
+            )
             self.bench_nav = self.bench_data["close"].values[
-                np.isin(self.trade_date, self.date)
+                np.isin(self.bench_trade_date, self.date)
             ]
             self.bench_nav = self.bench_nav / self.bench_nav[0]
             bench_drawdown, _ = drawdown_stats(self.bench_nav, self.date)
@@ -232,7 +242,7 @@ class SingleNavAnalysis:
                 os.system(f"start {html_file_path.__str__()}")
 
     def plot(self, where: Literal["lower", "upper"] = "lower"):
-        fig, (ax1, ax2) = plt.subplots(nrows=2, figsize=(25, 14))
+        _, (ax1, ax2) = plt.subplots(nrows=2, figsize=(25, 14))
         # 画超额收益图
         ax1.plot(self.date, self.nav - 1, color="red", label=f"{self.name}_累计净值")
         if self.nav_analysis_config.benchmark:
@@ -283,9 +293,9 @@ if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
         nav_data_path=Path(
-            r"C:\Euclid_Jie\barra\submodule\nav_analysis\nav_data\ABA86A-弈倍龙杉九号A类净值序列.xlsx"
+            r"nav_data\ABA86A-弈倍龙杉九号A类净值序列.xlsx"
         ),
-        # begin_date=np.datetime64("2023-12-29"),
+        begin_date=np.datetime64("2023-12-29"),
         open_html=True,
         benchmark="SHSE.000905",
     )

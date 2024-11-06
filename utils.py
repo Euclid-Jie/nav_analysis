@@ -2,7 +2,7 @@ import datetime
 import pandas as pd
 import numpy as np
 from pandas import Series, Timestamp
-from typing import Union, Literal, NamedTuple, List
+from typing import Union, Literal, NamedTuple, List, Tuple
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from pyecharts.charts import Line
@@ -72,6 +72,38 @@ def load_bench_data(index_data_path: Path = None):
     return index_data
 
 
+def generate_trading_date(
+    begin_date: np.datetime64 = np.datetime64("2015-01-01"),
+    end_date: np.datetime64 = np.datetime64("today"),
+) -> Tuple[np.ndarray[np.datetime64]]:
+    assert begin_date >= np.datetime64(
+        "2015-01-04"
+    ), "系统预设起始日期仅支持2015年1月4日以后"
+    with open(
+        Path(__file__).resolve().parent.joinpath("Chinese_special_holiday.txt"), "r"
+    ) as f:
+        chinese_special_holiday = pd.Series(
+            [date.strip() for date in f.readlines()]
+        ).values.astype("datetime64[D]")
+    working_date = pd.date_range(begin_date, end_date, freq="B").values.astype(
+        "datetime64[D]"
+    )
+    trading_date = np.setdiff1d(working_date, chinese_special_holiday)
+    trading_date_df = pd.DataFrame(working_date, columns=["working_date"])
+    trading_date_df["is_friday"] = trading_date_df["working_date"].apply(
+        lambda x: x.weekday() == 4
+    )
+    trading_date_df["trading_date"] = (
+        trading_date_df["working_date"]
+        .apply(lambda x: x if x in trading_date else np.nan)
+        .ffill()
+    )
+    return (
+        trading_date,
+        trading_date_df[trading_date_df["is_friday"]]["trading_date"].values[1:],
+    )
+
+
 def infer_frequency(
     date: np.ndarray[np.datetime64], threshold=0.75
 ) -> Literal["W", "D"]:
@@ -81,7 +113,8 @@ def infer_frequency(
     elif (np.diff(date) >= np.timedelta64(5, "D")).mean() > threshold:
         return "W"
     else:
-        raise ValueError("无法推断频率")
+        print("无法推断频率, 将自动转为周度")
+        return "W"
 
 
 def format_nav_data(path, ingnore_null=True):

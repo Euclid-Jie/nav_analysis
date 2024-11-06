@@ -137,17 +137,17 @@ class CompareNavAnalysis(SingleNavAnalysis):
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-        # nav_data_path=[
-        #     Path(
-        #         r"C:\Users\Ouwei\Desktop\nav_data\SGB773_麦迪生利锐联中性对冲1号.xlsx"
-        #     ),
-        #     Path(
-        #         r"C:/Users/Ouwei/Desktop/nav_data/净值0814/市场中性/天算中性B-SXU256.xlsx"
-        #     ),
-        # ],
+        nav_data_path=[
+            Path(
+                r"nav_data\STC996-永誉天泽经纶二号净值序列.xlsx"
+            ),
+            Path(
+                r"nav_data\SXL736-永誉天泽经纶四号净值序列.xlsx"
+            ),
+        ],
         begin_date=np.datetime64("2023-12-29"),
         open_html=True,
-        benchmark="SHSE.000905",
+        # benchmark="SHSE.000905",
     )
     demo = CompareNavAnalysis(nav_analysis_config)
     demo.anlysis()
