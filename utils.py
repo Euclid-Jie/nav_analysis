@@ -100,7 +100,9 @@ def generate_trading_date(
     )
     return (
         trading_date,
-        trading_date_df[trading_date_df["is_friday"]]["trading_date"].values[1:],
+        np.unique(
+            trading_date_df[trading_date_df["is_friday"]]["trading_date"].values[1:]
+        ),
     )
 
 
@@ -432,7 +434,12 @@ def win_ratio_stastics(nav: np.ndarray, date: np.ndarray[np.datetime64]):
 
 
 def up_lower_bound(max_value, min_value, precision=0.1, decimal=2):
-    assert max_value > min_value
+    assert (
+        np.isnan(max_value) == False and np.isnan(min_value) == False
+    ), "max_value or min_value is nan"
+    assert (
+        max_value > min_value
+    ), "max_value <= min_value,but {max_value} > {min_value}"
     up_bound = max_value + precision * (max_value - min_value)
     up_bound = np.ceil(up_bound * 10**decimal) / 10**decimal
 

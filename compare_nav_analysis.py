@@ -33,8 +33,8 @@ class CompareNavAnalysis(SingleNavAnalysis):
             self.nav_data_dict[path_i.stem] = format_nav_data(path_i)
 
     def select_date(self):
-        self.trade_date = np.unique(self.bench_data["bob"].values).astype(
-            "datetime64[ns]"
+        _, self.trade_date = generate_trading_date(
+            self.begin_date, self.end_date
         )
         # TODO 优化时间区间选择逻辑, 有可能无重叠部分(suppose不应该)
         # 记录所有净值数据的时间区间中重叠的部分
@@ -88,6 +88,8 @@ class CompareNavAnalysis(SingleNavAnalysis):
                 match_nav_i[
                     np.where(np.isin(self.trade_date, single_nav_analysis.date))
                 ] = nav_i
+                if np.isnan(match_nav_i[0]):
+                    match_nav_i[0] = 1
                 self.nav_dict[nav_name_i] = ffill(match_nav_i)
             for (
                 drawdown_name_i,
