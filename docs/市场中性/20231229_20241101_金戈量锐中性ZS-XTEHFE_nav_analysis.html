@@ -1,0 +1,1040 @@
+
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Value over Time</title>
+                <style>
+                body {
+                    font-family: kaiti, Fira Code;
+                }
+                h1 {
+                    text-align: center;
+                    margin-top: 2px;
+                    font-size: 24px;
+                    color: #333;
+                }
+                table {
+                    margin: auto;
+                    margin-bottom: 20px;
+                    border-collapse: collapse;
+                    width: 1500px;
+                    text-align: center;
+
+                }
+                table,
+                th,
+                td {
+                    border: 1px solid #8d8b8b;
+                    padding: 8px;
+                    text-align: center;
+                }
+                th {
+                    background-color: #f59e00;
+                    color: white;
+                }
+            </style>
+            </head>
+            <body>
+                <table  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>年化收益率</th>
+      <th>年化波动率</th>
+      <th>最大回撤</th>
+      <th>夏普比率</th>
+      <th>开始日期</th>
+      <th>结束日期</th>
+      <th>持续天数</th>
+      <th>修复日期</th>
+      <th>修复天数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>金戈量锐中性ZS-XTEHFE</th>
+      <td>-1.542%</td>
+      <td>11.833%</td>
+      <td>-7.973%</td>
+      <td>-0.130</td>
+      <td>2024-05-17</td>
+      <td>2024-09-27</td>
+      <td>133</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+                <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+
+</head>
+<body >
+    <div id="3446c8ffa57d4d5e936c56246de0e082" class="chart-container" style="width:1560px; height:600px; text-align:center; margin: auto"></div>
+    <script>
+        var chart_3446c8ffa57d4d5e936c56246de0e082 = echarts.init(
+            document.getElementById('3446c8ffa57d4d5e936c56246de0e082'), 'white', {renderer: 'canvas'});
+        var option_3446c8ffa57d4d5e936c56246de0e082 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "line",
+            "name": "\u91d1\u6208\u91cf\u9510\u4e2d\u6027ZS-XTEHFE",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2024-01-05",
+                    1.0
+                ],
+                [
+                    "2024-01-12",
+                    1.0041
+                ],
+                [
+                    "2024-01-19",
+                    1.0024
+                ],
+                [
+                    "2024-01-26",
+                    1.0113
+                ],
+                [
+                    "2024-02-02",
+                    1.0186
+                ],
+                [
+                    "2024-02-08",
+                    0.9619
+                ],
+                [
+                    "2024-02-23",
+                    1.0014
+                ],
+                [
+                    "2024-03-01",
+                    0.9898
+                ],
+                [
+                    "2024-03-08",
+                    0.9921
+                ],
+                [
+                    "2024-03-15",
+                    0.9958
+                ],
+                [
+                    "2024-03-22",
+                    1.0148
+                ],
+                [
+                    "2024-03-29",
+                    1.0241
+                ],
+                [
+                    "2024-04-03",
+                    1.0247
+                ],
+                [
+                    "2024-04-12",
+                    1.024
+                ],
+                [
+                    "2024-04-19",
+                    1.014
+                ],
+                [
+                    "2024-04-26",
+                    1.0068
+                ],
+                [
+                    "2024-04-30",
+                    1.0099
+                ],
+                [
+                    "2024-05-10",
+                    1.0187
+                ],
+                [
+                    "2024-05-17",
+                    1.0325
+                ],
+                [
+                    "2024-05-24",
+                    1.028
+                ],
+                [
+                    "2024-05-31",
+                    1.0274
+                ],
+                [
+                    "2024-06-07",
+                    1.0043
+                ],
+                [
+                    "2024-06-14",
+                    1.0068
+                ],
+                [
+                    "2024-06-21",
+                    1.0054
+                ],
+                [
+                    "2024-06-28",
+                    1.0145
+                ],
+                [
+                    "2024-07-05",
+                    1.0167
+                ],
+                [
+                    "2024-07-12",
+                    1.0129
+                ],
+                [
+                    "2024-07-19",
+                    1.001
+                ],
+                [
+                    "2024-07-26",
+                    1.0088
+                ],
+                [
+                    "2024-08-02",
+                    1.0121
+                ],
+                [
+                    "2024-08-09",
+                    1.0118
+                ],
+                [
+                    "2024-08-16",
+                    1.0174
+                ],
+                [
+                    "2024-08-23",
+                    1.0127
+                ],
+                [
+                    "2024-08-30",
+                    1.0063
+                ],
+                [
+                    "2024-09-06",
+                    1.0079
+                ],
+                [
+                    "2024-09-13",
+                    1.0016
+                ],
+                [
+                    "2024-09-20",
+                    1.0036
+                ],
+                [
+                    "2024-09-27",
+                    0.9502
+                ],
+                [
+                    "2024-09-30",
+                    0.9534
+                ],
+                [
+                    "2024-10-11",
+                    0.9761
+                ],
+                [
+                    "2024-10-18",
+                    0.9668
+                ],
+                [
+                    "2024-10-25",
+                    0.9911
+                ],
+                [
+                    "2024-11-01",
+                    0.9872
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u91d1\u6208\u91cf\u9510\u4e2d\u6027ZS-XTEHFE"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "textStyle": {
+                "fontWeight": "bold",
+                "fontSize": 20
+            },
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "axis",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "2024-01-05",
+                "2024-01-12",
+                "2024-01-19",
+                "2024-01-26",
+                "2024-02-02",
+                "2024-02-08",
+                "2024-02-23",
+                "2024-03-01",
+                "2024-03-08",
+                "2024-03-15",
+                "2024-03-22",
+                "2024-03-29",
+                "2024-04-03",
+                "2024-04-12",
+                "2024-04-19",
+                "2024-04-26",
+                "2024-04-30",
+                "2024-05-10",
+                "2024-05-17",
+                "2024-05-24",
+                "2024-05-31",
+                "2024-06-07",
+                "2024-06-14",
+                "2024-06-21",
+                "2024-06-28",
+                "2024-07-05",
+                "2024-07-12",
+                "2024-07-19",
+                "2024-07-26",
+                "2024-08-02",
+                "2024-08-09",
+                "2024-08-16",
+                "2024-08-23",
+                "2024-08-30",
+                "2024-09-06",
+                "2024-09-13",
+                "2024-09-20",
+                "2024-09-27",
+                "2024-09-30",
+                "2024-10-11",
+                "2024-10-18",
+                "2024-10-25",
+                "2024-11-01"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "min": 0.94,
+            "max": 1.05,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": "Value over Time",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "dataZoom": [
+        {
+            "show": true,
+            "type": "slider",
+            "showDetail": true,
+            "showDataShadow": true,
+            "realtime": true,
+            "start": 0,
+            "end": 100,
+            "orient": "horizontal",
+            "zoomLock": false,
+            "filterMode": "filter"
+        }
+    ]
+};
+        chart_3446c8ffa57d4d5e936c56246de0e082.setOption(option_3446c8ffa57d4d5e936c56246de0e082);
+    </script>
+</body>
+</html>
+
+                <table  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>1月</th>
+      <th>2月</th>
+      <th>3月</th>
+      <th>4月</th>
+      <th>5月</th>
+      <th>6月</th>
+      <th>7月</th>
+      <th>8月</th>
+      <th>9月</th>
+      <th>10月</th>
+      <th>11月</th>
+      <th>年度总收益</th>
+      <th>月度胜率</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>金戈量锐中性ZS-XTEHFE_2024</th>
+      <td>1.120%</td>
+      <td>-0.980%</td>
+      <td>2.240%</td>
+      <td>-1.400%</td>
+      <td>1.720%</td>
+      <td>-1.270%</td>
+      <td>-0.570%</td>
+      <td>-0.240%</td>
+      <td>-5.400%</td>
+      <td>3.870%</td>
+      <td>-0.390%</td>
+      <td>-1.280%</td>
+      <td>33.330%</td>
+    </tr>
+  </tbody>
+</table><table  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>日期</th>
+      <th>2024-08-30</th>
+      <th>2024-09-06</th>
+      <th>2024-09-13</th>
+      <th>2024-09-20</th>
+      <th>2024-09-27</th>
+      <th>2024-10-04</th>
+      <th>2024-10-11</th>
+      <th>2024-10-18</th>
+      <th>2024-10-25</th>
+      <th>2024-11-01</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>金戈量锐中性ZS-XTEHFE_周收益</th>
+      <td>-0.0063</td>
+      <td>0.0016</td>
+      <td>-0.0062</td>
+      <td>0.0019</td>
+      <td>-0.0546</td>
+      <td>0.0034</td>
+      <td>0.0235</td>
+      <td>-0.0096</td>
+      <td>0.0248</td>
+      <td>-0.0039</td>
+    </tr>
+  </tbody>
+</table><table  border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>区间收益率</th>
+      <th>年化收益率</th>
+      <th>区间波动率</th>
+      <th>年化波动率</th>
+      <th>夏普比率</th>
+      <th>最大回撤</th>
+      <th>begin_date</th>
+      <th>end_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>金戈量锐中性ZS-XTEHFE_1M</th>
+      <td>1.147%</td>
+      <td>14.905%</td>
+      <td>1.504%</td>
+      <td>10.846%</td>
+      <td>1.374</td>
+      <td>-0.951%</td>
+      <td>2024-10-11</td>
+      <td>2024-11-01</td>
+    </tr>
+    <tr>
+      <th>金戈量锐中性ZS-XTEHFE_3M</th>
+      <td>-2.460%</td>
+      <td>-9.137%</td>
+      <td>1.831%</td>
+      <td>13.200%</td>
+      <td>-0.692</td>
+      <td>-6.600%</td>
+      <td>2024-08-02</td>
+      <td>2024-11-01</td>
+    </tr>
+    <tr>
+      <th>金戈量锐中性ZS-XTEHFE_6M</th>
+      <td>-3.083%</td>
+      <td>-6.166%</td>
+      <td>1.470%</td>
+      <td>10.603%</td>
+      <td>-0.582</td>
+      <td>-7.973%</td>
+      <td>2024-05-10</td>
+      <td>2024-11-01</td>
+    </tr>
+  </tbody>
+</table>
+                <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+
+</head>
+<body >
+    <div id="6598af7ae5cf45b69173bc4bca87017c" class="chart-container" style="width:1560px; height:600px; text-align:center; margin: auto"></div>
+    <script>
+        var chart_6598af7ae5cf45b69173bc4bca87017c = echarts.init(
+            document.getElementById('6598af7ae5cf45b69173bc4bca87017c'), 'white', {renderer: 'canvas'});
+        var option_6598af7ae5cf45b69173bc4bca87017c = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "line",
+            "name": "\u91d1\u6208\u91cf\u9510\u4e2d\u6027ZS-XTEHFE",
+            "connectNulls": false,
+            "xAxisIndex": 0,
+            "symbolSize": 4,
+            "showSymbol": false,
+            "smooth": false,
+            "clip": true,
+            "step": false,
+            "stackStrategy": "samesign",
+            "data": [
+                [
+                    "2024-01-05",
+                    0.0
+                ],
+                [
+                    "2024-01-12",
+                    0.0
+                ],
+                [
+                    "2024-01-19",
+                    -0.0016
+                ],
+                [
+                    "2024-01-26",
+                    0.0
+                ],
+                [
+                    "2024-02-02",
+                    0.0
+                ],
+                [
+                    "2024-02-08",
+                    -0.0556
+                ],
+                [
+                    "2024-02-23",
+                    -0.0169
+                ],
+                [
+                    "2024-03-01",
+                    -0.0283
+                ],
+                [
+                    "2024-03-08",
+                    -0.026
+                ],
+                [
+                    "2024-03-15",
+                    -0.0223
+                ],
+                [
+                    "2024-03-22",
+                    -0.0037
+                ],
+                [
+                    "2024-03-29",
+                    0.0
+                ],
+                [
+                    "2024-04-03",
+                    0.0
+                ],
+                [
+                    "2024-04-12",
+                    -0.0007
+                ],
+                [
+                    "2024-04-19",
+                    -0.0105
+                ],
+                [
+                    "2024-04-26",
+                    -0.0175
+                ],
+                [
+                    "2024-04-30",
+                    -0.0145
+                ],
+                [
+                    "2024-05-10",
+                    -0.0059
+                ],
+                [
+                    "2024-05-17",
+                    0.0
+                ],
+                [
+                    "2024-05-24",
+                    -0.0044
+                ],
+                [
+                    "2024-05-31",
+                    -0.005
+                ],
+                [
+                    "2024-06-07",
+                    -0.0273
+                ],
+                [
+                    "2024-06-14",
+                    -0.025
+                ],
+                [
+                    "2024-06-21",
+                    -0.0263
+                ],
+                [
+                    "2024-06-28",
+                    -0.0175
+                ],
+                [
+                    "2024-07-05",
+                    -0.0153
+                ],
+                [
+                    "2024-07-12",
+                    -0.019
+                ],
+                [
+                    "2024-07-19",
+                    -0.0306
+                ],
+                [
+                    "2024-07-26",
+                    -0.023
+                ],
+                [
+                    "2024-08-02",
+                    -0.0197
+                ],
+                [
+                    "2024-08-09",
+                    -0.0201
+                ],
+                [
+                    "2024-08-16",
+                    -0.0147
+                ],
+                [
+                    "2024-08-23",
+                    -0.0192
+                ],
+                [
+                    "2024-08-30",
+                    -0.0254
+                ],
+                [
+                    "2024-09-06",
+                    -0.0239
+                ],
+                [
+                    "2024-09-13",
+                    -0.0299
+                ],
+                [
+                    "2024-09-20",
+                    -0.0281
+                ],
+                [
+                    "2024-09-27",
+                    -0.0797
+                ],
+                [
+                    "2024-09-30",
+                    -0.0766
+                ],
+                [
+                    "2024-10-11",
+                    -0.0547
+                ],
+                [
+                    "2024-10-18",
+                    -0.0637
+                ],
+                [
+                    "2024-10-25",
+                    -0.0402
+                ],
+                [
+                    "2024-11-01",
+                    -0.0439
+                ]
+            ],
+            "hoverAnimation": true,
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "logBase": 10,
+            "seriesLayoutBy": "column",
+            "lineStyle": {
+                "show": true,
+                "width": 3,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "zlevel": 0,
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u91d1\u6208\u91cf\u9510\u4e2d\u6027ZS-XTEHFE"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "textStyle": {
+                "fontWeight": "bold",
+                "fontSize": 20
+            },
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "axis",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "2024-01-05",
+                "2024-01-12",
+                "2024-01-19",
+                "2024-01-26",
+                "2024-02-02",
+                "2024-02-08",
+                "2024-02-23",
+                "2024-03-01",
+                "2024-03-08",
+                "2024-03-15",
+                "2024-03-22",
+                "2024-03-29",
+                "2024-04-03",
+                "2024-04-12",
+                "2024-04-19",
+                "2024-04-26",
+                "2024-04-30",
+                "2024-05-10",
+                "2024-05-17",
+                "2024-05-24",
+                "2024-05-31",
+                "2024-06-07",
+                "2024-06-14",
+                "2024-06-21",
+                "2024-06-28",
+                "2024-07-05",
+                "2024-07-12",
+                "2024-07-19",
+                "2024-07-26",
+                "2024-08-02",
+                "2024-08-09",
+                "2024-08-16",
+                "2024-08-23",
+                "2024-08-30",
+                "2024-09-06",
+                "2024-09-13",
+                "2024-09-20",
+                "2024-09-27",
+                "2024-09-30",
+                "2024-10-11",
+                "2024-10-18",
+                "2024-10-25",
+                "2024-11-01"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": "max drawdown",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "dataZoom": [
+        {
+            "show": true,
+            "type": "slider",
+            "showDetail": true,
+            "showDataShadow": true,
+            "realtime": true,
+            "start": 0,
+            "end": 100,
+            "orient": "horizontal",
+            "zoomLock": false,
+            "filterMode": "filter"
+        }
+    ]
+};
+        chart_6598af7ae5cf45b69173bc4bca87017c.setOption(option_6598af7ae5cf45b69173bc4bca87017c);
+    </script>
+</body>
+</html>
+
+            </body>
+        </html>
+    
