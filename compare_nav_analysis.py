@@ -3,8 +3,12 @@ from single_nav_analysis import SingleNavAnalysis
 
 class CompareNavAnalysis(SingleNavAnalysis):
     def __init__(self, nav_analysis_config: NavAnalysisConfig, strip_date:bool=True):
+        """
+        param strip_date: 是否删除早于begin_date的净值数据, 默认为True; 为False时, 会选择数据中的最早时间作为begin_date
+        """
         self.nav_analysis_config = nav_analysis_config
-        if self.nav_analysis_config.begin_date == np.datetime64("2000-06-06") and self.strip_date:
+        self.strip_date = strip_date
+        if self.nav_analysis_config.begin_date == NavAnalysisConfig().begin_date and self.strip_date:
             raise ValueError("当使用strip_date时，必须指定begin_date")
         self.nav_file_paths = (
             self.nav_analysis_config.nav_data_path

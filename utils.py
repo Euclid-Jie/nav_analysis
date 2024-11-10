@@ -572,7 +572,7 @@ class NavAnalysisConfig(NamedTuple):
         image_save_parh: 图片保存路径, 为None则不保存图片
     """
 
-    begin_date: np.datetime64 = np.datetime64("2000-06-06")
+    begin_date: np.datetime64 = np.datetime64("2015-06-06")
     end_date: np.datetime64 = np.datetime64("2099-06-06")
     special_html_name: bool = False
     open_html: bool = True
