@@ -117,6 +117,10 @@ class CompareNavAnalysis(SingleNavAnalysis):
                     np.where(np.isin(self.trade_date, single_nav_analysis.date))
                 ] = drawdown_i
                 self.drawdown_dict[drawdown_name_i] = ffill(match_drawdown_i)
+                
+        self.nav_df = pd.DataFrame(self.nav_dict,index = self.trade_date)
+        if self.weely_display:
+            self.nav_df = self.nav_df.reindex(self.weekly_trade_date)
 
     def export_html(self, save=True):
         self.html = nav_analysis_echarts_plot(
@@ -154,6 +158,12 @@ class CompareNavAnalysis(SingleNavAnalysis):
                 input("导出完成，按任意键打开html文件")
                 os.system(f"start {html_file_path.__str__()}")
 
+    def corr(self,**kwargs):
+        """
+        计算净值相关性, 注意适应的是收益率序列计算
+        """
+        return self.nav_df.corr(**kwargs)
+        
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
