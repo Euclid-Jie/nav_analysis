@@ -72,6 +72,24 @@ def load_bench_data(index_data_path: Path = None):
     return index_data
 
 
+def load_bench_rtn(
+    index_data_path: Path = r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv",
+    reindex_date: np.ndarray[np.datetime64] = None,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    index_df = load_bench_data(index_data_path)
+    index_df["date"] = pd.to_datetime(index_df["bob"])
+    index_df.set_index("date", inplace=True)
+    SHSE_000300 = index_df[index_df["symbol"] == "SHSE.000300"]
+    SHSE_000905 = index_df[index_df["symbol"] == "SHSE.000905"]
+    SHSE_000852 = index_df[index_df["symbol"] == "SHSE.000852"]
+    SZSE_399303 = index_df[index_df["symbol"] == "SZSE.399303"]
+    SHSE_000300_rtn = SHSE_000300["close"].pct_change().reindex(reindex_date).values
+    SHSE_000905_rtn = SHSE_000905["close"].pct_change().reindex(reindex_date).values
+    SHSE_000852_rtn = SHSE_000852["close"].pct_change().reindex(reindex_date).values
+    SHSE_000300_rtn = SZSE_399303["close"].pct_change().reindex(reindex_date).values
+    return SHSE_000300_rtn, SHSE_000905_rtn, SHSE_000852_rtn, SHSE_000300_rtn
+
+
 def generate_trading_date(
     begin_date: np.datetime64 = np.datetime64("2015-01-01"),
     end_date: np.datetime64 = np.datetime64("today"),
@@ -102,7 +120,7 @@ def generate_trading_date(
         trading_date,
         np.unique(
             trading_date_df[trading_date_df["is_friday"]]["trading_date"].values[1:]
-        ),
+        ).astype("datetime64[D]"),
     )
 
 
@@ -358,6 +376,24 @@ def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     return result
 
 
+def calc_excess_nav(
+    nav: np.ndarray,
+    bench_nav: np.ndarray,
+    method: Literal["simple", "nav2rtn2nav"] = "simple",
+):
+    assert len(nav) == len(bench_nav), "nav和bench_nav长度不一致"
+    if method == "simple":
+        return nav / bench_nav
+    elif method == "nav2rtn2nav":
+        nav_rtn = calc_nav_rtn(nav, types="log")
+        bench_rtn = calc_nav_rtn(bench_nav, types="log")
+        excess_rtn = nav_rtn - bench_rtn
+        excess_rtn[0] = 0
+        return np.cumsum(excess_rtn) + 1
+    else:
+        raise ValueError("method参数错误,仅支持simple和nav2rtn2nav")
+
+
 def calc_nav_rtn(nav: np.ndarray, types: Literal["log", "simple"] = "log"):
     if types == "simple":
         rtn = nav[1:] / nav[:-1] - 1
@@ -457,6 +493,7 @@ def nav_analysis_echarts_plot(
     table: pd.DataFrame = None,
     additional_table: list[pd.DataFrame] = None,
     select_date: np.ndarray[np.datetime64] = None,
+    attraction_analysis_html: str = "",
 ):
     if select_date is not None:
         assert len(select_date) <= len(date), "select_date长度大于date"
@@ -559,6 +596,7 @@ def nav_analysis_echarts_plot(
                 {nav_line.render_embed()}
                 {"".join([table_i.to_html(render_links=True) for table_i in additional_table]) if additional_table is not None else ""}
                 {drawdown_line.render_embed()}
+                {attraction_analysis_html}
             </body>
         </html>
     """

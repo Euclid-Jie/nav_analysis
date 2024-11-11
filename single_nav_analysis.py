@@ -2,6 +2,7 @@ import datetime
 from utils import *
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from attribution_analysis import AttractionAnalysis
 
 plt.rcParams["font.sans-serif"] = ["SimHei"]
 plt.rcParams["axes.unicode_minus"] = False
@@ -23,6 +24,7 @@ class SingleNavAnalysis:
         self.end_date = self.nav_analysis_config.end_date
         self.nav_dict = {}
         self.drawdown_dict = {}
+        self.attraction_analysis_html = ""
         self.load_data()
         self.select_date()
         self.trade_date, self.weekly_trade_date = generate_trading_date(
@@ -127,7 +129,7 @@ class SingleNavAnalysis:
                 {self.nav_analysis_config.benchmark: bench_drawdown}
             )
             # NOTE excess = nav / bench
-            self.excess_nav = self.nav / self.bench_nav
+            self.excess_nav = calc_excess_nav(self.nav, self.bench_nav)
             drawdown, drawdown_info = drawdown_stats(self.excess_nav, self.date)
             self.max_drawdown_info = drawdown_info[
                 drawdown_info["max_drawdown"] == drawdown_info["max_drawdown"].min()
@@ -205,6 +207,37 @@ class SingleNavAnalysis:
                 axis=1,
             )
         )
+        self.nav_df = pd.DataFrame(self.nav_dict, index=self.date)
+
+    def attraction_analysis(self, barra_df: pd.DataFrame, show=False, R2=True):
+        # NOTE attraction analysis
+        assert "日期" in barra_df.columns, "日期列不存在"
+        barra_df["日期"] = pd.to_datetime(barra_df["日期"], format="%Y-%m-%d")
+        barra_df.set_index("日期", inplace=True)
+        seleclted_date = np.intersect1d(self.date, barra_df.index)
+        barra_df = barra_df.reindex(seleclted_date)
+        attraction_analysis = AttractionAnalysis(
+            nav=self.nav[np.isin(self.date, seleclted_date)],
+            date=seleclted_date,
+            Xs=[barra_df[col_i].values for col_i in barra_df.columns],
+            Xs_name=barra_df.columns,
+            windows=13,
+            title=self.name,
+        )
+        if seleclted_date[-1] < self.date[-1]:
+            print(
+                f"Warning: barra data end date is {np.datetime_as_string(seleclted_date[-1], unit='D')}, please update barra data"
+            )
+        attraction_analysis.analyze()
+        fig = attraction_analysis.plot(show=show, R2=R2)
+        fig.write_html("demo.html", full_html=False)
+        with open("demo.html", "r", encoding="utf-8") as f:
+            self.attraction_analysis_html = f.read()
+        # del tmp file
+        try:
+            os.remove("demo.html")
+        except FileNotFoundError:
+            pass
 
     def export_html(self, save=True):
         self.html = nav_analysis_echarts_plot(
@@ -217,6 +250,7 @@ class SingleNavAnalysis:
                 self.weekly_rtn_df,
                 self.backword_analysis_df,
             ],
+            attraction_analysis_html=self.attraction_analysis_html,
         )
         if save:
             if self.nav_analysis_config.special_html_name:
@@ -292,13 +326,16 @@ class SingleNavAnalysis:
 if __name__ == "__main__":
     nav_analysis_config = NavAnalysisConfig(
         bench_data_path=Path(r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"),
-        nav_data_path=Path(
-            r"nav_data\ABA86A-弈倍龙杉九号A类净值序列.xlsx"
-        ),
+        nav_data_path=Path(r"nav_data\ABA86A-弈倍龙杉九号A类净值序列.xlsx"),
         begin_date=np.datetime64("2023-12-29"),
         open_html=True,
         benchmark="SHSE.000905",
     )
     demo = SingleNavAnalysis(nav_analysis_config)
     demo.analysis()
+    demo.attraction_analysis(
+        barra_df=pd.read_excel("data_barra_cne5.xlsx"),
+        show=False,
+        R2=False,
+    )
     demo.export_html()
