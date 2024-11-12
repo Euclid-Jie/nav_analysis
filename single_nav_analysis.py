@@ -334,7 +334,7 @@ if __name__ == "__main__":
     demo = SingleNavAnalysis(nav_analysis_config)
     demo.analysis()
     demo.attraction_analysis(
-        barra_df=pd.read_excel("data_barra_cne5.xlsx"),
+        barra_df=pd.read_csv(r"barra_data\cne6\merged_cne6_barra_factor_rtn.csv"),
         show=False,
         R2=False,
     )
