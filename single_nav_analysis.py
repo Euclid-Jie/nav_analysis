@@ -209,18 +209,14 @@ class SingleNavAnalysis:
         )
         self.nav_df = pd.DataFrame(self.nav_dict, index=self.date)
 
-    def attraction_analysis(self, barra_df: pd.DataFrame, show=False, R2=True):
+    def attraction_analysis(self, barra_rtn_df: pd.DataFrame, show=False, R2=True):
         # NOTE attraction analysis
-        assert "日期" in barra_df.columns, "日期列不存在"
-        barra_df["日期"] = pd.to_datetime(barra_df["日期"], format="%Y-%m-%d")
-        barra_df.set_index("日期", inplace=True)
-        seleclted_date = np.intersect1d(self.date, barra_df.index)
-        barra_df = barra_df.reindex(seleclted_date)
+        barra_rtn_df, seleclted_date = self.reindex_rtn_df(barra_rtn_df, self.date)
         attraction_analysis = AttractionAnalysis(
             nav=self.nav[np.isin(self.date, seleclted_date)],
             date=seleclted_date,
-            Xs=[barra_df[col_i].values for col_i in barra_df.columns],
-            Xs_name=barra_df.columns,
+            Xs=[barra_rtn_df[col_i].values for col_i in barra_rtn_df.columns],
+            Xs_name=barra_rtn_df.columns,
             windows=13,
             title=self.name,
         )
@@ -238,6 +234,19 @@ class SingleNavAnalysis:
             os.remove("demo.html")
         except FileNotFoundError:
             pass
+
+    @staticmethod
+    def reindex_rtn_df(barra_rtn_df, date):
+        assert "日期" in barra_rtn_df.columns, "日期列不存在"
+        barra_rtn_df["日期"] = pd.to_datetime(barra_rtn_df["日期"], format="%Y-%m-%d")
+        barra_rtn_df.set_index("日期", inplace=True)
+        seleclted_date = np.intersect1d(date, barra_rtn_df.index)
+        barra_nav_df = (barra_rtn_df + 1).cumprod().reindex(seleclted_date)
+        barra_rtn_df = barra_nav_df.copy()
+        for coli in barra_nav_df.columns:
+            barra_rtn_df[coli] = calc_nav_rtn(barra_rtn_df[coli].values)
+        barra_rtn_df = barra_rtn_df.iloc[1:]
+        return barra_rtn_df, seleclted_date[1:]
 
     def export_html(self, save=True):
         self.html = nav_analysis_echarts_plot(
