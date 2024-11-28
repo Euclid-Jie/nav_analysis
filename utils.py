@@ -363,9 +363,9 @@ def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     assert nav.ndim == 1, "nav维度不为1"
     assert np.isnan(nav).sum() == 0, "nav中有nan"
     result = {"区间收益率": nav[-1] / nav[0] - 1}
-    result["年化收益率"] = (
-        result["区间收益率"] / len(nav) * (250 if freq == "D" else 52)
-    )
+    result["年化收益率"] = (1 + result["区间收益率"]) ** (
+        (250 if freq == "D" else 52) / len(nav)
+    ) - 1
 
     rtn = np.log(nav[1:] / nav[:-1])
     result["区间波动率"] = np.std(rtn)
