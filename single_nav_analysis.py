@@ -184,7 +184,7 @@ class SingleNavAnalysis:
             pd.concat(
                 [
                     self.metrics_df[
-                        ["年化收益率", "年化波动率", "最大回撤", "夏普比率"]
+                        ["年化收益率", "年化波动率", "最大回撤", "夏普比率", "卡玛比率"]
                     ],
                     self.max_drawdown_info[
                         [

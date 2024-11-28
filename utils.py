@@ -373,6 +373,7 @@ def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     result["夏普比率"] = result["年化收益率"] / result["年化波动率"]
     cummax = np.maximum.accumulate(nav)
     result["最大回撤"] = np.min((nav - cummax) / cummax)
+    result["卡玛比率"] = result["年化收益率"] / -result["最大回撤"]
     return result
 
 
