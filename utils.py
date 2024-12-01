@@ -193,6 +193,11 @@ def match_data(
     nav_data: pd.DataFrame,
     trade_date: np.ndarray[np.datetime64],
 ) -> pd.DataFrame:
+    """
+    如果trade_date 的日期不在nav_data中, 则用前一个交易日的数据填充
+    特殊的, 如果trade_date的开始日期早于nav_data的开始日期, 则需要对trade_date进行截取
+    """
+    trade_date = trade_date[trade_date >= nav_data["日期"].min()]
     nav_data = nav_data.set_index("日期")
     nav_data = nav_data.reindex(trade_date, method="ffill")
     return nav_data.reset_index(drop=False)
@@ -359,6 +364,12 @@ def display_df(data: pd.DataFrame):
     return df
 
 
+def calculate_karma_ratio(annual_return: float, max_drawdown: float) -> float:
+    if max_drawdown == 0:
+        return np.inf  # 或者返回一个适当的值，如0或None
+    return annual_return / (-1 * max_drawdown)
+
+
 def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     assert nav.ndim == 1, "nav维度不为1"
     assert np.isnan(nav).sum() == 0, "nav中有nan"
@@ -373,7 +384,7 @@ def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     result["夏普比率"] = result["年化收益率"] / result["年化波动率"]
     cummax = np.maximum.accumulate(nav)
     result["最大回撤"] = np.min((nav - cummax) / cummax)
-    result["卡玛比率"] = result["年化收益率"] / -result["最大回撤"]
+    result["卡玛比率"] = calculate_karma_ratio(result["年化收益率"], result["最大回撤"])
     return result
 
 
@@ -438,23 +449,23 @@ def win_ratio_stastics(nav: np.ndarray, date: np.ndarray[np.datetime64]):
     """
     assert len(nav) == len(date), "nav和date长度不一致"
     nav_data = pd.DataFrame({"日期": date, "累计净值": nav})
-    nav_data["rtn"] = np.log(nav_data["累计净值"]) - np.log(
-        nav_data["累计净值"].shift(1)
-    )
-    monthly_rtn = (
-        nav_data.groupby(pd.Grouper(key="日期", freq="ME"))
-        .apply(
-            lambda x: x["rtn"].sum(),
-            include_groups=False,
-        )
-        .to_frame("月度收益")
-        .reset_index()
+    # 找到日期序列中每个月的最后一天
+    nav_data["year_month"] = nav_data["日期"].dt.to_period("M")
+    monthly_rtn = nav_data.drop_duplicates(
+        subset="year_month", keep="last"
+    ).reset_index(drop=True)
+
+    monthly_rtn["rtn"] = calc_nav_rtn(monthly_rtn["累计净值"].values, types="simple")
+    monthly_rtn = monthly_rtn.copy()
+    monthly_rtn.iloc[0, monthly_rtn.columns.get_loc("rtn")] = (
+        monthly_rtn.iloc[0]["累计净值"] - 1
     )
     monthly_rtn["year"] = monthly_rtn["日期"].dt.year
     monthly_rtn["month"] = monthly_rtn["日期"].dt.month
     monthly_rtn = monthly_rtn.pivot_table(
-        index="year", columns="month", values="月度收益", aggfunc="sum"
+        index="year", columns="month", values="rtn", aggfunc="sum"
     )
+
     monthly_rtn.columns = [f"{x}月" for x in monthly_rtn.columns]
     monthly_rtn.index.name = None
     monthly_rtn["年度总收益"] = monthly_rtn.apply(lambda x: np.nansum(x), axis=1)

@@ -28,7 +28,7 @@ class SingleNavAnalysis:
         self.load_data()
         self.select_date()
         self.trade_date, self.weekly_trade_date = generate_trading_date(
-            self.begin_date, self.end_date
+            self.begin_date - np.timedelta64(10, "D"), self.end_date
         )
         # 根据数据频率对数据进行日期的规范化
         if self.freq == "D":
