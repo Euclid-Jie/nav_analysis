@@ -240,12 +240,12 @@ def backword_analysis(
         res = _backword_analysis(nav_data, pd.DateOffset(months=i), freq=freq)
         res_dict[f"{i}M"] = res
 
-    if nav_data["日期"].values.min() <= pd.to_datetime(
+    if nav_data["日期"].values.min() < pd.to_datetime(
         f"{datetime.datetime.now().year}-01-01"
     ):
         YTD_idx = np.where(
-            nav_data["日期"] >= pd.to_datetime(f"{datetime.datetime.now().year}-01-01")
-        )[0][1]
+            nav_data["日期"] < pd.to_datetime(f"{datetime.datetime.now().year}-01-01")
+        )[0][-1]
         ytd_data = nav_data[YTD_idx:]
         ytd_metrics = curve_analysis(ytd_data["累计净值"].values, freq=freq)
         ytd_metrics["begin_date"] = np.datetime_as_string(
@@ -468,7 +468,7 @@ def win_ratio_stastics(nav: np.ndarray, date: np.ndarray[np.datetime64]):
 
     monthly_rtn.columns = [f"{x}月" for x in monthly_rtn.columns]
     monthly_rtn.index.name = None
-    monthly_rtn["年度总收益"] = monthly_rtn.apply(lambda x: np.nansum(x), axis=1)
+    monthly_rtn["年度总收益"] = monthly_rtn.apply(lambda x: np.prod(x + 1) - 1, axis=1)
     monthly_rtn["月度胜率"] = monthly_rtn.apply(
         lambda x: (x >= 0).sum() / (~np.isnan(x)).sum(), axis=1
     )
@@ -531,7 +531,9 @@ def nav_analysis_echarts_plot(
         nav_line.add_yaxis(key, (nav / nav[0]).tolist(), is_symbol_show=False)
     nav_line.set_global_opts(
         legend_opts=opts.LegendOpts(
-            textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)
+            textstyle_opts=opts.TextStyleOpts(
+                font_weight="bold", font_size=16, font_family="kaiti"
+            )
         ),
         datazoom_opts=[
             opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")
@@ -558,7 +560,9 @@ def nav_analysis_echarts_plot(
         drawdown_line.add_yaxis(key, drawdown.tolist(), is_symbol_show=False)
     drawdown_line.set_global_opts(
         legend_opts=opts.LegendOpts(
-            textstyle_opts=opts.TextStyleOpts(font_weight="bold", font_size=20)
+            textstyle_opts=opts.TextStyleOpts(
+                font_weight="bold", font_size=16, font_family="kaiti"
+            )
         ),
         datazoom_opts=[
             opts.DataZoomOpts(range_start=0, range_end=100, orient="horizontal")
@@ -604,9 +608,13 @@ def nav_analysis_echarts_plot(
             </style>
             </head>
             <body>
+                <h1>基础指标</h1>
                 {table}
+                <h1>净值曲线</h1>
                 {nav_line.render_embed()}
+                <h1>区间收益</h1>
                 {"".join([table_i.to_html(render_links=True) for table_i in additional_table]) if additional_table is not None else ""}
+                <h1>最大回撤</h1>
                 {drawdown_line.render_embed()}
                 {attraction_analysis_html}
             </body>
