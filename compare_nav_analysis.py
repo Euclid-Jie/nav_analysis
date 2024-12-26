@@ -36,6 +36,7 @@ class CompareNavAnalysis(SingleNavAnalysis):
             self.nav_analysis_config.bench_data_path
         )
         for path_i in self.nav_file_paths:
+            print(f"正在加载{path_i.stem}数据")
             data = format_nav_data(path_i)
             if data["日期"].min() > self.begin_date and self.strip_date:
                 print(f"{path_i.stem}晚于开始时间，已删除")

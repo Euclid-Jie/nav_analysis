@@ -68,7 +68,11 @@ class SingleNavAnalysis:
         else:
             self.bench_data: pd.DataFrame = None
         print(f"开始读取{self.name}净值数据")
-        self.nav_data: pd.DataFrame = format_nav_data(self.nav_file_path)
+        self.nav_data: pd.DataFrame = format_nav_data(
+            self.nav_file_path,
+            ingnore_null=self.nav_analysis_config.ingnore_null,
+            ingnore_duplicate=self.nav_analysis_config.ingnore_duplicate,
+        )
 
         self.freq = infer_frequency(self.nav_data["日期"].values)
 

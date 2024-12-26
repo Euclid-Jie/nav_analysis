@@ -137,7 +137,7 @@ def infer_frequency(
         return "W"
 
 
-def format_nav_data(path, ingnore_null=True):
+def format_nav_data(path, ingnore_null=True, ingnore_duplicate=False):
     if path.suffix == ".csv":
         nav_data = pd.read_csv(path)
     else:
@@ -166,21 +166,25 @@ def format_nav_data(path, ingnore_null=True):
         )
     else:
         if nav_data["累计净值"].isnull().sum() > 0:
-            print("已剔除, 净值数据中存在累计净值为空的数据")
+            print("【已剔除】, 净值数据中存在累计净值为空的数据")
             nav_data = nav_data[~nav_data["累计净值"].isnull()]
     assert nav_data["日期"].isnull().sum() == 0, input(
         "Error: 净值数据中存在日期为空的数据"
     )
     if nav_data["日期"].duplicated(keep=False).sum() != 0:
-        if (
-            input(
-                "Info: 净值数据中存在日期重复的数据\n{}\n 键入回车键自动剔除重复".format(
-                    nav_data[nav_data["日期"].duplicated()]
+        if ingnore_duplicate == False:
+            if (
+                input(
+                    "Info: 净值数据中存在日期重复的数据\n{}\n 键入回车键自动剔除重复".format(
+                        nav_data[nav_data["日期"].duplicated()]
+                    )
                 )
-            )
-            == ""
-        ):
+                == ""
+            ):
+                nav_data = nav_data.drop_duplicates(subset="日期")
+        else:
             nav_data = nav_data.drop_duplicates(subset="日期")
+            print("已剔除, 净值数据中存在日期重复的数据")
     if nav_data["日期"].dtype == "int":
         nav_data["日期"] = pd.to_datetime(nav_data["日期"], format="%Y%m%d")
     else:
@@ -643,6 +647,8 @@ class NavAnalysisConfig(NamedTuple):
     ] = None
     nav_data_path: List[Path] | Path = None
     bench_data_path: Path = None
+    ingnore_null: bool = False
+    ingnore_duplicate: bool = False
 
     def dict(self):
         return self._asdict()
