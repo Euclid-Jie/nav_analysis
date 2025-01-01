@@ -243,9 +243,14 @@ def backword_analysis(
             break
         res = _backword_analysis(nav_data, pd.DateOffset(months=i), freq=freq)
         res_dict[f"{i}M"] = res
-
-    if nav_data["日期"].values.min() < pd.to_datetime(
-        f"{datetime.datetime.now().year}-01-01"
+    # 仅在产品当年运行超过20天 且 产品在当年一直存续 才计算YTD
+    if (
+        nav_data["日期"].values.max()
+        - pd.to_datetime(f"{datetime.datetime.now().year}-01-01")
+        > pd.Timedelta(20, "D")
+    ) and (
+        nav_data["日期"].values.min()
+        < pd.to_datetime(f"{datetime.datetime.now().year}-01-01")
     ):
         YTD_idx = np.where(
             nav_data["日期"] < pd.to_datetime(f"{datetime.datetime.now().year}-01-01")
@@ -363,6 +368,8 @@ def display_df(data: pd.DataFrame):
             df[col] = df[col].map(lambda x: f"{x:.3%}")
         if "夏普比率" in col:
             df[col] = df[col].map(lambda x: f"{x:.3f}")
+        if "卡玛比率" in col:
+            df[col] = df[col].map(lambda x: f"{x:.3f}")
         if "最大回撤" in col:
             df[col] = df[col].map(lambda x: f"{x:.3%}")
     return df
@@ -377,6 +384,7 @@ def calculate_karma_ratio(annual_return: float, max_drawdown: float) -> float:
 def curve_analysis(nav: np.ndarray, freq: Literal["W", "D"] = "W") -> dict:
     assert nav.ndim == 1, "nav维度不为1"
     assert np.isnan(nav).sum() == 0, "nav中有nan"
+    assert len(rtn) <= 1, "nav不足两条, 无法计算"
     result = {"区间收益率": nav[-1] / nav[0] - 1}
     result["年化收益率"] = (1 + result["区间收益率"]) ** (
         (250 if freq == "D" else 52) / len(nav)

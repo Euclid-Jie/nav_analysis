@@ -1,4 +1,5 @@
 from utils import *
+import itertools
 from single_nav_analysis import SingleNavAnalysis
 
 
@@ -14,9 +15,14 @@ class BatchNavAnalysis:
             else getLocalFile(log=False)
         )
         assert self.nav_file_path.is_dir(), "batch analysis 以文件夹为最小分析单位"
+
         self.nav_file_paths = [
             Path(path_i)
-            for path_i in self.nav_file_path.glob("*.xlsx" or "*.xls" or "csv")
+            for path_i in itertools.chain(
+                self.nav_file_path.rglob("*.xlsx"),
+                self.nav_file_path.rglob("*.xls"),
+                self.nav_file_path.rglob("*.csv"),
+            )
         ]
         assert (
             len(self.nav_file_paths) > 0
@@ -32,13 +38,13 @@ class BatchNavAnalysis:
     def weekly_yearly_rtn(
         nav: np.ndarray,
         date: np.datetime64,
-        last_week_date: np.datetime64 = np.datetime64("2024-12-13"),
+        last_week_date: np.datetime64 = np.datetime64("2024-12-20"),
         last_year_date: np.datetime64 = np.datetime64("2023-12-29"),
     ) -> Tuple[float, float]:
         """
         计算最近一周和今年以来收益率
         """
-        # TODO: 显然last_week_date\last_week_date可以自动计算, 使用generate_trading_date
+        # TODO: 显然last_week_date\last_week_date可以自动计算, 使用 generate_trading_date
         # 最近一周收益率
         week_nav = nav[date >= last_week_date]
         if len(week_nav) == 0:
@@ -97,6 +103,7 @@ class BatchNavAnalysis:
                                 "净值结束时间": single_nav_analysis.nav_data[
                                     "日期"
                                 ].max(),
+                                "最新累计单位净值": single_nav_analysis.nav[-1],
                             },
                             index=[single_nav_analysis.name],
                         )
@@ -124,33 +131,32 @@ class BatchNavAnalysis:
 if __name__ == "__main__":
     save_folder = Path(r"C:\Users\Ouwei\Desktop\nav_data_stats")
     save_folder.mkdir(exist_ok=True)
-    all_res = pd.DataFrame()
-    for name, bench in {
-        "市场中性": None,
-        "量化选股": None,
-        "300增强": "SHSE.000300",
-        "500增强": "SHSE.000905",
-        "1000增强": "SHSE.000852",
-    }.items():
-        nav_analysis_config = NavAnalysisConfig(
-            bench_data_path=Path(
-                r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"
-            ),
-            nav_data_path=Path(
-                rf"C:\Users\Ouwei\Desktop\nav_data\净值库1220\按策略分\{name}"
-            ),
-            benchmark=bench,
-            ingnore_null=True,
-            ingnore_duplicate=True,
-        )
-        demo = BatchNavAnalysis(
-            nav_analysis_config,
-        )
-        res = demo.anlysis()
-        res.index.name = "管理人及产品"
-        res.to_csv(
-            save_folder.joinpath(f"{name}.xlsx"), index=True, encoding="utf-8-sig"
-        )
-        res["策略类型"] = name
-        all_res = pd.concat([all_res, res])
-    all_res.to_csv(save_folder.joinpath("all.csv"), index=True, encoding="utf-8-sig")
+    with pd.ExcelWriter(save_folder.joinpath("all_20241227.xlsx")) as xlsx:
+        for name, bench in {
+            "市场中性": None,
+            "量化选股": None,
+            "300增强": "SHSE.000300",
+            "500增强": "SHSE.000905",
+            "1000增强": "SHSE.000852",
+        }.items():
+            nav_analysis_config = NavAnalysisConfig(
+                bench_data_path=Path(
+                    r"C:\Euclid_Jie\barra\src\nav_analysis\index_data.csv"
+                ),
+                nav_data_path=Path(
+                    rf"C:\Users\Ouwei\Desktop\nav_data\净值库1227\按策略分\{name}"
+                ),
+                benchmark=bench,
+                ingnore_null=True,
+                ingnore_duplicate=True,
+            )
+            demo = BatchNavAnalysis(
+                nav_analysis_config,
+            )
+            res = demo.anlysis()
+            res.index.name = "管理人及产品"
+            res.to_csv(
+                save_folder.joinpath(f"{name}.csv"), index=True, encoding="utf-8-sig"
+            )
+            res["策略类型"] = name
+            res.to_excel(xlsx, sheet_name=name)
